@@ -15,7 +15,6 @@ class GameScene: SKScene {
   var visitor:Team?
   var home:Team?
   var game:BBGame?
-  let status = SKLabelNode(fontNamed: "Copperplate")
   let hdr = SKLabelNode(fontNamed: "Copperplate")
   let visitorName = SKLabelNode(fontNamed: "Copperplate")
   let homeName = SKLabelNode(fontNamed: "Copperplate")
@@ -23,13 +22,10 @@ class GameScene: SKScene {
   let homeScore = SKLabelNode(fontNamed: "Copperplate")
   let visitorRHE = SKLabelNode(fontNamed: "Copperplate")
   let homeRHE = SKLabelNode(fontNamed: "Copperplate")
-  let sideRetired = SKLabelNode(fontNamed: "Copperplate")
-  let sideRetired2 = SKLabelNode(fontNamed: "Copperplate")
-  let runsScored = SKLabelNode(fontNamed: "Copperplate")
   let tapMessage1 = SKLabelNode(fontNamed: "Copperplate")
   let tapMessage2 = SKLabelNode(fontNamed: "Copperplate")
-  let batterResult = SKLabelNode(fontNamed: "Copperplate")
-    
+  var lstLabels:[SKLabelNode] = []
+  
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
   }
@@ -41,11 +37,33 @@ class GameScene: SKScene {
         
     visitor = Team(name:"Colonels")
     home = Team(name:"Aces")
-    game = BBGame()
+    game = BBGame(scene:self)
         
     addScoreBoardNodes()
   }
+  
+  func addLabelNodes(num:Int=5) {
     
+    var yOffset:CGFloat = 100.0
+    let xOffset:CGFloat = 30.0
+    
+    for _ in 1...num {
+      
+      let node = SKLabelNode(fontNamed: "Copperplate")
+      node.text = ""
+      node.fontSize = BBfontSize
+      node.fontColor = SKColor.blackColor()
+      node.position = CGPointMake(xOffset, size.height-yOffset)
+      node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+      node.hidden = true
+      addChild(node)
+    
+      lstLabels.append(node)
+      yOffset += 20.0
+      
+    }
+  }
+  
   func addScoreBoardNodes() {
         
     hdr.text = "1  2  3  4  5  6  7   R  H  E"
@@ -97,68 +115,28 @@ class GameScene: SKScene {
     homeRHE.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
     addChild(homeRHE)
         
-    // status.text = "\(game!.half) of \(game!.inning) -- \(game!.outs) outs - \(game!.base_status())"
-    status.text = ""
-    status.fontSize = BBfontSize
-    status.fontColor = SKColor.blackColor()
-    status.position = CGPointMake(30, size.height-100.0)
-    status.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(status)
-        
-    batterResult.text = ""
-    batterResult.fontSize = BBfontSize
-    batterResult.fontColor = SKColor.blackColor()
-    batterResult.position = CGPointMake(30, size.height-140.0)
-    batterResult.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(batterResult)
-        
-    runsScored.text = ""
-    runsScored.fontSize = BBfontSize
-    runsScored.fontColor = SKColor.blackColor()
-    runsScored.position = CGPointMake(30, size.height-160.0)
-    runsScored.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(runsScored)
-        
-    sideRetired.text = "Side Retired"
-    sideRetired.fontSize = BBfontSize
-    sideRetired.fontColor = SKColor.blackColor()
-    sideRetired.position = CGPointMake(30, size.height-140.0)
-    sideRetired.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(sideRetired)
-        
-    //sideRetired2.text = "\(game!.srd_runs) runs \(game!.srd_hits) hits \(game!.srd_errors) errors \(game!.srd_lob) LOB"
-    sideRetired2.text = ""
-    sideRetired2.fontSize = BBfontSize
-    sideRetired2.fontColor = SKColor.blackColor()
-    sideRetired2.position = CGPointMake(30, size.height-160.0)
-    sideRetired2.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(sideRetired2)
-        
+    
     tapMessage1.text = "Tap screen"
     tapMessage1.fontSize = BBfontSize
     tapMessage1.fontColor = SKColor.blackColor()
-    tapMessage1.position = CGPointMake(80, 40)
-    tapMessage1.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+    tapMessage1.position = CGPointMake(size.width / 2.0, 40)
+    tapMessage1.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(tapMessage1)
         
     tapMessage2.text = ""
-    //tapMessage2.text = "\(game!.nextEvent)"
     tapMessage2.fontSize = BBfontSize
     tapMessage2.fontColor = SKColor.blackColor()
-    tapMessage2.position = CGPointMake(30, 20)
-    tapMessage2.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+    tapMessage2.position = CGPointMake(size.width / 2.0, 20)
+    tapMessage2.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(tapMessage2)
+    
+    addLabelNodes()
         
     updateAllText()
   }
     
   func updateAllText() {
         
-    sideRetired.hidden = true
-    sideRetired2.hidden = true
-    runsScored.hidden = true
-    batterResult.hidden = true
-    status.hidden = true
     visitorScore.hidden = true
     homeScore.hidden = true
     visitorRHE.hidden = true
@@ -175,34 +153,7 @@ class GameScene: SKScene {
       homeScore.hidden = false
       visitorRHE.hidden = false
       homeRHE.hidden = false
-            
-      // update game status
-      status.text = "\(game!.half) of \(game!.inning) -- \(game!.outs) outs - \(game!.base_status())"
-      status.hidden = false
-            
-      // show side retired if needed
-      if game!.sideRetired {
-                
-        sideRetired2.text = "\(game!.srd_runs) runs \(game!.srd_hits) hits \(game!.srd_errors) errors \(game!.srd_lob) LOB"
-        sideRetired.hidden = false
-        sideRetired2.hidden = false
-                
-      } else {
-                
-        // update game status
-        if game!.batterResult != "" {
-          batterResult.text = "Batter: \(game!.batterResult)"
-          batterResult.hidden = false
-        }
-                
-        // show runs scored if needed
-        if game!.runs > 0 {
-          runsScored.text = "\(game!.runs) Run(s) scored"
-          runsScored.hidden = false
-        }
-      }
     }
-        
     // show next event
     tapMessage2.text = "\(game!.nextEvent)"
   }
@@ -210,19 +161,23 @@ class GameScene: SKScene {
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     print( "touchesBegan()")
         
-    if game!.makeSelection {
-      let idx = game!.avail()[0]
-      game!.in_play(idx)
-    }
-        
-    if game!.sideRetired {
-    }
-        
     if game!.gameOver {
       game!.setup_game(visitor!, home:home!)
       game!.start_game()
-    }
+    } else {
+
+      game!.run_game()
+      
+      if game!.makeSelection {
+        let idx = game!.avail()[0]
+        game!.in_play(idx)
+        game!.makeSelection = false
+      }
         
+      if game!.sideRetired {
+      }
+    }
+    
     updateAllText()
   }
     
