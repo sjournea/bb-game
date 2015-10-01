@@ -52,13 +52,13 @@ class BBGame : Game {
     let node = scene!.lstLabels[idx]
     node.text = text
     let yOffset:CGFloat = scene!.size.height - (100.0 + CGFloat(idx)*20.0)
-    if ham == .Left {
-      node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-      node.position = CGPointMake(30.0, yOffset)
-    } else {
-      // Center
-      node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-      node.position = CGPointMake(scene!.size.width/2.0, yOffset)
+    switch ham {
+      case .Left:
+        node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+        node.position = CGPointMake(30.0, yOffset)
+      case .Center:
+        node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        node.position = CGPointMake(scene!.size.width/2.0, yOffset)
     }
     node.hidden = false
   }
@@ -73,6 +73,7 @@ class BBGame : Game {
     updateLabelNode(1, text:"vs", ham:.Center)
     updateLabelNode(2, text:"\(scene!.home!.name)", ham:.Center)
 
+    scene!.lblGameEvent.text = "Event: GameStart"
     nextEvent = "To Continue"
 
     return EVENT_RETURN
@@ -86,6 +87,7 @@ class BBGame : Game {
     updateLabelNode(0, text:"GAME", ham:.Center)
     updateLabelNode(1, text:"OVER", ham:.Center)
 
+    scene!.lblGameEvent.text = "Event: GameEnd"
     nextEvent = "To Start a new Game"
     return EVENT_RETURN
   }
@@ -99,6 +101,8 @@ class BBGame : Game {
     
     hideLabels()
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+
+    scene!.lblGameEvent.text = "Event: InningStart"
     nextEvent = "To Continue"
 
     return EVENT_RETURN
@@ -113,7 +117,9 @@ class BBGame : Game {
     hideLabels()
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
 
+    scene!.lblGameEvent.text = "Event: AtBat"
     nextEvent = "\(team.name) Batter Up"
+
     return EVENT_RETURN
   }
   
@@ -128,6 +134,8 @@ class BBGame : Game {
 
     hideLabels()
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+
+    scene!.lblGameEvent.text = "Event: Selection"
     
     return EVENT_RETURN
   }
@@ -142,6 +150,7 @@ class BBGame : Game {
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     updateLabelNode(1, text:"Batter: \(batterResult)")
 
+    scene!.lblGameEvent.text = "Event: Out"
     nextEvent = "To Continue"
     return EVENT_RETURN
   }
@@ -155,6 +164,7 @@ class BBGame : Game {
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     updateLabelNode(1, text:"Batter: \(batterResult)")
 
+    scene!.lblGameEvent.text = "Event: Error"
     nextEvent = "To Continue"
     return EVENT_RETURN
   }
@@ -168,6 +178,7 @@ class BBGame : Game {
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     updateLabelNode(1, text:"Batter: \(batterResult)")
 
+    scene!.lblGameEvent.text = "Event: Hit"
     nextEvent = "To Continue"
     return EVENT_RETURN
   }
@@ -179,9 +190,12 @@ class BBGame : Game {
     hideLabels()
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     var i = 1
-    for (runner, base) in dctRunnerAdvance {
-      updateLabelNode(i++, text:"\(runner) -> \(base)")
-    }
+    if let val = dct["3B"] { updateLabelNode(i++, text:"3B -> \(val)") }
+    if let val = dct["2B"] { updateLabelNode(i++, text:"2B -> \(val)") }
+    if let val = dct["1B"] { updateLabelNode(i++, text:"1B -> \(val)") }
+    if let val = dct["Batter"] { updateLabelNode(i++, text:"Batter -> \(val)") }
+
+    scene!.lblGameEvent.text = "Event: RunnerAdvance"
     nextEvent = "To Continue"
     return EVENT_RETURN
   }
@@ -194,6 +208,7 @@ class BBGame : Game {
     updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     updateLabelNode(1, text:"\(runs) runs scored")
 
+    scene!.lblGameEvent.text = "Event: Run"
     nextEvent = "To Continue"
     return EVENT_RETURN
   }
@@ -212,6 +227,7 @@ class BBGame : Game {
 
     outs = 0
     
+    scene!.lblGameEvent.text = "Event: SideRetured"
     nextEvent = "To Continue"
     return EVENT_RETURN
   }

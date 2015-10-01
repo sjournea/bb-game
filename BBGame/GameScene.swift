@@ -24,6 +24,7 @@ class GameScene: SKScene {
   let homeRHE = SKLabelNode(fontNamed: "Copperplate")
   let tapMessage1 = SKLabelNode(fontNamed: "Copperplate")
   let tapMessage2 = SKLabelNode(fontNamed: "Copperplate")
+  let lblGameEvent = SKLabelNode(fontNamed: "Copperplate")
   var lstLabels:[SKLabelNode] = []
   
   required init?(coder aDecoder: NSCoder) {
@@ -115,6 +116,12 @@ class GameScene: SKScene {
     homeRHE.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
     addChild(homeRHE)
         
+    lblGameEvent.text = ""
+    lblGameEvent.fontSize = BBfontSize
+    lblGameEvent.fontColor = SKColor.blackColor()
+    lblGameEvent.position = CGPointMake(size.width / 2.0, 65)
+    lblGameEvent.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+    addChild(lblGameEvent)
     
     tapMessage1.text = "Tap screen"
     tapMessage1.fontSize = BBfontSize
