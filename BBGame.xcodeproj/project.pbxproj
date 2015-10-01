@@ -20,6 +20,7 @@
 		0B833A6F1BBB8F9700036E93 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A6E1BBB8F9700036E93 /* Team.swift */; settings = {ASSET_TAGS = (); }; };
 		0B833A711BBB8FE500036E93 /* Selections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A701BBB8FE500036E93 /* Selections.swift */; settings = {ASSET_TAGS = (); }; };
 		0B833A731BBB904C00036E93 /* BBGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A721BBB904C00036E93 /* BBGame.swift */; settings = {ASSET_TAGS = (); }; };
+		0B833A751BBCEF1200036E93 /* ScoreBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A741BBCEF1200036E93 /* ScoreBoard.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		0B833A6E1BBB8F9700036E93 /* Team.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B833A701BBB8FE500036E93 /* Selections.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Selections.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B833A721BBB904C00036E93 /* BBGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBGame.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0B833A741BBCEF1200036E93 /* ScoreBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ScoreBoard.swift; sourceTree = "<group>"; tabWidth = 2; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				0B833A3A1BBB89F300036E93 /* AppDelegate.swift */,
 				0B833A3C1BBB89F300036E93 /* GameScene.sks */,
 				0B833A3E1BBB89F400036E93 /* GameScene.swift */,
+				0B833A741BBCEF1200036E93 /* ScoreBoard.swift */,
 				0B833A401BBB89F500036E93 /* GameViewController.swift */,
 				0B833A6C1BBB8EA600036E93 /* Game.swift */,
 				0B833A6E1BBB8F9700036E93 /* Team.swift */,
@@ -281,6 +284,7 @@
 				0B833A6F1BBB8F9700036E93 /* Team.swift in Sources */,
 				0B833A711BBB8FE500036E93 /* Selections.swift in Sources */,
 				0B833A6D1BBB8EA700036E93 /* Game.swift in Sources */,
+				0B833A751BBCEF1200036E93 /* ScoreBoard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,18 +10,13 @@ import SpriteKit
 
 import SpriteKit
 
+let BBfontSize:CGFloat = 19
+
 class GameScene: SKScene {
-  let BBfontSize:CGFloat = 19
   var visitor:Team?
   var home:Team?
   var game:BBGame?
-  let hdr = SKLabelNode(fontNamed: "Copperplate")
-  let visitorName = SKLabelNode(fontNamed: "Copperplate")
-  let homeName = SKLabelNode(fontNamed: "Copperplate")
-  let visitorScore = SKLabelNode(fontNamed: "Copperplate")
-  let homeScore = SKLabelNode(fontNamed: "Copperplate")
-  let visitorRHE = SKLabelNode(fontNamed: "Copperplate")
-  let homeRHE = SKLabelNode(fontNamed: "Copperplate")
+  var scoreboard:ScoreBoard?
   let tapMessage1 = SKLabelNode(fontNamed: "Copperplate")
   let tapMessage2 = SKLabelNode(fontNamed: "Copperplate")
   let lblGameEvent = SKLabelNode(fontNamed: "Copperplate")
@@ -39,8 +34,15 @@ class GameScene: SKScene {
     visitor = Team(name:"Colonels")
     home = Team(name:"Aces")
     game = BBGame(scene:self)
-        
+    
+    scoreboard = ScoreBoard(size: CGSize(width:size.width, height:60))
+    scoreboard!.anchorPoint = CGPoint(x:0.0, y:0.0)
+    scoreboard!.position = CGPointMake(0.0, size.height - 60.0)
+    
     addScoreBoardNodes()
+    addLabelNodes()
+    
+    updateAllText()
   }
   
   func addLabelNodes(num:Int=5) {
@@ -67,55 +69,8 @@ class GameScene: SKScene {
   
   func addScoreBoardNodes() {
         
-    hdr.text = "1  2  3  4  5  6  7   R  H  E"
-    hdr.fontSize = BBfontSize
-    hdr.fontColor = SKColor.blackColor()
-    hdr.position = CGPointMake((size.width*5)/16, size.height-30.0)
-    hdr.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(hdr)
-        
-    visitorName.text = "\(visitor!.name)"
-    visitorName.fontSize = BBfontSize
-    visitorName.fontColor = SKColor.blackColor()
-    visitorName.position = CGPointMake(10, size.height-50.0)
-    visitorName.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(visitorName)
-        
-    visitorScore.text = ""
-    visitorScore.fontSize = BBfontSize
-    visitorScore.fontColor = SKColor.blackColor()
-    visitorScore.position = CGPointMake((size.width*5)/16, size.height-50.0)
-    visitorScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(visitorScore)
-        
-    visitorRHE.text = "0  0  0"
-    visitorRHE.fontSize = BBfontSize
-    visitorRHE.fontColor = SKColor.blackColor()
-    visitorRHE.position = CGPointMake(285, size.height-50.0)
-    visitorRHE.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(visitorRHE)
-        
-    homeName.text = "\(home!.name)"
-    homeName.fontSize = BBfontSize
-    homeName.fontColor = SKColor.blackColor()
-    homeName.position = CGPointMake(10, size.height-70.0)
-    homeName.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(homeName)
-        
-    homeScore.text = ""
-    homeScore.fontSize = BBfontSize
-    homeScore.fontColor = SKColor.blackColor()
-    homeScore.position = CGPointMake((size.width*5)/16, size.height-70.0)
-    homeScore.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(homeScore)
-        
-    homeRHE.text = "0  0  0"
-    homeRHE.fontSize = BBfontSize
-    homeRHE.fontColor = SKColor.blackColor()
-    homeRHE.position = CGPointMake(285, size.height-70.0)
-    homeRHE.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-    addChild(homeRHE)
-        
+    addChild(scoreboard!)
+    
     lblGameEvent.text = ""
     lblGameEvent.fontSize = BBfontSize
     lblGameEvent.fontColor = SKColor.blackColor()
@@ -137,30 +92,16 @@ class GameScene: SKScene {
     tapMessage2.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(tapMessage2)
     
-    addLabelNodes()
-        
-    updateAllText()
   }
     
   func updateAllText() {
         
-    visitorScore.hidden = true
-    homeScore.hidden = true
-    visitorRHE.hidden = true
-    homeRHE.hidden = true
-        
-    if !game!.gameOver {
-      // update box score
-      var dct:[String:String] = game!.box_score2()
-      visitorScore.text = dct["VisitorScore"]
-      homeScore.text = dct["HomeScore"]
-      visitorRHE.text = dct["VisitorRHE"]
-      homeRHE.text = dct["HomeRHE"]
-      visitorScore.hidden = false
-      homeScore.hidden = false
-      visitorRHE.hidden = false
-      homeRHE.hidden = false
+    if game!.gameOver {
+      scoreboard!.hideScore()
+    } else {
+      scoreboard!.updateScore()
     }
+    
     // show next event
     tapMessage2.text = "\(game!.nextEvent)"
   }
@@ -170,6 +111,7 @@ class GameScene: SKScene {
         
     if game!.gameOver {
       game!.setup_game(visitor!, home:home!)
+      scoreboard!.setGame(game!)
       game!.start_game()
     } else {
 
@@ -179,9 +121,6 @@ class GameScene: SKScene {
         let idx = game!.avail()[0]
         game!.in_play(idx)
         game!.makeSelection = false
-      }
-        
-      if game!.sideRetired {
       }
     }
     
