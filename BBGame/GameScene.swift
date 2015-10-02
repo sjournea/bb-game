@@ -38,6 +38,7 @@ class GameScene: SKScene {
     scoreboard = ScoreBoard(size: CGSize(width:size.width, height:60))
     scoreboard!.anchorPoint = CGPoint(x:0.0, y:0.0)
     scoreboard!.position = CGPointMake(0.0, size.height - 60.0)
+    scoreboard!.hidden = true
     
     addScoreBoardNodes()
     addLabelNodes()
@@ -112,6 +113,7 @@ class GameScene: SKScene {
     if game!.gameOver {
       game!.setup_game(visitor!, home:home!)
       scoreboard!.setGame(game!)
+      scoreboard!.hidden = false
       game!.start_game()
     } else {
 

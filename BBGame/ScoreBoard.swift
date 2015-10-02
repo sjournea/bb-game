@@ -199,7 +199,7 @@ class ScoreBoard : SKSpriteNode {
     }
     index = 0
     for score in game!.home.innings {
-      lblHomeScore[index++].text = "\(score)"
+      lblHomeScore[index++].text = score == -1 ? "x" : "\(score)"
     }
     lblVisitorRuns.text = "\(game!.visitor.runs)"
     lblVisitorHits.text = "\(game!.visitor.hits)"

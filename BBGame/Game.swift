@@ -22,8 +22,10 @@ enum GameEvent: Int, CustomStringConvertible {
   Selection,
   InningStart,
   RunnerAdvance,
-  GameInit
-    
+  GameInit,
+  GameFinal,
+  Walkoff
+  
   var description : String {
     get {
       switch(self) {
@@ -40,6 +42,8 @@ enum GameEvent: Int, CustomStringConvertible {
         case InningStart: return "InningStart"
         case RunnerAdvance: return "RunnerAdvance"
         case GameInit: return "GameInit"
+        case GameFinal: return "GameFinal"
+        case Walkoff: return "Walkoff"
       }
     }
   }
@@ -137,6 +141,8 @@ class Game {
       case .Selection: return evtSelection(dct)
       case .InningStart: return evtInningStart(dct)
       case .RunnerAdvance: return evtRunnerAdvance(dct)
+      case .GameFinal: return evtGameFinal(dct)
+      case .Walkoff: return evtWalkoff(dct)
     }
     return EVENT_RETURN
   }
@@ -172,6 +178,8 @@ class Game {
         case .Selection: status = self.stSelection()
         case .InningStart: status = self.stInningStart()
         case .RunnerAdvance: status = self.stRunnerAdvance()
+        case .GameFinal: status = self.stGameFinal()
+        case .Walkoff: status = self.stWalkoff()
       }
     } while status == EVENT_CONTINUE
   }
@@ -188,6 +196,16 @@ class Game {
     return EVENT_RETURN
   }
     
+  private func stGameFinal() -> Int {
+    // GAME_FINAL => GAME_END
+    return event_publish( GameEvent.GameEnd)
+  }
+  
+  private func stWalkoff() -> Int {
+    // Walkoff => GAME_FINAL
+    return event_publish( GameEvent.GameFinal)
+  }
+  
   private func stGameInit() -> Int {
     // GAME_INIT => GAME_START
     self.visitor.start_game()
@@ -243,6 +261,7 @@ class Game {
   }
     
   private func stOut() -> Int {
+    /// OUT => AT_BAT | SIDE_RETURED
     if self._outs == 3 {
       // 3 outs -- update stats
       // update LOB
@@ -262,6 +281,7 @@ class Game {
   }
     
   private func stError() -> Int {
+    // ERROR => RUNNER_ADVANCE
     var dctRunners:[String:AnyObject] = [:]
     if self.sel.sel == BB.ERROR_1B {
       dctRunners["Batter"] = "1B"
@@ -303,6 +323,7 @@ class Game {
   }
     
   private func stHit() -> Int {
+    // HIT => RUNNER_ADVANCE
     var dctRunners:[String:AnyObject] = [:]
     if self.sel.sel == BB.SINGLE {
       dctRunners["Batter"] = "1B"
@@ -390,17 +411,17 @@ class Game {
   }
     
   private func stRun() -> Int {
-    // RUN => AT_BAT | GAME_END
+    // RUN => AT_BAT | WALKOFF
     // check for end of game if in extra innings
-    if (self._inning > self._last_inning && self._up == self.home && self.home.runs > self.visitor.runs) {
+    if (self._inning >= self._last_inning && self._up == self.home && self.home.runs > self.visitor.runs) {
       self._final = true
-      return event_publish(GameEvent.GameEnd)
+      return event_publish(GameEvent.Walkoff)
     }
     return event_publish(GameEvent.AtBat, dct:["team":self._up])
   }
     
   private func stSideRetired() -> Int {
-    // SIDE_RETIRED => GAME_END | INNING_START
+    // SIDE_RETIRED => GAME_FINAL | INNING_START
     self._srd.clear()
     //
     var half:String = ""
@@ -410,7 +431,7 @@ class Game {
       // check for game over,last inning and home leading, last at bat not needed
       if self._inning == self._last_inning && self.home.runs > self.visitor.runs {
         self.home.at_bat(-1)
-        return event_publish(GameEvent.GameEnd)
+        return event_publish(GameEvent.GameFinal)
       }
     } else {
       self._up = self.visitor
@@ -418,7 +439,7 @@ class Game {
       // check for game over
       if self._inning >= self._last_inning && self.home.runs != self.visitor.runs {
         self._final = true
-        return event_publish(GameEvent.GameEnd)
+        return event_publish(GameEvent.GameFinal)
       }
       self._inning++
     }
@@ -578,6 +599,7 @@ class Game {
   }
     
   func evtGameStart(dct:[String:AnyObject] = [:]) -> Int { return EVENT_CONTINUE }
+  func evtGameFinal(dct:[String:AnyObject] = [:]) -> Int { return EVENT_CONTINUE }
   func evtGameEnd(dct:[String:AnyObject] = [:]) -> Int { return EVENT_CONTINUE }
   func evtInningStart(dct:[String:AnyObject] = [:]) -> Int { return EVENT_CONTINUE }
   func evtAtBat(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
@@ -588,4 +610,5 @@ class Game {
   func evtRunnerAdvance(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
   func evtRun(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
   func evtSideRetired(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
+  func evtWalkoff(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
 }

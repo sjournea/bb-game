@@ -79,6 +79,26 @@ class BBGame : Game {
     return EVENT_RETURN
   }
   
+  override func evtGameFinal(dct:[String:AnyObject] = [:]) -> Int {
+    print("evtGameFinal() dct:\(dct)")
+    
+    hideLabels()
+    updateLabelNode(0, text:"FINAL", ham:.Center)
+    
+    let visitor_score = "\(scene!.visitor!.name) \(scene!.visitor!.runs)"
+    let home_score = "\(scene!.home!.name) \(scene!.home!.runs)"
+
+    if scene!.visitor!.runs > scene!.home!.runs {
+      updateLabelNode(2, text:visitor_score + " " + home_score, ham:.Center)
+    } else {
+      updateLabelNode(2, text:home_score + " " + visitor_score, ham:.Center)
+    }
+    
+    scene!.lblGameEvent.text = "Event: GameFinal"
+    nextEvent = "To Continue"
+    return EVENT_RETURN
+  }
+
   override func evtGameEnd(dct:[String:AnyObject] = [:]) -> Int {
     print("evtGameEnd() dct:\(dct)")
     gameOver = true
@@ -89,6 +109,17 @@ class BBGame : Game {
 
     scene!.lblGameEvent.text = "Event: GameEnd"
     nextEvent = "To Start a new Game"
+    return EVENT_RETURN
+  }
+  
+  override func evtWalkoff(dct:[String:AnyObject] = [:]) -> Int {
+    print("evtWalkoff() dct:\(dct)")
+    
+    hideLabels()
+    updateLabelNode(0, text:"WALKOFF WIN", ham:.Center)
+    
+    scene!.lblGameEvent.text = "Event: Walkoff"
+    nextEvent = "To Continue"
     return EVENT_RETURN
   }
   
