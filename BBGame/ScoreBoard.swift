@@ -14,8 +14,14 @@ let HITS_OFFSET:CGFloat = RUNS_OFFSET + 27
 let ERRORS_OFFSET:CGFloat = HITS_OFFSET + 27
 let INNINGS_OFFSET:CGFloat = 120
 let INNINGS_INCREMENT:CGFloat = 25
+let LABEL_X_OFFSET:CGFloat = 45.0
+let VISITOR_X_OFFSET:CGFloat = 25.0
+let HOME_X_OFFSET:CGFloat = 5.0
 
 class ScoreBoard : SKSpriteNode {
+  
+  let bgColor:UIColor = UIColor.blackColor()
+  let txtColor:SKColor = SKColor.whiteColor()
   
   var game:BBGame?
   let lblVisitorName = SKLabelNode(fontNamed: "Copperplate")
@@ -33,23 +39,23 @@ class ScoreBoard : SKSpriteNode {
   let lblHomeErrors = SKLabelNode(fontNamed: "Copperplate")
 
   init(size:CGSize) {
-    super.init( texture:nil, color:UIColor.whiteColor(), size:size)
+    super.init( texture:nil, color:bgColor, size:size)
     
     var xOffset:CGFloat = INNINGS_OFFSET
     for i in 1...7 {
       let node = SKLabelNode(fontNamed: "Copperplate")
       node.text = "\(i)"
       node.fontSize = BBfontSize
-      node.fontColor = SKColor.blackColor()
-      node.position = CGPointMake(xOffset, 40.0)
+      node.fontColor = txtColor
+      node.position = CGPointMake(xOffset, LABEL_X_OFFSET)
       node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
       addChild(node)
 
       let vis = SKLabelNode(fontNamed: "Copperplate")
       vis.text = ""
       vis.fontSize = BBfontSize
-      vis.fontColor = SKColor.blackColor()
-      vis.position = CGPointMake(xOffset, 20.0)
+      vis.fontColor = txtColor
+      vis.position = CGPointMake(xOffset, VISITOR_X_OFFSET)
       vis.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
       addChild(vis)
       lblVisitorScore.append(vis)
@@ -57,8 +63,8 @@ class ScoreBoard : SKSpriteNode {
       let hom = SKLabelNode(fontNamed: "Copperplate")
       hom.text = ""
       hom.fontSize = BBfontSize
-      hom.fontColor = SKColor.blackColor()
-      hom.position = CGPointMake(xOffset, 0.0)
+      hom.fontColor = txtColor
+      hom.position = CGPointMake(xOffset, HOME_X_OFFSET)
       hom.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
       addChild(hom)
       lblHomeScore.append(hom)
@@ -68,78 +74,78 @@ class ScoreBoard : SKSpriteNode {
 
     lblVisitorName.text = ""
     lblVisitorName.fontSize = BBfontSize
-    lblVisitorName.fontColor = SKColor.blackColor()
-    lblVisitorName.position = CGPointMake(10, 20.0)
+    lblVisitorName.fontColor = txtColor
+    lblVisitorName.position = CGPointMake(10, VISITOR_X_OFFSET)
     lblVisitorName.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
     addChild(lblVisitorName)
     
     lblHdrRuns.text = "R"
     lblHdrRuns.fontSize = BBfontSize
-    lblHdrRuns.fontColor = SKColor.blackColor()
-    lblHdrRuns.position = CGPointMake(RUNS_OFFSET, 40.0)
+    lblHdrRuns.fontColor = txtColor
+    lblHdrRuns.position = CGPointMake(RUNS_OFFSET, LABEL_X_OFFSET)
     lblHdrRuns.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblHdrRuns)
     
     lblHdrHits.text = "H"
     lblHdrHits.fontSize = BBfontSize
-    lblHdrHits.fontColor = SKColor.blackColor()
-    lblHdrHits.position = CGPointMake(HITS_OFFSET, 40.0)
+    lblHdrHits.fontColor = txtColor
+    lblHdrHits.position = CGPointMake(HITS_OFFSET, LABEL_X_OFFSET)
     lblHdrHits.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblHdrHits)
     
     lblHdrErrors.text = "E"
     lblHdrErrors.fontSize = BBfontSize
-    lblHdrErrors.fontColor = SKColor.blackColor()
-    lblHdrErrors.position = CGPointMake(ERRORS_OFFSET, 40.0)
+    lblHdrErrors.fontColor = txtColor
+    lblHdrErrors.position = CGPointMake(ERRORS_OFFSET, LABEL_X_OFFSET)
     lblHdrErrors.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblHdrErrors)
 
     lblVisitorRuns.text = "0"
     lblVisitorRuns.fontSize = BBfontSize
-    lblVisitorRuns.fontColor = SKColor.blackColor()
-    lblVisitorRuns.position = CGPointMake(RUNS_OFFSET, 20.0)
+    lblVisitorRuns.fontColor = txtColor
+    lblVisitorRuns.position = CGPointMake(RUNS_OFFSET, VISITOR_X_OFFSET)
     lblVisitorRuns.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblVisitorRuns)
     
     lblVisitorHits.text = "0"
     lblVisitorHits.fontSize = BBfontSize
-    lblVisitorHits.fontColor = SKColor.blackColor()
-    lblVisitorHits.position = CGPointMake(HITS_OFFSET, 20.0)
+    lblVisitorHits.fontColor = txtColor
+    lblVisitorHits.position = CGPointMake(HITS_OFFSET, VISITOR_X_OFFSET)
     lblVisitorHits.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblVisitorHits)
     
     lblVisitorErrors.text = "0"
     lblVisitorErrors.fontSize = BBfontSize
-    lblVisitorErrors.fontColor = SKColor.blackColor()
-    lblVisitorErrors.position = CGPointMake(ERRORS_OFFSET, 20.0)
+    lblVisitorErrors.fontColor = txtColor
+    lblVisitorErrors.position = CGPointMake(ERRORS_OFFSET, VISITOR_X_OFFSET)
     lblVisitorErrors.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblVisitorErrors)
 
     lblHomeName.text = ""
     lblHomeName.fontSize = BBfontSize
-    lblHomeName.fontColor = SKColor.blackColor()
-    lblHomeName.position = CGPointMake(10, 0.0)
+    lblHomeName.fontColor = txtColor
+    lblHomeName.position = CGPointMake(10, HOME_X_OFFSET)
     lblHomeName.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
     addChild(lblHomeName)
     
     lblHomeRuns.text = "0"
     lblHomeRuns.fontSize = BBfontSize
-    lblHomeRuns.fontColor = SKColor.blackColor()
-    lblHomeRuns.position = CGPointMake(RUNS_OFFSET, 0.0)
+    lblHomeRuns.fontColor = txtColor
+    lblHomeRuns.position = CGPointMake(RUNS_OFFSET, HOME_X_OFFSET)
     lblHomeRuns.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblHomeRuns)
     
     lblHomeHits.text = "0"
     lblHomeHits.fontSize = BBfontSize
-    lblHomeHits.fontColor = SKColor.blackColor()
-    lblHomeHits.position = CGPointMake(HITS_OFFSET, 0.0)
+    lblHomeHits.fontColor = txtColor
+    lblHomeHits.position = CGPointMake(HITS_OFFSET, HOME_X_OFFSET )
     lblHomeHits.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblHomeHits)
     
     lblHomeErrors.text = "0"
     lblHomeErrors.fontSize = BBfontSize
-    lblHomeErrors.fontColor = SKColor.blackColor()
-    lblHomeErrors.position = CGPointMake(ERRORS_OFFSET, 0.0)
+    lblHomeErrors.fontColor = txtColor
+    lblHomeErrors.position = CGPointMake(ERRORS_OFFSET, HOME_X_OFFSET)
     lblHomeErrors.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
     addChild(lblHomeErrors)
   }

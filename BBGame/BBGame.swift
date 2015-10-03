@@ -9,14 +9,12 @@
 import Foundation
 import SpriteKit
 
-enum LabelPosition {
-  case Center,
-  Left
-}
-
 class BBGame : Game {
   var scene:GameScene?
+  var labels:Labels?
+  var labelsBottom:Labels?
   var gameOver:Bool = true
+
   var inning = 1
   var half = "Top"
   var up:Team?
@@ -39,42 +37,23 @@ class BBGame : Game {
   init(scene:GameScene ) {
     super.init()
     self.scene = scene
+    labels = scene.labels
+    labelsBottom = scene.labelsBottom
+
   }
 
-  private func hideLabels() {
-    for lblNode in scene!.lstLabels {
-      lblNode.hidden = true
-    }
-  }
-  
-  private func updateLabelNode(idx:Int, text:String, ham:LabelPosition = LabelPosition.Left ) {
-    
-    let node = scene!.lstLabels[idx]
-    node.text = text
-    let yOffset:CGFloat = scene!.size.height - (100.0 + CGFloat(idx)*20.0)
-    switch ham {
-      case .Left:
-        node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
-        node.position = CGPointMake(30.0, yOffset)
-      case .Center:
-        node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-        node.position = CGPointMake(scene!.size.width/2.0, yOffset)
-    }
-    node.hidden = false
-  }
-  
   override func evtGameStart(dct:[String:AnyObject] = [:]) -> Int {
 
     print("evtGameStart() dct:\(dct)")
     gameOver = false
     
-    hideLabels()
-    updateLabelNode(0, text:"\(scene!.visitor!.name)", ham:.Center)
-    updateLabelNode(1, text:"vs", ham:.Center)
-    updateLabelNode(2, text:"\(scene!.home!.name)", ham:.Center)
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(scene!.visitor!.name)", ham:.Center)
+    labels!.updateLabelNode(1, text:"vs", ham:.Center)
+    labels!.updateLabelNode(2, text:"\(scene!.home!.name)", ham:.Center)
 
-    scene!.lblGameEvent.text = "Event: GameStart"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: GameStart", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     return EVENT_RETURN
   }
@@ -82,20 +61,24 @@ class BBGame : Game {
   override func evtGameFinal(dct:[String:AnyObject] = [:]) -> Int {
     print("evtGameFinal() dct:\(dct)")
     
-    hideLabels()
-    updateLabelNode(0, text:"FINAL", ham:.Center)
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"FINAL", ham:.Center)
     
     let visitor_score = "\(scene!.visitor!.name) \(scene!.visitor!.runs)"
     let home_score = "\(scene!.home!.name) \(scene!.home!.runs)"
 
     if scene!.visitor!.runs > scene!.home!.runs {
-      updateLabelNode(2, text:visitor_score + " " + home_score, ham:.Center)
+      labels!.updateLabelNode(2, text:visitor_score + " " + home_score, ham:.Center)
     } else {
-      updateLabelNode(2, text:home_score + " " + visitor_score, ham:.Center)
+      labels!.updateLabelNode(2, text:home_score + " " + visitor_score, ham:.Center)
     }
+    let lob = "LOB: \(scene!.visitor!.name) \(scene!.visitor!.lob), \(scene!.home!.name) \(scene!.home!.lob)"
+    labels!.updateLabelNode(3, text:lob, ham:.Center)
     
-    scene!.lblGameEvent.text = "Event: GameFinal"
-    nextEvent = "To Continue"
+    
+    labelsBottom!.updateLabelNode(0, text:"Event: GameFinal", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
 
@@ -103,23 +86,25 @@ class BBGame : Game {
     print("evtGameEnd() dct:\(dct)")
     gameOver = true
 
-    hideLabels()
-    updateLabelNode(0, text:"GAME", ham:.Center)
-    updateLabelNode(1, text:"OVER", ham:.Center)
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"GAME", ham:.Center)
+    labels!.updateLabelNode(1, text:"OVER", ham:.Center)
 
-    scene!.lblGameEvent.text = "Event: GameEnd"
-    nextEvent = "To Start a new Game"
+    labelsBottom!.updateLabelNode(0, text:"Event: GameEnd", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to start new game", ham:.Center)
+
     return EVENT_RETURN
   }
   
   override func evtWalkoff(dct:[String:AnyObject] = [:]) -> Int {
     print("evtWalkoff() dct:\(dct)")
     
-    hideLabels()
-    updateLabelNode(0, text:"WALKOFF WIN", ham:.Center)
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"WALKOFF WIN", ham:.Center)
     
-    scene!.lblGameEvent.text = "Event: Walkoff"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: Walkoff", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
   
@@ -130,11 +115,11 @@ class BBGame : Game {
     self.up = dct["up"] as? Team
     outs = 0
     
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
 
-    scene!.lblGameEvent.text = "Event: InningStart"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     return EVENT_RETURN
   }
@@ -145,11 +130,11 @@ class BBGame : Game {
 
     makeSelection = true
 
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
 
-    scene!.lblGameEvent.text = "Event: AtBat"
-    nextEvent = "\(team.name) Batter Up"
+    labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen for next \(team.name) Batter", ham:.Center)
 
     return EVENT_RETURN
   }
@@ -163,10 +148,11 @@ class BBGame : Game {
     runs = 0
     sideRetired = false
 
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
 
-    scene!.lblGameEvent.text = "Event: Selection"
+    labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
+    // labelsBottom!.updateLabelNode(1, text:"Tap screen for next \(team.name) Batter", ham:.Center)
     
     return EVENT_RETURN
   }
@@ -177,12 +163,13 @@ class BBGame : Game {
     
     batterResult = "Out"
     
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    updateLabelNode(1, text:"Batter: \(batterResult)")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
-    scene!.lblGameEvent.text = "Event: Out"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: Out", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    
     return EVENT_RETURN
   }
   
@@ -191,12 +178,13 @@ class BBGame : Game {
     
     batterResult = dct["error"] as! String
     
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    updateLabelNode(1, text:"Batter: \(batterResult)")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
-    scene!.lblGameEvent.text = "Event: Error"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: Error", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
   
@@ -205,12 +193,13 @@ class BBGame : Game {
     
     batterResult = dct["hit"] as! String
     
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    updateLabelNode(1, text:"Batter: \(batterResult)")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
-    scene!.lblGameEvent.text = "Event: Hit"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: Hit", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
   
@@ -218,16 +207,17 @@ class BBGame : Game {
     print("evtRunnerAdvance() dct:\(dct)")
     dctRunnerAdvance = dct
     
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     var i = 1
-    if let val = dct["3B"] { updateLabelNode(i++, text:"3B -> \(val)") }
-    if let val = dct["2B"] { updateLabelNode(i++, text:"2B -> \(val)") }
-    if let val = dct["1B"] { updateLabelNode(i++, text:"1B -> \(val)") }
-    if let val = dct["Batter"] { updateLabelNode(i++, text:"Batter -> \(val)") }
+    if let val = dct["3B"] { labels!.updateLabelNode(i++, text:"3B -> \(val)") }
+    if let val = dct["2B"] { labels!.updateLabelNode(i++, text:"2B -> \(val)") }
+    if let val = dct["1B"] { labels!.updateLabelNode(i++, text:"1B -> \(val)") }
+    if let val = dct["Batter"] { labels!.updateLabelNode(i++, text:"Batter -> \(val)") }
 
-    scene!.lblGameEvent.text = "Event: RunnerAdvance"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: RunnerAdvance", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
   
@@ -235,12 +225,13 @@ class BBGame : Game {
     print("evtRun() dct:\(dct)")
     self.runs = dct["runs"] as! Int
 
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    updateLabelNode(1, text:"\(runs) runs scored")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(1, text:"\(runs) runs scored")
 
-    scene!.lblGameEvent.text = "Event: Run"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: Run", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
   
@@ -251,15 +242,16 @@ class BBGame : Game {
     self.srd_errors = dct["errors"] as! Int
     self.srd_lob = dct["lob"] as! Int
 
-    hideLabels()
-    updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    updateLabelNode(1, text:"Side Retired")
-    updateLabelNode(2, text:"\(srd_runs) runs \(srd_hits) hits \(srd_errors) errors \(srd_lob) LOB")
+    labels!.hideLabels()
+    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(1, text:"Side Retired")
+    labels!.updateLabelNode(2, text:"\(srd_runs) runs \(srd_hits) hits \(srd_errors) errors \(srd_lob) LOB")
 
     outs = 0
     
-    scene!.lblGameEvent.text = "Event: SideRetured"
-    nextEvent = "To Continue"
+    labelsBottom!.updateLabelNode(0, text:"Event: SideRetired", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
     return EVENT_RETURN
   }
 }
