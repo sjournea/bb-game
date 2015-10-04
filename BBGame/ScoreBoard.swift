@@ -26,6 +26,7 @@ class ScoreBoard : SKSpriteNode {
   var game:BBGame?
   let lblVisitorName = SKLabelNode(fontNamed: "Copperplate")
   let lblHomeName = SKLabelNode(fontNamed: "Copperplate")
+  var lblHeaderScore:[SKLabelNode] = []
   var lblVisitorScore:[SKLabelNode] = []
   var lblHomeScore:[SKLabelNode] = []
   let lblHdrRuns = SKLabelNode(fontNamed: "Copperplate")
@@ -43,32 +44,7 @@ class ScoreBoard : SKSpriteNode {
     
     var xOffset:CGFloat = INNINGS_OFFSET
     for i in 1...7 {
-      let node = SKLabelNode(fontNamed: "Copperplate")
-      node.text = "\(i)"
-      node.fontSize = BBfontSize
-      node.fontColor = txtColor
-      node.position = CGPointMake(xOffset, LABEL_X_OFFSET)
-      node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-      addChild(node)
-
-      let vis = SKLabelNode(fontNamed: "Copperplate")
-      vis.text = ""
-      vis.fontSize = BBfontSize
-      vis.fontColor = txtColor
-      vis.position = CGPointMake(xOffset, VISITOR_X_OFFSET)
-      vis.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-      addChild(vis)
-      lblVisitorScore.append(vis)
-
-      let hom = SKLabelNode(fontNamed: "Copperplate")
-      hom.text = ""
-      hom.fontSize = BBfontSize
-      hom.fontColor = txtColor
-      hom.position = CGPointMake(xOffset, HOME_X_OFFSET)
-      hom.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-      addChild(hom)
-      lblHomeScore.append(hom)
-
+      addInning(i, xOffset: xOffset)
       xOffset += INNINGS_INCREMENT
     }
 
@@ -150,6 +126,36 @@ class ScoreBoard : SKSpriteNode {
     addChild(lblHomeErrors)
   }
   
+  private func addInning(inning:Int, xOffset:CGFloat) {
+
+    let node = SKLabelNode(fontNamed: "Copperplate")
+    node.text = "\(inning)"
+    node.fontSize = BBfontSize
+    node.fontColor = txtColor
+    node.position = CGPointMake(xOffset, LABEL_X_OFFSET)
+    node.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+    addChild(node)
+    lblHeaderScore.append(node)
+    
+    let vis = SKLabelNode(fontNamed: "Copperplate")
+    vis.text = ""
+    vis.fontSize = BBfontSize
+    vis.fontColor = txtColor
+    vis.position = CGPointMake(xOffset, VISITOR_X_OFFSET)
+    vis.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+    addChild(vis)
+    lblVisitorScore.append(vis)
+    
+    let hom = SKLabelNode(fontNamed: "Copperplate")
+    hom.text = ""
+    hom.fontSize = BBfontSize
+    hom.fontColor = txtColor
+    hom.position = CGPointMake(xOffset, HOME_X_OFFSET)
+    hom.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+    addChild(hom)
+    lblHomeScore.append(hom)
+  }
+  
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder) has not been implemented")
   }
@@ -198,6 +204,42 @@ class ScoreBoard : SKSpriteNode {
   }
 
   func updateScore() {
+    // update box score
+    var index:Int = 0
+    for score in game!.visitor.innings {
+      lblVisitorScore[index++].text = "\(score)"
+    }
+    index = 0
+    for score in game!.home.innings {
+      lblHomeScore[index++].text = score == -1 ? "x" : "\(score)"
+    }
+    lblVisitorRuns.text = "\(game!.visitor.runs)"
+    lblVisitorHits.text = "\(game!.visitor.hits)"
+    lblHomeErrors.text = "\(game!.visitor.errors)"
+    lblHomeRuns.text = "\(game!.home.runs)"
+    lblHomeHits.text = "\(game!.home.hits)"
+    lblHomeErrors.text = "\(game!.home.errors)"
+    showScore()
+  }
+
+  func addExtraInning(inning:Int) {
+    // calculate extra inning
+    addInning(inning, xOffset: 0.0)
+    // update the positions
+    var xOffset:CGFloat = INNINGS_OFFSET
+    let start = inning - 6
+    for i in 1...inning {
+      if i < start {
+        lblVisitorScore[i].hidden = true
+        lblHomeScore[i].hidden = true
+        lblHeaderScore[i].hidden = true
+      } else {
+        lblVisitorScore[i].position = CGPointMake(xOffset, VISITOR_X_OFFSET)
+        lblHomeScore[i].position = CGPointMake(xOffset, HOME_X_OFFSET)
+        xOffset += INNINGS_INCREMENT
+      }
+    }
+   
     // update box score
     var index:Int = 0
     for score in game!.visitor.innings {

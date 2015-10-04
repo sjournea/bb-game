@@ -105,7 +105,7 @@ class Game {
   private var _2B:Bool = false
   private var _3B:Bool = false
   private var _final:Bool = false
-  private var _last_inning = 7
+  var _last_inning = 7
   private var _up:Team
   private var _pctError:Float = 0.0
   var _srd:SideRetiredData

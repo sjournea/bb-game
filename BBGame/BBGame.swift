@@ -118,6 +118,11 @@ class BBGame : Game {
     self.up = dct["up"] as? BBTeam
     outs = 0
     
+    // scoreboard needs to be informed of extra innings
+    if self.half == "top" && self.inning > _last_inning {
+      scene!.scoreboard?.addExtraInning(self.inning)
+    }
+    
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     labels!.color = self.up!.color!
