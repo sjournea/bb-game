@@ -18,11 +18,10 @@ class Labels : SKSpriteNode {
   let bgColor: UIColor = UIColor.yellowColor()
   let txtColor: SKColor = SKColor.blackColor()
   
-//  var game:BBGame?
   var lstLabels:[SKLabelNode] = []
   var num:Int = 0
     
-  init(size:CGSize, num:Int) {
+  init(size:CGSize, num:Int, bgColor:UIColor = UIColor.whiteColor()) {
     super.init( texture:nil, color:bgColor, size:size)
     
     self.num = num

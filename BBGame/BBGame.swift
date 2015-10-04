@@ -17,8 +17,8 @@ class BBGame : Game {
 
   var inning = 1
   var half = "Top"
-  var up:Team?
-  var atBat: Team?
+  var up:BBTeam?
+  var atBat: BBTeam?
   var selection:Selection?
   var selectionIndex = 0
   var outs = 0
@@ -51,6 +51,7 @@ class BBGame : Game {
     labels!.updateLabelNode(0, text:"\(scene!.visitor!.name)", ham:.Center)
     labels!.updateLabelNode(1, text:"vs", ham:.Center)
     labels!.updateLabelNode(2, text:"\(scene!.home!.name)", ham:.Center)
+    labels!.color = .whiteColor()
 
     labelsBottom!.updateLabelNode(0, text:"Event: GameStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
@@ -69,8 +70,10 @@ class BBGame : Game {
 
     if scene!.visitor!.runs > scene!.home!.runs {
       labels!.updateLabelNode(2, text:visitor_score + " " + home_score, ham:.Center)
+      labels!.color = scene!.visitor!.color!
     } else {
       labels!.updateLabelNode(2, text:home_score + " " + visitor_score, ham:.Center)
+      labels!.color = scene!.home!.color!
     }
     let lob = "LOB: \(scene!.visitor!.name) \(scene!.visitor!.lob), \(scene!.home!.name) \(scene!.home!.lob)"
     labels!.updateLabelNode(3, text:lob, ham:.Center)
@@ -112,12 +115,13 @@ class BBGame : Game {
     print("evtInningStart() - dct:\(dct)")
     self.inning = dct["inning"] as! Int
     self.half = dct["half"] as! String
-    self.up = dct["up"] as? Team
+    self.up = dct["up"] as? BBTeam
     outs = 0
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-
+    labels!.color = self.up!.color!
+    
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
