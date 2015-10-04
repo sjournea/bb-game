@@ -17,6 +17,7 @@ class GameScene: SKScene {
   var scoreboard:ScoreBoard?
   var labels:Labels?
   var labelsBottom:Labels?
+  var testButtons : TestButtons?
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -34,17 +35,22 @@ class GameScene: SKScene {
     addChild(scoreboard!)
 
     labels = Labels(size: CGSize(width:size.width, height:105), num:5)
-    labels!.anchorPoint = CGPoint(x:0.0, y:0.0)   // Upper Left
+    labels!.anchorPoint = CGPoint(x:0.0, y:0.0)   // Lower right
     labels!.position = CGPointMake(0.0, size.height - 175.0)
     labels!.hidden = false
     addChild(labels!)
 
     labelsBottom = Labels(size: CGSize(width:size.width, height:42), num:2)
-    labelsBottom!.anchorPoint = CGPoint(x:0.0, y:0.0)   // Upper Left
+    labelsBottom!.anchorPoint = CGPoint(x:0.0, y:0.0)   // Lower right
     labelsBottom!.position = CGPointMake(0.0, 0.0)
     labelsBottom!.hidden = false
     addChild(labelsBottom!)
     
+    testButtons = TestButtons(size: CGSize(width:size.width, height:100))
+    testButtons!.position = CGPointMake(0.0, 200.0)
+    testButtons!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
+    testButtons!.hidden = true
+    addChild(testButtons!)
     
     visitor = BBTeam(name:"Colonels", color:UIColor.greenColor())
     home = BBTeam(name:"Aces", color:UIColor.yellowColor())
@@ -63,15 +69,13 @@ class GameScene: SKScene {
       scoreboard!.hidden = false
       game!.start_game()
       scoreboard!.updateScore()
+      testButtons!.setGame(game!)
   
     } else {
-      game!.run_game()
-      if game!.makeSelection {
-        let idx = game!.avail()[0]
-        game!.in_play(idx)
-        game!.makeSelection = false
+      if !game!.makeSelection {
+        game!.run_game()
+        scoreboard!.updateScore()
       }
-      scoreboard!.updateScore()
     }
   }
     

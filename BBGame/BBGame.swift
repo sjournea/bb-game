@@ -13,33 +13,20 @@ class BBGame : Game {
   var scene:GameScene?
   var labels:Labels?
   var labelsBottom:Labels?
+  var testButtons:TestButtons?
+  
   var gameOver:Bool = true
-
   var inning = 1
   var half = "Top"
-  var up:BBTeam?
-  var atBat: BBTeam?
-  var selection:Selection?
-  var selectionIndex = 0
   var outs = 0
-  var error = ""
-  var dctRunnerAdvance:[String:AnyObject] = [:]
-  var runs = 0
-  var srd_runs = 0
-  var srd_hits = 0
-  var srd_errors = 0
-  var srd_lob = 0
-  var batterResult = ""
-  var nextEvent = "To Start Game"
   var makeSelection = false
-  var sideRetired = false
   
   init(scene:GameScene ) {
     super.init()
     self.scene = scene
     labels = scene.labels
     labelsBottom = scene.labelsBottom
-
+    testButtons = scene.testButtons
   }
 
   override func evtGameStart(dct:[String:AnyObject] = [:]) -> Int {
@@ -113,19 +100,19 @@ class BBGame : Game {
   
   override func evtInningStart(dct:[String:AnyObject] = [:]) -> Int {
     print("evtInningStart() - dct:\(dct)")
-    self.inning = dct["inning"] as! Int
-    self.half = dct["half"] as! String
-    self.up = dct["up"] as? BBTeam
+    inning = dct["inning"] as! Int
+    half = dct["half"] as! String
+    let up = dct["up"] as? BBTeam
     outs = 0
     
     // scoreboard needs to be informed of extra innings
-    if self.half == "top" && self.inning > _last_inning {
-      scene!.scoreboard?.addExtraInning(self.inning)
+    if half == "top" && inning > _last_inning {
+      scene!.scoreboard?.addExtraInning(inning)
     }
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    labels!.color = self.up!.color!
+    labels!.color = up!.color!
     
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
@@ -143,25 +130,25 @@ class BBGame : Game {
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
 
     labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen for next \(team.name) Batter", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
 
+    testButtons!.enableSelection(true)
+    
     return EVENT_RETURN
   }
   
   override func evtSelection(dct:[String:AnyObject] = [:]) -> Int {
     print("evtSelection() dct:\(dct)")
-    selection = dct["sel"] as? Selection
-    selectionIndex = dct["idx"] as! Int
     
-    batterResult = ""
-    runs = 0
-    sideRetired = false
+    // batterResult = ""
 
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
-    // labelsBottom!.updateLabelNode(1, text:"Tap screen for next \(team.name) Batter", ham:.Center)
+    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    
+    testButtons!.enableSelection(false)
     
     return EVENT_RETURN
   }
@@ -170,7 +157,7 @@ class BBGame : Game {
     print("evtOut() dct:\(dct)")
     self.outs = dct["outs"] as! Int
     
-    batterResult = "Out"
+    let batterResult = "Out"
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -185,7 +172,7 @@ class BBGame : Game {
   override func evtError(dct:[String:AnyObject] = [:]) -> Int {
     print("evtError() dct:\(dct)")
     
-    batterResult = dct["error"] as! String
+    let batterResult = dct["error"] as! String
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -200,7 +187,7 @@ class BBGame : Game {
   override func evtHit(dct:[String:AnyObject] = [:]) -> Int {
     print("evtHit() dct:\(dct)")
     
-    batterResult = dct["hit"] as! String
+    let batterResult = dct["hit"] as! String
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -214,7 +201,7 @@ class BBGame : Game {
   
   override func evtRunnerAdvance(dct:[String:AnyObject] = [:]) -> Int {
     print("evtRunnerAdvance() dct:\(dct)")
-    dctRunnerAdvance = dct
+    //dctRunnerAdvance = dct
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -232,7 +219,7 @@ class BBGame : Game {
   
   override func evtRun(dct:[String:AnyObject] = [:]) -> Int {
     print("evtRun() dct:\(dct)")
-    self.runs = dct["runs"] as! Int
+    let runs = dct["runs"] as! Int
 
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -246,10 +233,10 @@ class BBGame : Game {
   
   override func evtSideRetired(dct:[String:AnyObject] = [:]) -> Int {
     print("evtSideRetired() dct:\(dct)")
-    self.srd_runs = dct["runs"] as! Int
-    self.srd_hits = dct["hits"] as! Int
-    self.srd_errors = dct["errors"] as! Int
-    self.srd_lob = dct["lob"] as! Int
+    let srd_runs = dct["runs"] as! Int
+    let srd_hits = dct["hits"] as! Int
+    let srd_errors = dct["errors"] as! Int
+    let srd_lob = dct["lob"] as! Int
 
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
