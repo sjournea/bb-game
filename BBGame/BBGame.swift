@@ -40,7 +40,7 @@ class BBGame : Game {
     labels!.updateLabelNode(0, text:"\(scene!.visitor!.name)", ham:.Center)
     labels!.updateLabelNode(1, text:"vs", ham:.Center)
     labels!.updateLabelNode(2, text:"\(scene!.home!.name)", ham:.Center)
-    labels!.color = .whiteColor()
+    // labels!.color = .whiteColor()
 
     labelsBottom!.updateLabelNode(0, text:"Event: GameStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
@@ -59,10 +59,10 @@ class BBGame : Game {
 
     if scene!.visitor!.runs > scene!.home!.runs {
       labels!.updateLabelNode(2, text:visitor_score + " " + home_score, ham:.Center)
-      labels!.color = scene!.visitor!.color!
+      //labels!.color = scene!.visitor!.color!
     } else {
       labels!.updateLabelNode(2, text:home_score + " " + visitor_score, ham:.Center)
-      labels!.color = scene!.home!.color!
+      //labels!.color = scene!.home!.color!
     }
     let lob = "LOB: \(scene!.visitor!.name) \(scene!.visitor!.lob), \(scene!.home!.name) \(scene!.home!.lob)"
     labels!.updateLabelNode(3, text:lob, ham:.Center)
@@ -114,7 +114,7 @@ class BBGame : Game {
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
-    labels!.color = up!.color!
+    //labels!.color = up!.color!
     
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
@@ -141,11 +141,13 @@ class BBGame : Game {
   
   override func evtSelection(dct:[String:AnyObject] = [:]) -> Int {
     print("evtSelection() dct:\(dct)")
+    let index = dct["idx"] as! Int
+    let sel = dct["sel"] as! Selection
     
-    // batterResult = ""
-
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(2, text:"Index:\(index)")
+    labels!.updateLabelNode(3, text:"Selection:\(sel.sel)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)

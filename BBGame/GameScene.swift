@@ -18,6 +18,7 @@ class GameScene: SKScene {
   var labels:Labels?
   var labelsBottom:Labels?
   var testButtons : TestButtons?
+  var field : BBField?
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -28,6 +29,11 @@ class GameScene: SKScene {
         
     backgroundColor = SKColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
+    field = BBField()
+    field!.anchorPoint = CGPoint(x:0.5, y:0.0)  // Left center
+    field!.position = CGPointMake(size.width / 2.0, 0.0)
+    addChild(field!)
+    
     scoreboard = ScoreBoard(size: CGSize(width:size.width, height:70))
     scoreboard!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
     scoreboard!.position = CGPointMake(0.0, size.height - 70.0)
@@ -46,8 +52,8 @@ class GameScene: SKScene {
     labelsBottom!.hidden = false
     addChild(labelsBottom!)
     
-    testButtons = TestButtons(size: CGSize(width:size.width, height:100))
-    testButtons!.position = CGPointMake(0.0, 200.0)
+    testButtons = TestButtons(size: CGSize(width:size.width, height:50))
+    testButtons!.position = CGPointMake(0.0, 42.0)
     testButtons!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
     testButtons!.hidden = true
     addChild(testButtons!)

@@ -10,6 +10,7 @@
 		0B3B5DDF1BC0B68F00038221 /* BBTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */; settings = {ASSET_TAGS = (); }; };
 		0B3B5DE11BC0D49D00038221 /* TestButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE01BC0D49D00038221 /* TestButtons.swift */; settings = {ASSET_TAGS = (); }; };
 		0B3B5DE31BC0D64700038221 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE21BC0D64700038221 /* Button.swift */; settings = {ASSET_TAGS = (); }; };
+		0B3B5DE51BC21F3E00038221 /* BBField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE41BC21F3E00038221 /* BBField.swift */; settings = {ASSET_TAGS = (); }; };
 		0B833A3B1BBB89F300036E93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A3A1BBB89F300036E93 /* AppDelegate.swift */; };
 		0B833A3D1BBB89F300036E93 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0B833A3C1BBB89F300036E93 /* GameScene.sks */; };
 		0B833A3F1BBB89F400036E93 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A3E1BBB89F400036E93 /* GameScene.swift */; };
@@ -48,6 +49,7 @@
 		0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBTeam.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DE01BC0D49D00038221 /* TestButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = TestButtons.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DE21BC0D64700038221 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0B3B5DE41BC21F3E00038221 /* BBField.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBField.swift; sourceTree = "<group>"; tabWidth = 2; wrapsLines = 0; };
 		0B833A371BBB89F200036E93 /* BBGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BBGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B833A3A1BBB89F300036E93 /* AppDelegate.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B833A3C1BBB89F300036E93 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */,
 				0B833A701BBB8FE500036E93 /* Selections.swift */,
 				0B833A721BBB904C00036E93 /* BBGame.swift */,
+				0B3B5DE41BC21F3E00038221 /* BBField.swift */,
 				0B833A421BBB89F600036E93 /* Main.storyboard */,
 				0B833A451BBB89F600036E93 /* Assets.xcassets */,
 				0B833A471BBB89F700036E93 /* LaunchScreen.storyboard */,
@@ -295,6 +298,7 @@
 				0B3B5DDF1BC0B68F00038221 /* BBTeam.swift in Sources */,
 				0B833A731BBB904C00036E93 /* BBGame.swift in Sources */,
 				0B833A3B1BBB89F300036E93 /* AppDelegate.swift in Sources */,
+				0B3B5DE51BC21F3E00038221 /* BBField.swift in Sources */,
 				0B833A6F1BBB8F9700036E93 /* Team.swift in Sources */,
 				0B3B5DE31BC0D64700038221 /* Button.swift in Sources */,
 				0B833A7B1BC03D5200036E93 /* Labels.swift in Sources */,

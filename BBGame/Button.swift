@@ -41,6 +41,7 @@ class TLButton: SKNode {
       lbl.fontSize = BBfontSize
       lbl.fontColor = txtColor
       lbl.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+      lbl.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
       lbl.position = CGPointMake(size.width/2.0, size.height/2.0)
       
       defaultButton.addChild(lbl)
