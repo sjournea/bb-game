@@ -17,6 +17,7 @@ let INNINGS_INCREMENT:CGFloat = 25
 let LABEL_X_OFFSET:CGFloat = 45.0
 let VISITOR_X_OFFSET:CGFloat = 25.0
 let HOME_X_OFFSET:CGFloat = 5.0
+let NUM_INNINGS_DISPLAYED:Int = 7
 
 class ScoreBoard : SKSpriteNode {
   
@@ -38,7 +39,8 @@ class ScoreBoard : SKSpriteNode {
   let lblHomeRuns = SKLabelNode(fontNamed: "Copperplate")
   let lblHomeHits = SKLabelNode(fontNamed: "Copperplate")
   let lblHomeErrors = SKLabelNode(fontNamed: "Copperplate")
-
+  var inningIndex:Int = 0
+  
   init(size:CGSize) {
     super.init( texture:nil, color:bgColor, size:size)
     
@@ -177,6 +179,13 @@ class ScoreBoard : SKSpriteNode {
     lblHomeRuns.text = ""
     lblHomeHits.text = ""
     lblHomeErrors.text = ""
+
+    // reset headers
+    for var i = 0; i < NUM_INNINGS_DISPLAYED; i++ {
+      lblHeaderScore[i].text = "\(i + 1)"
+    }
+    // reset inningIndex
+    inningIndex = 0
   }
   
   private func setScore(hide:Bool) {
@@ -205,13 +214,15 @@ class ScoreBoard : SKSpriteNode {
 
   func updateScore() {
     // update box score
-    var index:Int = 0
-    for score in game!.visitor.innings {
-      lblVisitorScore[index++].text = "\(score)"
-    }
-    index = 0
-    for score in game!.home.innings {
-      lblHomeScore[index++].text = score == -1 ? "x" : "\(score)"
+    var inning_index:Int = inningIndex
+    for var i = 0; i < NUM_INNINGS_DISPLAYED; i++ {
+      if game!.visitor.innings.count > inning_index {
+        lblVisitorScore[i].text = "\(game!.visitor.innings[inning_index])"
+      }
+      if game!.home.innings.count > inning_index {
+        lblHomeScore[i].text = "\(game!.home.innings[inning_index])"
+      }
+      inning_index++
     }
     lblVisitorRuns.text = "\(game!.visitor.runs)"
     lblVisitorHits.text = "\(game!.visitor.hits)"
@@ -223,38 +234,13 @@ class ScoreBoard : SKSpriteNode {
   }
 
   func addExtraInning(inning:Int) {
-    // calculate extra inning
-    addInning(inning, xOffset: 0.0)
-    // update the positions
-    var xOffset:CGFloat = INNINGS_OFFSET
-    let start = inning - 6
-    for i in 1...inning {
-      if i < start {
-        lblVisitorScore[i].hidden = true
-        lblHomeScore[i].hidden = true
-        lblHeaderScore[i].hidden = true
-      } else {
-        lblVisitorScore[i].position = CGPointMake(xOffset, VISITOR_X_OFFSET)
-        lblHomeScore[i].position = CGPointMake(xOffset, HOME_X_OFFSET)
-        xOffset += INNINGS_INCREMENT
-      }
+    // determine inningIndex
+    inningIndex = inning - 7
+    // update headers
+    for var i = 0; i < NUM_INNINGS_DISPLAYED; i++ {
+      lblHeaderScore[i].text = "\(inningIndex + i + 1)"
     }
-   
-    // update box score
-    var index:Int = 0
-    for score in game!.visitor.innings {
-      lblVisitorScore[index++].text = "\(score)"
-    }
-    index = 0
-    for score in game!.home.innings {
-      lblHomeScore[index++].text = score == -1 ? "x" : "\(score)"
-    }
-    lblVisitorRuns.text = "\(game!.visitor.runs)"
-    lblVisitorHits.text = "\(game!.visitor.hits)"
-    lblHomeErrors.text = "\(game!.visitor.errors)"
-    lblHomeRuns.text = "\(game!.home.runs)"
-    lblHomeHits.text = "\(game!.home.hits)"
-    lblHomeErrors.text = "\(game!.home.errors)"
-    showScore()
+    // need to clear the last home inning position
+    lblHomeScore[6].text = ""
   }
 }

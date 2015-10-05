@@ -10,6 +10,8 @@ import Foundation
 import SpriteKit
 
 class BBGame : Game {
+  let EVENT = EVENT_RETURN  // EVENT_RETURN EVENT_CONTINUE
+  
   var scene:GameScene?
   var labels:Labels?
   var labelsBottom:Labels?
@@ -43,7 +45,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: GameStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtGameFinal(dct:[String:AnyObject] = [:]) -> Int {
@@ -95,7 +97,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Walkoff", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtInningStart(dct:[String:AnyObject] = [:]) -> Int {
@@ -117,7 +119,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtAtBat(dct:[String:AnyObject] = [:]) -> Int{
@@ -150,7 +152,7 @@ class BBGame : Game {
     
     testButtons!.enableSelection(false)
     
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtOut(dct:[String:AnyObject] = [:]) -> Int {
@@ -166,7 +168,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Out", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtError(dct:[String:AnyObject] = [:]) -> Int {
@@ -181,7 +183,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Error", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtHit(dct:[String:AnyObject] = [:]) -> Int {
@@ -196,7 +198,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Hit", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtRunnerAdvance(dct:[String:AnyObject] = [:]) -> Int {
@@ -214,7 +216,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: RunnerAdvance", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtRun(dct:[String:AnyObject] = [:]) -> Int {
@@ -228,7 +230,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Run", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtSideRetired(dct:[String:AnyObject] = [:]) -> Int {
@@ -248,6 +250,6 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: SideRetired", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
 }
