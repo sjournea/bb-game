@@ -16,6 +16,7 @@ class BBGame : Game {
   var labels:Labels?
   var labelsBottom:Labels?
   var testButtons:TestButtons?
+  var field:BBField?
   
   var gameOver:Bool = true
   var inning = 1
@@ -29,6 +30,7 @@ class BBGame : Game {
     labels = scene.labels
     labelsBottom = scene.labelsBottom
     testButtons = scene.testButtons
+    field = scene.field
   }
 
   override func evtGameStart(dct:[String:AnyObject] = [:]) -> Int {
@@ -71,7 +73,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: GameFinal", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
 
   override func evtGameEnd(dct:[String:AnyObject] = [:]) -> Int {
@@ -85,7 +87,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: GameEnd", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to start new game", ham:.Center)
 
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtWalkoff(dct:[String:AnyObject] = [:]) -> Int {
@@ -135,8 +137,10 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
 
     testButtons!.enableSelection(true)
+  
+    field!.batterUp()
     
-    return EVENT_RETURN
+    return EVENT
   }
   
   override func evtSelection(dct:[String:AnyObject] = [:]) -> Int {
@@ -170,6 +174,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Out", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
+    field!.batterOut()
     return EVENT
   }
   
@@ -218,6 +223,8 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: RunnerAdvance", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
+    field!.runnersAdvance(dct)
+    
     return EVENT
   }
   
@@ -251,6 +258,8 @@ class BBGame : Game {
     
     labelsBottom!.updateLabelNode(0, text:"Event: SideRetired", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
+    field!.sideRetired()
 
     return EVENT
   }

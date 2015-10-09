@@ -32,6 +32,7 @@ class GameScene: SKScene {
     field = BBField(size: CGSize(width:size.width, height:380.0))
     field!.anchorPoint = CGPoint(x:0.0, y:0.0)  // lower right
     field!.position = CGPointMake(0.0, 100.0)
+    field!.hidden = true
     addChild(field!)
     
     scoreboard = ScoreBoard(size: CGSize(width:size.width, height:70))
@@ -70,9 +71,10 @@ class GameScene: SKScene {
         
     if game!.gameOver {
 
+      scoreboard!.hidden = false
+      field!.hidden = false
       game!.setup_game(visitor!, home:home!)
       scoreboard!.setGame(game!)
-      scoreboard!.hidden = false
       game!.start_game()
       scoreboard!.updateScore()
       testButtons!.setGame(game!)

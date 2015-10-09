@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GameplayKit
 
 enum BB: Int, CustomStringConvertible {
   case OUT = 1,
@@ -101,6 +102,7 @@ func generate_selections(total:Int=100, NUM_HR:Int=5, NUM_3B:Int=5, NUM_2B:Int=1
   var lstSelections = [Selection]()
   var setIndex = Set<Int>()
   
+  // (TODO) Add usage of GkShuffledDistribution
   for x in 0..<total {
     selection = Selection(idx:x, sel:BB.OUT)
     lstSelections.append(selection)
