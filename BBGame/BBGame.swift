@@ -104,7 +104,7 @@ class BBGame : Game {
     print("evtInningStart() - dct:\(dct)")
     inning = dct["inning"] as! Int
     half = dct["half"] as! String
-    let up = dct["up"] as? BBTeam
+//    let up = dct["up"] as? BBTeam
     outs = 0
     
     // scoreboard needs to be informed of extra innings

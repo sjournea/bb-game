@@ -29,9 +29,9 @@ class GameScene: SKScene {
         
     backgroundColor = SKColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
-    field = BBField()
-    field!.anchorPoint = CGPoint(x:0.5, y:0.0)  // Left center
-    field!.position = CGPointMake(size.width / 2.0, 0.0)
+    field = BBField(size: CGSize(width:size.width, height:380.0))
+    field!.anchorPoint = CGPoint(x:0.0, y:0.0)  // lower right
+    field!.position = CGPointMake(0.0, 100.0)
     addChild(field!)
     
     scoreboard = ScoreBoard(size: CGSize(width:size.width, height:70))
