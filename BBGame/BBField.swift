@@ -26,7 +26,8 @@ class BBField : SKSpriteNode {
   let BG_COLOR = UIColor.whiteColor()
   let BASE_EMPTY_COLOR = UIColor.whiteColor()
   let BASE_OCCUPY_COLOR = UIColor.redColor()
-
+  let RUNNER_ADVANCE_DURATION = 2.0  // 2 seconds
+  
   //  var diamond:SKShapeNode?
   var home:SKShapeNode?
   var firstBase:SKShapeNode?
@@ -127,6 +128,36 @@ class BBField : SKSpriteNode {
     return ""
   }
   
+  private func moveRunnerSequence(start:PlayerPosition, stop:PlayerPosition) -> [SKAction] {
+    var actions:[SKAction] = []
+    if start == .batting {
+      actions.append(SKAction.moveTo(positions["firstBase"]!, duration: RUNNER_ADVANCE_DURATION))
+      if stop == .onFirstBase { return actions }
+      actions.append(SKAction.moveTo(positions["secondBase"]!, duration: RUNNER_ADVANCE_DURATION))
+      if stop == .onSecondBase { return actions }
+      actions.append(SKAction.moveTo(positions["thirdBase"]!, duration: RUNNER_ADVANCE_DURATION))
+      if stop == .onThirdBase { return actions }
+      actions.append(SKAction.moveTo(positions["home"]!, duration: RUNNER_ADVANCE_DURATION))
+      actions.append(SKAction.hide())
+    } else if start == .onFirstBase {
+      actions.append(SKAction.moveTo(positions["secondBase"]!, duration: RUNNER_ADVANCE_DURATION))
+      if stop == .onSecondBase { return actions }
+      actions.append(SKAction.moveTo(positions["thirdBase"]!, duration: RUNNER_ADVANCE_DURATION))
+      if stop == .onThirdBase { return actions }
+      actions.append(SKAction.moveTo(positions["home"]!, duration: RUNNER_ADVANCE_DURATION))
+      actions.append(SKAction.hide())
+    } else if start == .onSecondBase {
+      actions.append(SKAction.moveTo(positions["thirdBase"]!, duration: RUNNER_ADVANCE_DURATION))
+      if stop == .onThirdBase { return actions }
+      actions.append(SKAction.moveTo(positions["home"]!, duration: RUNNER_ADVANCE_DURATION))
+      actions.append(SKAction.hide())
+    } else if start == .onThirdBase {
+      actions.append(SKAction.moveTo(positions["home"]!, duration: RUNNER_ADVANCE_DURATION))
+      actions.append(SKAction.hide())
+    }
+    return actions
+  }
+  
   func runnersAdvance(dct:[String:AnyObject]) {
     // We need to advance the runners
 
@@ -138,11 +169,13 @@ class BBField : SKSpriteNode {
 
       let stick = stickManLocations[startPosition]
       assert(stick != nil, "runnerAdvance() -- \(startPosition) has no stickman")
-      if stopPosition == .score {
-        stick!.hidden = true
-      } else {
+
+      let actions = moveRunnerSequence(startPosition, stop: stopPosition)
+      let sequenceAction = SKAction.sequence(actions)
+      stick!.runAction(sequenceAction)
+      
+      if stopPosition != .score {
         stickManLocations[stopPosition] = stick
-        stick!.position = positions[getStringFromRunnerAdvance(stop)]!
       }
       stickManLocations.removeValueForKey(startPosition)
     }
