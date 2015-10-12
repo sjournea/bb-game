@@ -70,9 +70,9 @@ class BBField : SKSpriteNode {
     createStickMan()
     
   }
+    
   private func createStickMan() {
     for var i = 0; i < 5; i++ {
-      
       let stickMan = BBStickMan()
       stickMan.hidden = true
       addChild(stickMan)
