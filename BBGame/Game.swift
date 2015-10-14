@@ -120,7 +120,7 @@ class Game {
     self.lstSelections = SelectionList(generate_now: false)
     self._srd = SideRetiredData()
     self._up = self.visitor
-    self.sel = Selection(idx:0, sel:BB.OUT)
+    self.sel = Selection(sel:BB.OUT)
     self.lastSelection = self.sel
   }
     
@@ -504,11 +504,11 @@ class Game {
     
   func avail() -> [Int] {
     var lst:[Int] = []
-    for sel in self.lstSelections {
+    for (index, sel) in self.lstSelections.enumerate() {
       if (sel.isUsed()) {
         continue
       }
-      lst.append(sel.idx)
+      lst.append(index)
     }
     return lst
   }

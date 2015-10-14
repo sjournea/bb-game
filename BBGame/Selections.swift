@@ -50,13 +50,11 @@ enum BINARY_VERSION:Int {
 }
 
 class Selection {
-  let idx: Int
+  let version = BINARY_VERSION.VERSION
   var sel: BB
   private var _used:Bool = false
-  let version = BINARY_VERSION.VERSION
   
-  init(idx: Int, sel: BB) {
-    self.idx = idx
+  init(sel: BB) {
     self.sel = sel
   }
   
@@ -69,7 +67,7 @@ class Selection {
   }
   
   func status() -> String {
-    return "idx:\(idx) sel:\(self.sel) used:\(self._used)"
+    return "sel:\(sel) used:\(_used)"
   }
   
   func encode(version:BINARY_VERSION) -> [Int] {
@@ -82,13 +80,12 @@ class Selection {
   }
   
   func str() -> String {
-    return "idx:\(self.idx) sel:\(self.sel.description)"
+    return "sel:\(sel.description)"
   }
 }
 
 func ==(left:Selection, right:Selection) -> Bool {
   return left.version == right.version &&
-    left.idx     == right.idx &&
     left.sel     == right.sel &&
     left._used   == right._used
 }
@@ -98,54 +95,43 @@ func !=(left:Selection, right:Selection) -> Bool {
 }
 
 func generate_selections(total:Int=100, NUM_HR:Int=5, NUM_3B:Int=5, NUM_2B:Int=10, NUM_1B:Int=20) ->[Selection] {
-  var selection:Selection
-  var lstSelections = [Selection]()
-  var setIndex = Set<Int>()
+  var lstSelections:[Selection] = []
   
-  // (TODO) Add usage of GkShuffledDistribution
-  for x in 0..<total {
-    selection = Selection(idx:x, sel:BB.OUT)
-    lstSelections.append(selection)
+  for _ in 1...total {
+    lstSelections.append(Selection(sel:BB.OUT))
   }
-  
+
+  let shuffled = GKShuffledDistribution(lowestValue: 0, highestValue: total-1)
+  var setIndex = Set<Int>()
+
   for _ in 1...NUM_HR {
-    var idx:Int = Int(arc4random_uniform(UInt32(total)))
-    while setIndex.contains(idx) {
-      idx++
-      if idx == Int(total) { idx = 0 }
-    }
+    let idx:Int = shuffled.nextInt()
+    assert(setIndex.contains(idx) == false)
     setIndex.insert(idx)
     lstSelections[idx].sel = BB.HOMERUN
   }
   
   for _ in 1...NUM_3B {
-    var idx:Int = Int(arc4random_uniform(UInt32(total)))
-    while setIndex.contains(idx) {
-      idx++
-      if idx == Int(total) { idx = 0 }
-    }
+    let idx:Int = shuffled.nextInt()
+    assert(setIndex.contains(idx) == false)
     setIndex.insert(idx)
     lstSelections[idx].sel = BB.TRIPLE
   }
   
   for _ in 1...NUM_2B {
-    var idx:Int = Int(arc4random_uniform(UInt32(total)))
-    while setIndex.contains(idx) {
-      idx++
-      if idx == Int(total) { idx = 0 }
-    }
+    let idx:Int = shuffled.nextInt()
+    assert(setIndex.contains(idx) == false)
     setIndex.insert(idx)
     lstSelections[idx].sel = BB.DOUBLE
   }
+  
   for _ in 1...NUM_1B {
-    var idx:Int = Int(arc4random_uniform(UInt32(total)))
-    while setIndex.contains(idx) {
-      idx++
-      if idx == Int(total) { idx = 0 }
-    }
+    let idx:Int = shuffled.nextInt()
+    assert(setIndex.contains(idx) == false)
     setIndex.insert(idx)
     lstSelections[idx].sel = BB.SINGLE
   }
+
   return lstSelections
 }
 

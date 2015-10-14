@@ -158,26 +158,32 @@ class BBField : SKSpriteNode {
     return actions
   }
   
+  private func runnerAdvance(start:String, stop:String) {
+
+    let startPosition = getPositionFromRunnerAdvance(start)
+    let stopPosition = getPositionFromRunnerAdvance(stop)
+    
+    let stick = stickManLocations[startPosition]
+    assert(stick != nil, "runnerAdvance() -- \(startPosition) has no stickman")
+    
+    let actions = moveRunnerSequence(startPosition, stop: stopPosition)
+    let sequenceAction = SKAction.sequence(actions)
+    stick!.runAction(sequenceAction)
+    
+    if stopPosition != .score {
+      stickManLocations[stopPosition] = stick
+    }
+    stickManLocations.removeValueForKey(startPosition)
+  }
+  
   func runnersAdvance(dct:[String:AnyObject]) {
-    // We need to advance the runners
-
-    for (start, end) in dct {
-      let stop = end as! String
-
-      let startPosition = getPositionFromRunnerAdvance(start)
-      let stopPosition = getPositionFromRunnerAdvance(stop)
-
-      let stick = stickManLocations[startPosition]
-      assert(stick != nil, "runnerAdvance() -- \(startPosition) has no stickman")
-
-      let actions = moveRunnerSequence(startPosition, stop: stopPosition)
-      let sequenceAction = SKAction.sequence(actions)
-      stick!.runAction(sequenceAction)
-      
-      if stopPosition != .score {
-        stickManLocations[stopPosition] = stick
+    // We need to advance the runners in the proper order
+    let lst:[String] = ["3B", "2B", "1B", "Batter"]
+    for start in lst {
+      if let end = dct[start] {
+        let stop = end as! String
+        runnerAdvance(start, stop:stop)
       }
-      stickManLocations.removeValueForKey(startPosition)
     }
   }
   
