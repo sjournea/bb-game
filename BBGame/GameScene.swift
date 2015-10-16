@@ -17,8 +17,8 @@ class GameScene: SKScene {
   var scoreboard:ScoreBoard?
   var labels:Labels?
   var labelsBottom:Labels?
-  var testButtons : TestButtons?
   var field : BBField?
+  var selectionDisplay:SelectionDisplay?
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -53,11 +53,11 @@ class GameScene: SKScene {
     labelsBottom!.hidden = false
     addChild(labelsBottom!)
     
-    testButtons = TestButtons(size: CGSize(width:size.width, height:50))
-    testButtons!.position = CGPointMake(0.0, 42.0)
-    testButtons!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
-    testButtons!.hidden = true
-    addChild(testButtons!)
+    selectionDisplay = SelectionDisplay(size:CGSize(width:size.width, height:435))
+    selectionDisplay!.position = CGPointMake(0.0, 42.0)
+    selectionDisplay!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
+    selectionDisplay!.hidden = true
+    addChild(selectionDisplay!)
     
     visitor = BBTeam(name:"Colonels", color:UIColor.greenColor())
     home = BBTeam(name:"Aces", color:UIColor.yellowColor())
@@ -67,8 +67,7 @@ class GameScene: SKScene {
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    print( "touchesBegan()")
-        
+    
     if game!.gameOver {
 
       scoreboard!.hidden = false
@@ -77,7 +76,7 @@ class GameScene: SKScene {
       scoreboard!.setGame(game!)
       game!.start_game()
       scoreboard!.updateScore()
-      testButtons!.setGame(game!)
+      selectionDisplay!.setGame(game!)
   
     } else {
       if !game!.makeSelection {

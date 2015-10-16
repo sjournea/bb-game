@@ -9,6 +9,12 @@
 import Foundation
 import GameplayKit
 
+let SELECTIONS_TOTAL:Int = 100
+let SELECTIONS_HOME_RUN:Int = 5
+let SELECTIONS_TRIPLE:Int = 5
+let SELECTIONS_DOUBLE:Int = 10
+let SELECTIONS_SINGLE:Int = 20
+
 enum BB: Int, CustomStringConvertible {
   case OUT = 1,
   SINGLE = 11,
@@ -28,6 +34,20 @@ enum BB: Int, CustomStringConvertible {
       case HOMERUN: return "HR"
       case ERROR_1B: return "ERROR_1B"
       case ERROR_2B: return "ERROR_2B"
+      }
+    }
+  }
+  
+  var desc : String {
+    get {
+      switch(self) {
+      case OUT: return "OUT"
+      case SINGLE: return "1B"
+      case DOUBLE: return "2B"
+      case TRIPLE: return "3B"
+      case HOMERUN: return "HR"
+      case ERROR_1B: return "ERR 1B"
+      case ERROR_2B: return "ERR s2B"
       }
     }
   }
@@ -58,6 +78,12 @@ class Selection {
     self.sel = sel
   }
   
+  var desc : String {
+    get {
+      return sel.desc
+    }
+  }
+
   func isUsed() -> Bool {
     return self._used
   }
@@ -79,6 +105,7 @@ class Selection {
     assert(true, "decode() not implemented")
   }
   
+  
   func str() -> String {
     return "sel:\(sel.description)"
   }
@@ -94,7 +121,11 @@ func !=(left:Selection, right:Selection) -> Bool {
   return !(left == right)
 }
 
-func generate_selections(total:Int=100, NUM_HR:Int=5, NUM_3B:Int=5, NUM_2B:Int=10, NUM_1B:Int=20) ->[Selection] {
+func generate_selections(total:Int=SELECTIONS_TOTAL,
+                         NUM_HR:Int=SELECTIONS_HOME_RUN,
+                         NUM_3B:Int=SELECTIONS_TRIPLE,
+                         NUM_2B:Int=SELECTIONS_DOUBLE,
+                         NUM_1B:Int=SELECTIONS_SINGLE) ->[Selection] {
   var lstSelections:[Selection] = []
   
   for _ in 1...total {

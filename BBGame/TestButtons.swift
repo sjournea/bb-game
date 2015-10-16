@@ -67,7 +67,6 @@ class TestButtons : SKSpriteNode {
     self.hidden = !enable
   }
   
-
   private func findSelection(bb:BB) -> Bool {
     let lstAvail:[Int] = game!.avail()
     for index in lstAvail {
@@ -81,42 +80,42 @@ class TestButtons : SKSpriteNode {
     return false
   }
   
-  func homeRun() {
+  func homeRun(arg:AnyObject?) {
     print("HOME RUN")
     if !findSelection(BB.HOMERUN) {
       print("*** No HOME_RUNS found ***")
     }
   }
 
-  func triple() {
+  func triple(arg:AnyObject?) {
     print("TRIPLE")
     if !findSelection(BB.TRIPLE) {
       print("*** No TRIPLES found ***")
     }
   }
 
-  func double() {
+  func double(arg:AnyObject?) {
     print("DOUBLE")
     if !findSelection(BB.DOUBLE) {
       print("*** No DOUBLES found ***")
     }
   }
   
-  func single() {
+  func single(arg:AnyObject?) {
     print("SINGLE")
     if !findSelection(BB.SINGLE) {
       print("*** No SINGLES found ***")
     }
   }
   
-  func out() {
+  func out(arg:AnyObject?) {
     print("OUT")
     if !findSelection(BB.OUT) {
       print("*** No OUTS found ***")
     }
   }
   
-  func nextAvail() {
+  func nextAvail(arg:AnyObject?) {
     print("NEXT AVAILABLE")
     let idx = game!.avail()[0]
     game!.in_play(idx)

@@ -14,9 +14,17 @@ class TLButton: SKNode {
 
   var defaultButton: SKSpriteNode
   var activeButton: SKSpriteNode
-  var action: () -> Void
-    
-  init(size:CGSize, defaultColor:SKColor, activeColor:SKColor, label:String, buttonAction: () -> Void) {
+  var action: (AnyObject?) -> Void
+  var arg:AnyObject?
+  
+  var active:Bool = false
+  
+  init( size         : CGSize,
+        defaultColor : SKColor,
+        activeColor  : SKColor,
+        label        : String,
+        buttonAction : (AnyObject?) -> Void,
+        arg          : AnyObject? = nil) {
 
     
     //defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
@@ -53,21 +61,43 @@ class TLButton: SKNode {
     fatalError("init(coder:) has not been implemented")
   }
   
-  override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+  private func activate() {
+    active = true
     activeButton.hidden = false
     defaultButton.hidden = true
   }
   
-  override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    let touch: UITouch = touches.first!
-    let location: CGPoint = touch.locationInNode(self)
-    
-    if defaultButton.containsPoint(location) {
-      action()
-    }
-    
+  
+  private func deactivate() {
+    active = false
     activeButton.hidden = true
     defaultButton.hidden = false
   }
+  
+  override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    activate()
+  }
+  
+  override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    if active {
+      let touch: UITouch = touches.first!
+      let location: CGPoint = touch.locationInNode(self)
+    
+      if defaultButton.containsPoint(location) {
+        action(arg)
+      }
+      deactivate()
+    }
+  }
+
+  override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    let touch: UITouch = touches.first!
+    let location: CGPoint = touch.locationInNode(self)
+  
+    if !defaultButton.containsPoint(location) {
+      deactivate()
+    }
+  }
+
 }
   

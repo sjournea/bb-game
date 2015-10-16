@@ -15,8 +15,8 @@ class BBGame : Game {
   var scene:GameScene?
   var labels:Labels?
   var labelsBottom:Labels?
-  var testButtons:TestButtons?
   var field:BBField?
+  var selectionDisplay:SelectionDisplay?
   
   var gameOver:Bool = true
   var inning = 1
@@ -29,7 +29,7 @@ class BBGame : Game {
     self.scene = scene
     labels = scene.labels
     labelsBottom = scene.labelsBottom
-    testButtons = scene.testButtons
+    selectionDisplay = scene.selectionDisplay
     field = scene.field
   }
 
@@ -136,7 +136,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
 
-    testButtons!.enableSelection(true)
+    selectionDisplay!.enableSelection(true)
   
     field!.batterUp()
     
@@ -156,7 +156,7 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
-    testButtons!.enableSelection(false)
+    selectionDisplay!.enableSelection(false)
     
     return EVENT
   }

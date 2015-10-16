@@ -23,8 +23,8 @@ enum PlayerPosition {
 }
 
 class BBField : SKSpriteNode {
-  let BG_COLOR = UIColor.whiteColor()
-  let BASE_EMPTY_COLOR = UIColor.whiteColor()
+  let BG_COLOR = UIColor.greenColor()
+  let BASE_COLOR = UIColor.whiteColor()
   let BASE_OCCUPY_COLOR = UIColor.redColor()
   let RUNNER_ADVANCE_DURATION = 2.0  // 2 seconds
   
@@ -48,22 +48,22 @@ class BBField : SKSpriteNode {
     positions["thirdBase"] = CGPointMake(40.0, size.height / 2.0)
 
     home = SKShapeNode(circleOfRadius: 30.0)
-    home!.fillColor = UIColor.redColor()
+    home!.fillColor = BASE_COLOR
     home!.position = positions["home"]!
     addChild(home!)
 
     firstBase = SKShapeNode(circleOfRadius: 30.0)
-    firstBase!.fillColor = UIColor.redColor()
+    firstBase!.fillColor = BASE_COLOR
     firstBase!.position = positions["firstBase"]!
     addChild(firstBase!)
 
     secondBase = SKShapeNode(circleOfRadius: 30.0)
-    secondBase!.fillColor = UIColor.redColor()
+    secondBase!.fillColor = BASE_COLOR
     secondBase!.position = positions["secondBase"]!
     addChild(secondBase!)
 
     thirdBase = SKShapeNode(circleOfRadius: 30.0)
-    thirdBase!.fillColor = UIColor.redColor()
+    thirdBase!.fillColor = BASE_COLOR
     thirdBase!.position = positions["thirdBase"]!
     addChild(thirdBase!)
     
