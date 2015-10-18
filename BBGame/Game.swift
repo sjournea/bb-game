@@ -120,7 +120,7 @@ class Game {
     self.lstSelections = SelectionList(generate_now: false)
     self._srd = SideRetiredData()
     self._up = self.visitor
-    self.sel = Selection(sel:BB.OUT)
+    self.sel = Selection(sel:BB.OUT, index:0)
     self.lastSelection = self.sel
   }
     

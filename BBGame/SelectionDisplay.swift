@@ -31,17 +31,41 @@ class SelectionDisplay : SKSpriteNode {
   }
   
   private func createSelectionButtons() {
+    let buttonSize = CGSize(width: SELECTION_BUTTON_WIDTH, height: SELECTION_BUTTON_HEIGHT)
+    
+    // remove all existing selection buttons
     selectionButtons.removeAll()
-//    for sel in game!.lstSelections {
-//        let button = SelectionButton(selection: <#T##Selection#>, buttonAction: <#T##() -> Void#>)
-//    }
+    // add new Selection buttons
+    var yOffset:CGFloat = self.size.height
+    for (index,sel) in game!.lstSelections.enumerate() {
+      let multiplier = index % 10
+      if multiplier == 0 {
+        yOffset -= (SELECTION_BUTTON_HEIGHT + SELECTION_BUTTON_SPACING)
+      }
+      if index < 60 {
+        let button = SelectionButton(size:buttonSize, selection: sel, buttonAction: selectButtonAction)
+        let xOffset:CGFloat = CGFloat(multiplier) * (SELECTION_BUTTON_WIDTH + SELECTION_BUTTON_SPACING) + SELECTION_BUTTON_EDGE
+        button.position = CGPointMake(xOffset, yOffset)
+        addChild(button)
+
+        selectionButtons.append(button)
+      }
+    }
+    // TODO -- need to layout the buttons
+  }
+  
+  func selectButtonAction(button:TLButton) {
+    let but = button as! SelectionButton
+    but.setUsed()
+    
+    game!.makeSelection = false
+    game!.in_play(but.selection.index)
   }
   
   func setGame(game:BBGame) {
     self.game = game
     testButtons!.setGame(game)
-    
-    
+    createSelectionButtons()
   }
   
   func enableSelection(enable:Bool) {

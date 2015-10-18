@@ -8,7 +8,6 @@
 
 import SpriteKit
 
-let BBfontSize:CGFloat = 19
 
 class GameScene: SKScene {
   var visitor:BBTeam?
@@ -59,8 +58,8 @@ class GameScene: SKScene {
     selectionDisplay!.hidden = true
     addChild(selectionDisplay!)
     
-    visitor = BBTeam(name:"Colonels", color:UIColor.greenColor())
-    home = BBTeam(name:"Aces", color:UIColor.yellowColor())
+    visitor = BBTeam(name:"Cubs", color:UIColor.whiteColor())
+    home = BBTeam(name:"Mets", color:UIColor.blueColor())
     game = BBGame(scene:self)
     
     labelsBottom!.updateLabelNode(1, text:"Tap screen to start game", ham:.Center)

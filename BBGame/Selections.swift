@@ -72,10 +72,12 @@ enum BINARY_VERSION:Int {
 class Selection {
   let version = BINARY_VERSION.VERSION
   var sel: BB
+  let index: Int
   private var _used:Bool = false
   
-  init(sel: BB) {
+  init(sel: BB, index:Int) {
     self.sel = sel
+    self.index = index
   }
   
   var desc : String {
@@ -128,8 +130,8 @@ func generate_selections(total:Int=SELECTIONS_TOTAL,
                          NUM_1B:Int=SELECTIONS_SINGLE) ->[Selection] {
   var lstSelections:[Selection] = []
   
-  for _ in 1...total {
-    lstSelections.append(Selection(sel:BB.OUT))
+  for var i = 0; i < total; ++i {
+    lstSelections.append(Selection(sel:BB.OUT, index:i))
   }
 
   let shuffled = GKShuffledDistribution(lowestValue: 0, highestValue: total-1)

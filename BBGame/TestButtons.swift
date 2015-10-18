@@ -25,32 +25,32 @@ class TestButtons : SKSpriteNode {
     super.init( texture:nil, color:BG_COLOR, size:size)
     
     homeRunButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: SKColor.blueColor(), activeColor: SKColor.redColor(), label:"HR", buttonAction: homeRun)
+      defaultColor: TEST_BUTTON_HOME_RUN_COLOR, activeColor: SKColor.redColor(), label:"HR", buttonAction: homeRun)
     homeRunButton!.position = CGPointMake(0.0, 0.0)
     addChild(homeRunButton!)
     
     tripleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: SKColor.yellowColor(), activeColor: SKColor.redColor(), label:"3B", buttonAction: triple)
+      defaultColor: TEST_BUTTON_TRIPLE_COLOR, activeColor: SKColor.redColor(), label:"3B", buttonAction: triple)
     tripleButton!.position = CGPointMake(size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(tripleButton!)
 
     doubleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: SKColor.greenColor(), activeColor: SKColor.redColor(), label:"2B", buttonAction: double)
+      defaultColor: TEST_BUTTON_DOUBLE_COLOR, activeColor: SKColor.redColor(), label:"2B", buttonAction: double)
     doubleButton!.position = CGPointMake(2*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(doubleButton!)
 
     singleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: SKColor.orangeColor(), activeColor: SKColor.redColor(), label:"1B", buttonAction: single)
+      defaultColor: TEST_BUTTON_SINGLE_COLOR, activeColor: SKColor.redColor(), label:"1B", buttonAction: single)
     singleButton!.position = CGPointMake(3*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(singleButton!)
 
     outButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: SKColor.purpleColor(), activeColor: SKColor.redColor(), label:"OUT", buttonAction: out)
+      defaultColor: TEST_BUTTON_OUT_COLOR, activeColor: SKColor.redColor(), label:"OUT", buttonAction: out)
     outButton!.position = CGPointMake(4*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(outButton!)
 
     nextAvailButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: SKColor.brownColor(), activeColor: SKColor.redColor(), label:"?", buttonAction: nextAvail)
+      defaultColor: TEST_BUTTON_RANDOM_COLOR, activeColor: SKColor.redColor(), label:"?", buttonAction: nextAvail)
     nextAvailButton!.position = CGPointMake(5*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(nextAvailButton!)
   }
@@ -80,47 +80,46 @@ class TestButtons : SKSpriteNode {
     return false
   }
   
-  func homeRun(arg:AnyObject?) {
+  func homeRun(button:TLButton) {
     print("HOME RUN")
     if !findSelection(BB.HOMERUN) {
       print("*** No HOME_RUNS found ***")
     }
   }
 
-  func triple(arg:AnyObject?) {
+  func triple(button:TLButton) {
     print("TRIPLE")
     if !findSelection(BB.TRIPLE) {
       print("*** No TRIPLES found ***")
     }
   }
 
-  func double(arg:AnyObject?) {
+  func double(button:TLButton) {
     print("DOUBLE")
     if !findSelection(BB.DOUBLE) {
       print("*** No DOUBLES found ***")
     }
   }
   
-  func single(arg:AnyObject?) {
+  func single(button:TLButton) {
     print("SINGLE")
     if !findSelection(BB.SINGLE) {
       print("*** No SINGLES found ***")
     }
   }
   
-  func out(arg:AnyObject?) {
+  func out(button:TLButton) {
     print("OUT")
     if !findSelection(BB.OUT) {
       print("*** No OUTS found ***")
     }
   }
   
-  func nextAvail(arg:AnyObject?) {
+  func nextAvail(button:TLButton) {
     print("NEXT AVAILABLE")
     let idx = game!.avail()[0]
     game!.in_play(idx)
     game!.makeSelection = false
-
   }
 }
 

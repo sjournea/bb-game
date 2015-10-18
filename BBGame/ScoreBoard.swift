@@ -220,7 +220,8 @@ class ScoreBoard : SKSpriteNode {
         lblVisitorScore[i].text = "\(game!.visitor.innings[inning_index])"
       }
       if game!.home.innings.count > inning_index {
-        lblHomeScore[i].text = "\(game!.home.innings[inning_index])"
+        let score = game!.home.innings[inning_index]
+        lblHomeScore[i].text = score == -1 ? "x" : "\(score)"
       }
       inning_index++
     }

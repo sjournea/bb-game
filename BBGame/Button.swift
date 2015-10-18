@@ -14,17 +14,15 @@ class TLButton: SKNode {
 
   var defaultButton: SKSpriteNode
   var activeButton: SKSpriteNode
-  var action: (AnyObject?) -> Void
-  var arg:AnyObject?
-  
+  var action: (TLButton) -> Void
+  var lbl = SKLabelNode(fontNamed: "Copperplate")
   var active:Bool = false
   
   init( size         : CGSize,
         defaultColor : SKColor,
         activeColor  : SKColor,
         label        : String,
-        buttonAction : (AnyObject?) -> Void,
-        arg          : AnyObject? = nil) {
+        buttonAction : (TLButton) -> Void) {
 
     
     //defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
@@ -44,9 +42,8 @@ class TLButton: SKNode {
     addChild(activeButton)
     
     if label != "" {
-      let lbl = SKLabelNode(fontNamed: "Copperplate")
       lbl.text = label
-      lbl.fontSize = BBfontSize
+      lbl.fontSize = BUTTON_FONT_SIZE
       lbl.fontColor = txtColor
       lbl.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
       lbl.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
@@ -61,14 +58,14 @@ class TLButton: SKNode {
     fatalError("init(coder:) has not been implemented")
   }
   
-  private func activate() {
+  func activate() {
     active = true
     activeButton.hidden = false
     defaultButton.hidden = true
   }
   
   
-  private func deactivate() {
+  func deactivate() {
     active = false
     activeButton.hidden = true
     defaultButton.hidden = false
@@ -84,7 +81,7 @@ class TLButton: SKNode {
       let location: CGPoint = touch.locationInNode(self)
     
       if defaultButton.containsPoint(location) {
-        action(arg)
+        action(self)
       }
       deactivate()
     }

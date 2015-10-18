@@ -10,13 +10,14 @@ import Foundation
 import SpriteKit
 
 class SelectionButton : TLButton {
-  let SELECTION_BUTTON_WIDTH = 30
-  let SELECTION_BUTTON_HEIGHT = 30
-  let SELECTION_DEFAULT_COLOR = SKColor.blueColor()
-  let SELECTION_ACTIVE_COLOR = SKColor.redColor()
   
-  init( selection: Selection, buttonAction : (AnyObject?) -> Void) {
-    super.init( size:CGSize(width:SELECTION_BUTTON_WIDTH, height:SELECTION_BUTTON_HEIGHT),
+  var selection:Selection
+  
+  init( size:CGSize,
+        selection: Selection,
+        buttonAction : (TLButton) -> Void) {
+    self.selection = selection
+    super.init( size:size,
                 defaultColor:SELECTION_DEFAULT_COLOR,
                 activeColor:SELECTION_ACTIVE_COLOR,
                 label:selection.isUsed() ? selection.desc : "??",
@@ -27,6 +28,18 @@ class SelectionButton : TLButton {
   // Required so XCode doesn't throw warnings
   required init(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  func setUsed() {
+    lbl.text = selection.desc
+    defaultButton.color = SELECTION_USED_COLOR
+  }
+  
+  override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    // if selection has already been used then do nothing
+    if !selection.isUsed() {
+      activate()
+    }
   }
 
 }
