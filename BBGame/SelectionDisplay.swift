@@ -24,10 +24,12 @@ class SelectionDisplay : SKSpriteNode {
   init(size:CGSize) {
     super.init( texture:nil, color:BACKGROUND_COLOR, size:size)
     
-    testButtons = TestButtons(size: CGSize(width:size.width, height:50))
-    testButtons!.position = CGPointMake(0.0, 0.0)
-    testButtons!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
-    addChild(testButtons!)
+    if DEBUG_USE_TEST_BUTTONS {
+      testButtons = TestButtons(size: CGSize(width:size.width, height:50))
+      testButtons!.position = CGPointMake(0.0, 0.0)
+      testButtons!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
+      addChild(testButtons!)
+    }
   }
   
   private func createSelectionButtons() {
@@ -42,7 +44,7 @@ class SelectionDisplay : SKSpriteNode {
       if multiplier == 0 {
         yOffset -= (SELECTION_BUTTON_HEIGHT + SELECTION_BUTTON_SPACING)
       }
-      if index < 60 {
+      if index < 100 {
         let button = SelectionButton(size:buttonSize, selection: sel, buttonAction: selectButtonAction)
         let xOffset:CGFloat = CGFloat(multiplier) * (SELECTION_BUTTON_WIDTH + SELECTION_BUTTON_SPACING) + SELECTION_BUTTON_EDGE
         button.position = CGPointMake(xOffset, yOffset)
@@ -51,12 +53,12 @@ class SelectionDisplay : SKSpriteNode {
         selectionButtons.append(button)
       }
     }
-    // TODO -- need to layout the buttons
   }
   
   func selectButtonAction(button:TLButton) {
     let but = button as! SelectionButton
-    but.setUsed()
+    let color = game!.isVisitorUp() ? SELECTION_VISITOR_USED_COLOR : SELECTION_HOME_USED_COLOR
+    but.setUsed(color)
     
     game!.makeSelection = false
     game!.in_play(but.selection.index)
@@ -64,7 +66,9 @@ class SelectionDisplay : SKSpriteNode {
   
   func setGame(game:BBGame) {
     self.game = game
-    testButtons!.setGame(game)
+    if DEBUG_USE_TEST_BUTTONS {
+      testButtons!.setGame(game)
+    }
     createSelectionButtons()
   }
   

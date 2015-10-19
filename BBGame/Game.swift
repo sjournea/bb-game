@@ -448,6 +448,14 @@ class Game {
     return  event_publish(GameEvent.InningStart, dct:["inning":self._inning, "half": half, "up": self._up])
   }
     
+  func isVisitorUp() -> Bool {
+    return self._up == self.visitor
+  }
+  
+  func isHomeUp() -> Bool {
+    return self._up == self.home
+  }
+  
   func checkSelection(idx:Int) -> Bool {
     sel = self.lstSelections.get_item(idx)
     return sel.isUsed()

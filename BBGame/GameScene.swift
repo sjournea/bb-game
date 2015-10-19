@@ -85,5 +85,45 @@ class GameScene: SKScene {
     }
   }
     
+  func swipedRight(sender:UISwipeGestureRecognizer){
+    print("swiped right")
+  }
+  
+  func swipedLeft(sender:UISwipeGestureRecognizer){
+    print("swiped left")
+  }
+  
+  func swipedUp(sender:UISwipeGestureRecognizer){
+    print("swiped up")
+  }
+  
+  func swipedDown(sender:UISwipeGestureRecognizer){
+    print("swiped down")
+  }
+  
+  override func didMoveToView(view: SKView) {
+    
+    /* Setup your scene here */
+    
+    let swipeRight:UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: Selector("swipedRight:"))
+    swipeRight.direction = .Right
+    view.addGestureRecognizer(swipeRight)
+    
+    
+    let swipeLeft:UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: Selector("swipedLeft:"))
+    swipeLeft.direction = .Left
+    view.addGestureRecognizer(swipeLeft)
+    
+    
+    let swipeUp:UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: Selector("swipedUp:"))
+    swipeUp.direction = .Up
+    view.addGestureRecognizer(swipeUp)
+    
+    
+    let swipeDown:UISwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: Selector("swipedDown:"))
+    swipeDown.direction = .Down
+    view.addGestureRecognizer(swipeDown)
+  }
+  
   override func update(currentTime: NSTimeInterval) {}
 }

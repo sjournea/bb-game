@@ -20,7 +20,7 @@ class SelectionButton : TLButton {
     super.init( size:size,
                 defaultColor:SELECTION_DEFAULT_COLOR,
                 activeColor:SELECTION_ACTIVE_COLOR,
-                label:selection.isUsed() ? selection.desc : "??",
+                label:selection.isUsed() ? selection.desc : "?",
                 buttonAction:buttonAction)
         
   }
@@ -30,9 +30,9 @@ class SelectionButton : TLButton {
     fatalError("init(coder:) has not been implemented")
   }
 
-  func setUsed() {
+  func setUsed(color:SKColor) {
     lbl.text = selection.desc
-    defaultButton.color = SELECTION_USED_COLOR
+    defaultButton.color = color
   }
   
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
