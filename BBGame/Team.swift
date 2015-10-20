@@ -77,6 +77,14 @@ class Team {
     return home
   }
 
+  func isRobot() -> Bool {
+    return robot
+  }
+  
+  func isHuman() -> Bool {
+    return !robot
+  }
+  
   func str() -> String {
     return self.name
   }

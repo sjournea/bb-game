@@ -128,7 +128,6 @@ class BBGame : Game {
     print("evtAtBat() dct:\(dct)")
     let team = dct["team"] as! Team
 
-    makeSelection = true
 
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -136,8 +135,12 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
 
-    selectionDisplay!.enableSelection(true)
-  
+    if team.isHuman() {
+      makeSelection = true
+      selectionDisplay!.enableSelection(true)
+    } else {
+      assert(false, "Not supported yet")
+    }
     field!.batterUp()
     
     return EVENT
