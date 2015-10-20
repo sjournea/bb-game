@@ -70,7 +70,7 @@ class TestButtons : SKSpriteNode {
   private func findSelection(bb:BB) -> Bool {
     let lstAvail:[Int] = game!.avail()
     for index in lstAvail {
-      let selection = game!.lstSelections.get_item(index)
+      let selection = game!.lstSelections[index]
       if selection.sel == bb {
         game!.in_play(index)
         game!.makeSelection = false

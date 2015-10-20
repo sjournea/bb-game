@@ -98,7 +98,7 @@ class Game {
   let version = BINARY_VERSION.VERSION
   var visitor:Team
   var home:Team
-  var lstSelections:SelectionList
+  var lstSelections:[Selection] = []
   var _outs:Int = 0
   var _inning:Int = 1
   private var _1B:Bool = false
@@ -117,7 +117,7 @@ class Game {
   init() {
     self.visitor = Team()
     self.home = Team()
-    self.lstSelections = SelectionList(generate_now: false)
+    // self.lstSelections = generate_selections()
     self._srd = SideRetiredData()
     self._up = self.visitor
     self.sel = Selection(sel:BB.OUT, index:0)
@@ -152,7 +152,7 @@ class Game {
     self.visitor = visitor
     self.home = home
     self._pctError = pctError
-    self.lstSelections.generate_list()
+    self.lstSelections = generate_selections()
   }
     
   func start_game() {
@@ -457,12 +457,12 @@ class Game {
   }
   
   func checkSelection(idx:Int) -> Bool {
-    sel = self.lstSelections.get_item(idx)
+    sel = self.lstSelections[idx]
     return sel.isUsed()
   }
     
   func in_play(idx:Int) -> Bool {
-    self.sel = self.lstSelections.get_item(idx)
+    self.sel = self.lstSelections[idx]
     if self.sel.isUsed() {
       return false
     }

@@ -58,8 +58,8 @@ class GameScene: SKScene {
     selectionDisplay!.hidden = true
     addChild(selectionDisplay!)
     
-    visitor = BBTeam(name:"Cubs", color:UIColor.whiteColor())
-    home = BBTeam(name:"Mets", color:UIColor.blueColor())
+    visitor = BBTeam(name:"Royals", color:UIColor.whiteColor())
+    home = BBTeam(name:"Blue Jays", color:UIColor.blueColor())
     game = BBGame(scene:self)
     
     labelsBottom!.updateLabelNode(1, text:"Tap screen to start game", ham:.Center)
