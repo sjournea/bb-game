@@ -107,7 +107,6 @@ class Selection {
     assert(true, "decode() not implemented")
   }
   
-  
   func str() -> String {
     return "sel:\(sel.description)"
   }
@@ -123,15 +122,22 @@ func !=(left:Selection, right:Selection) -> Bool {
   return !(left == right)
 }
 
+typealias CreateSelectionFuncType = (Int, BB) -> Selection
+
+func CreateSelection(index:Int, bb:BB) -> Selection {
+    return Selection(sel:bb, index:index)
+}
+
 func generate_selections(total:Int=SELECTIONS_TOTAL,
                          NUM_HR:Int=SELECTIONS_HOME_RUN,
                          NUM_3B:Int=SELECTIONS_TRIPLE,
                          NUM_2B:Int=SELECTIONS_DOUBLE,
-                         NUM_1B:Int=SELECTIONS_SINGLE) ->[Selection] {
+                         NUM_1B:Int=SELECTIONS_SINGLE,
+                         createFunc: CreateSelectionFuncType) ->[Selection] {
   var lstSelections:[Selection] = []
   
   for var i = 0; i < total; ++i {
-    lstSelections.append(Selection(sel:BB.OUT, index:i))
+    lstSelections.append(createFunc(i, BB.OUT))
   }
 
   let shuffled = GKShuffledDistribution(lowestValue: 0, highestValue: total-1)

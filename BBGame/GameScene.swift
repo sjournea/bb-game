@@ -71,6 +71,7 @@ class GameScene: SKScene {
 
       scoreboard!.hidden = false
       field!.hidden = false
+      game!.setup_selection(CreateBBSelection)
       game!.setup_game(visitor!, home:home!)
       scoreboard!.setGame(game!)
       game!.start_game()

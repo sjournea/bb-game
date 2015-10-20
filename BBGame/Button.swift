@@ -9,12 +9,14 @@
 import Foundation
 import SpriteKit
 
+typealias ButtonCallback = (TLButton) -> Void
+
 class TLButton: SKNode {
   let txtColor = SKColor.blackColor()
 
   var defaultButton: SKSpriteNode
   var activeButton: SKSpriteNode
-  var action: (TLButton) -> Void
+  var action:ButtonCallback
   var lbl = SKLabelNode(fontNamed: "Copperplate")
   var active:Bool = false
   
@@ -22,7 +24,7 @@ class TLButton: SKNode {
         defaultColor : SKColor,
         activeColor  : SKColor,
         label        : String,
-        buttonAction : (TLButton) -> Void) {
+        buttonAction : ButtonCallback) {
 
     
     //defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)

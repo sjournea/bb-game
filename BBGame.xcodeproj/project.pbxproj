@@ -30,6 +30,7 @@
 		0BFA39C11BD09B530025E7FD /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C01BD09B530025E7FD /* SelectionButton.swift */; settings = {ASSET_TAGS = (); }; };
 		0BFA39C31BD0A7A60025E7FD /* SelectionDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C21BD0A7A60025E7FD /* SelectionDisplay.swift */; settings = {ASSET_TAGS = (); }; };
 		0BFA39C51BD42ABA0025E7FD /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C41BD42ABA0025E7FD /* common.swift */; settings = {ASSET_TAGS = (); }; };
+		0BFA39C71BD5E4280025E7FD /* BBSelections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C61BD5E4280025E7FD /* BBSelections.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		0BFA39C01BD09B530025E7FD /* SelectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C21BD0A7A60025E7FD /* SelectionDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionDisplay.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C41BD42ABA0025E7FD /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; };
+		0BFA39C61BD5E4280025E7FD /* BBSelections.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBSelections.swift; sourceTree = "<group>"; tabWidth = 2; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +143,7 @@
 				0B833A741BBCEF1200036E93 /* ScoreBoard.swift */,
 				0B833A401BBB89F500036E93 /* GameViewController.swift */,
 				0B833A6C1BBB8EA600036E93 /* Game.swift */,
+				0BFA39C61BD5E4280025E7FD /* BBSelections.swift */,
 				0B833A6E1BBB8F9700036E93 /* Team.swift */,
 				0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */,
 				0B833A701BBB8FE500036E93 /* Selections.swift */,
@@ -304,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BFA39C71BD5E4280025E7FD /* BBSelections.swift in Sources */,
 				0B833A3F1BBB89F400036E93 /* GameScene.swift in Sources */,
 				0B3B5DE11BC0D49D00038221 /* TestButtons.swift in Sources */,
 				0B833A411BBB89F500036E93 /* GameViewController.swift in Sources */,

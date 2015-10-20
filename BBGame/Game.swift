@@ -113,6 +113,7 @@ class Game {
   private var lastSelection:Selection
   private var runs:Int = 0
   private var gameEvent:GameEvent = GameEvent.GameIdle
+  var createSelectionsFunc:CreateSelectionFuncType = CreateSelection
     
   init() {
     self.visitor = Team()
@@ -152,9 +153,13 @@ class Game {
     self.visitor = visitor
     self.home = home
     self._pctError = pctError
-    self.lstSelections = generate_selections()
+    self.lstSelections = generate_selections(createFunc: createSelectionsFunc)
   }
-    
+  
+  func setup_selection(createFunc:CreateSelectionFuncType) {
+    createSelectionsFunc = createFunc
+  }
+  
   func start_game() {
     gameEvent = GameEvent.GameInit
     run_game()

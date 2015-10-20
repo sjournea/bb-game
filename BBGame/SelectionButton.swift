@@ -15,7 +15,7 @@ class SelectionButton : TLButton {
   
   init( size:CGSize,
         selection: Selection,
-        buttonAction : (TLButton) -> Void) {
+        buttonAction : ButtonCallback) {
     self.selection = selection
     super.init( size:size,
                 defaultColor:SELECTION_DEFAULT_COLOR,

@@ -33,25 +33,26 @@ class SelectionDisplay : SKSpriteNode {
   }
   
   private func createSelectionButtons() {
-    let buttonSize = CGSize(width: SELECTION_BUTTON_WIDTH, height: SELECTION_BUTTON_HEIGHT)
     
     // remove all existing selection buttons
     selectionButtons.removeAll()
     // add new Selection buttons
     var yOffset:CGFloat = self.size.height
-    for (index,sel) in game!.lstSelections.enumerate() {
+    for (index,select) in game!.lstSelections.enumerate() {
+      let sel = select as! BBSelection
       let multiplier = index % 10
       if multiplier == 0 {
         yOffset -= (SELECTION_BUTTON_HEIGHT + SELECTION_BUTTON_SPACING)
       }
-      if index < 100 {
-        let button = SelectionButton(size:buttonSize, selection: sel, buttonAction: selectButtonAction)
-        let xOffset:CGFloat = CGFloat(multiplier) * (SELECTION_BUTTON_WIDTH + SELECTION_BUTTON_SPACING) + SELECTION_BUTTON_EDGE
-        button.position = CGPointMake(xOffset, yOffset)
-        addChild(button)
+      
+      let button = SelectionButton(size:SELECTION_BUTTON_SIZE, selection: sel, buttonAction: selectButtonAction)
+      let xOffset:CGFloat = CGFloat(multiplier) * (SELECTION_BUTTON_WIDTH + SELECTION_BUTTON_SPACING) + SELECTION_BUTTON_EDGE
+      button.position = CGPointMake(xOffset, yOffset)
+      addChild(button)
 
-        selectionButtons.append(button)
-      }
+      selectionButtons.append(button)
+      
+      sel.button = button
     }
   }
   
