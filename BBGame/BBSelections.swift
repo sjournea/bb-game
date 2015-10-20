@@ -12,6 +12,18 @@ class BBSelection : Selection {
 
   var button: SelectionButton?
   
+  override func Used(team:Team) {
+    // call super
+    super.Used(team)
+    // 
+    if let but = button {
+      let color = team.isVisitor() ? SELECTION_VISITOR_USED_COLOR : SELECTION_HOME_USED_COLOR
+      but.setUsed(color)
+    }
+  }
+  
+
+  
 }
 
 func CreateBBSelection(index:Int, bb:BB) -> Selection {

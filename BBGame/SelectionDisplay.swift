@@ -33,9 +33,9 @@ class SelectionDisplay : SKSpriteNode {
   }
   
   private func createSelectionButtons() {
-    
     // remove all existing selection buttons
     selectionButtons.removeAll()
+
     // add new Selection buttons
     var yOffset:CGFloat = self.size.height
     for (index,select) in game!.lstSelections.enumerate() {
@@ -58,9 +58,6 @@ class SelectionDisplay : SKSpriteNode {
   
   func selectButtonAction(button:TLButton) {
     let but = button as! SelectionButton
-    let color = game!.isVisitorUp() ? SELECTION_VISITOR_USED_COLOR : SELECTION_HOME_USED_COLOR
-    but.setUsed(color)
-    
     game!.makeSelection = false
     game!.in_play(but.selection.index)
   }

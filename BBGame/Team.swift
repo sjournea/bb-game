@@ -21,6 +21,7 @@ class Team {
   var innings:[Int] = []
   var lstSelections:[[Int]] = []
   var lastSelections:[Int] = []
+  var home:Bool = false
   
   private func _clear_data() {
     runs = 0
@@ -32,8 +33,9 @@ class Team {
     lastSelections = []
   }
   
-  init(name:String="", robot:Bool=false) {
+  init(name:String="", home:Bool=false, robot:Bool=false) {
     self.name = name
+    self.home = home
     self.robot = robot
     self._clear_data()
   }
@@ -67,6 +69,14 @@ class Team {
     assert(true, "decode() not implemented")
   }
   
+  func isVisitor() -> Bool {
+    return !home
+  }
+  
+  func isHome() -> Bool {
+    return home
+  }
+
   func str() -> String {
     return self.name
   }

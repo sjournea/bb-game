@@ -73,7 +73,8 @@ class Selection {
   let version = BINARY_VERSION.VERSION
   var sel: BB
   let index: Int
-  private var _used:Bool = false
+  var usedBy:Team?
+  var used: Bool = false
   
   init(sel: BB, index:Int) {
     self.sel = sel
@@ -87,15 +88,16 @@ class Selection {
   }
 
   func isUsed() -> Bool {
-    return self._used
+    return self.used
   }
   
-  func used() {
-    self._used = true
+  func Used(team:Team) {
+    usedBy = team
+    used = true
   }
   
   func status() -> String {
-    return "sel:\(sel) used:\(_used)"
+    return "sel:\(sel) used:\(used)"
   }
   
   func encode(version:BINARY_VERSION) -> [Int] {
@@ -115,7 +117,8 @@ class Selection {
 func ==(left:Selection, right:Selection) -> Bool {
   return left.version == right.version &&
     left.sel     == right.sel &&
-    left._used   == right._used
+    left.used    == right.used &&
+    left.usedBy! == right.usedBy!
 }
 
 func !=(left:Selection, right:Selection) -> Bool {

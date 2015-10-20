@@ -11,9 +11,8 @@ import SpriteKit
 
 class BBTeam : Team {
   var color:UIColor?
-
-  init(name:String="", color:UIColor = .whiteColor(), robot:Bool=false) {
-    super.init(name:name, robot:robot)
+  init(name:String="", color:UIColor = .whiteColor(), home:Bool, robot:Bool=false) {
+    super.init(name:name, home:home, robot:robot)
     self.color = color
   }
 }

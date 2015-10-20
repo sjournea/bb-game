@@ -472,7 +472,7 @@ class Game {
       return false
     }
     // use this selection
-    self.sel.used()
+    self.sel.Used(_up)
     // check for an error
     // if (self.sel.sel == BB.OUT and self._pctError > 0.0 and random.random() < self._pctError) {
     //    self.sel.sel = BB.ERROR_1B
