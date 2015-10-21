@@ -126,8 +126,7 @@ class BBGame : Game {
   
   override func evtAtBat(dct:[String:AnyObject] = [:]) -> Int{
     print("evtAtBat() dct:\(dct)")
-    let team = dct["team"] as! Team
-
+    let team = dct["team"] as! BBTeam
 
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
@@ -135,13 +134,15 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
 
+
+    field!.batterUp()
     if team.isHuman() {
       makeSelection = true
       selectionDisplay!.enableSelection(true)
     } else {
-      assert(false, "Not supported yet")
+      let idx = team.pickSelection(self)
+      in_play(idx)
     }
-    field!.batterUp()
     
     return EVENT
   }
