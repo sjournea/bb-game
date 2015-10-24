@@ -140,14 +140,13 @@ class BBGame : Game {
       makeSelection = true
       selectionDisplay!.enableSelection(true)
     } else {
-      let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 2 * Int64(NSEC_PER_SEC))
-      print("Delay of 2 seconds before selection")
-      dispatch_after(time, dispatch_get_main_queue()) {
+//      let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 2 * Int64(NSEC_PER_SEC))
+//      dispatch_after(time, dispatch_get_main_queue())
+//      {
         // put your code which should be executed with a delay here
         let idx = team.pickSelection(self)
         self.in_play(idx)
-        print("Delay complete")
-      }
+//      }
     }
     
     return EVENT
