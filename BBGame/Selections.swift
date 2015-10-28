@@ -63,6 +63,19 @@ enum BB: Int, CustomStringConvertible {
   func isHit() -> Bool {
     return self == BB.SINGLE || self == BB.DOUBLE || self == BB.TRIPLE || self == BB.HOMERUN
   }
+  
+  func bases() -> Int {
+    switch(self) {
+    case SINGLE: return 1
+    case ERROR_1B: return 1
+    case DOUBLE: return 2
+    case ERROR_2B: return 2
+    case TRIPLE: return 3
+    case HOMERUN: return 4
+    default: return 0
+    }
+  }
+  
 }
 
 enum BINARY_VERSION:Int {

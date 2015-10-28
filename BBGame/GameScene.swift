@@ -60,7 +60,8 @@ class GameScene: SKScene {
     
     visitor = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:false, robot:false)
     home = BBTeam(name:"Royals", color:UIColor.blueColor(), home:true, robot:true)
-    game = BBGame(scene:self)
+    game = BBGame()
+    game?.setScene(self)
     
     startGame()
   }
@@ -78,13 +79,16 @@ class GameScene: SKScene {
     selectionDisplay!.setGame(game!)
     
   }
+  
+  func runGame() {
+    game!.run_game()
+    scoreboard!.updateScore()
+  }
+  
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     
-    if game!.gameOver == false {
-      if game!.makeSelection == false {
-        game!.run_game()
-        scoreboard!.updateScore()
-      }
+    if game!.gameOver == false && game!.makeSelection == false {
+      runGame()
     }
   }
     

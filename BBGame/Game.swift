@@ -261,7 +261,7 @@ class Game {
     } else { // if self.sel.sel.isHit() {
       self._up.hits++
       self._srd.hits++
-      return event_publish(GameEvent.Hit, dct:["team":self._up, "hit":self.sel.sel.description])
+      return event_publish(GameEvent.Hit, dct:["team":self._up, "hit":self.sel.sel.description, "bases":self.sel.sel.bases()])
     }
   }
     

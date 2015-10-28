@@ -23,9 +23,9 @@ class BBGame : Game {
   var half = "Top"
   var outs = 0
   var makeSelection = false
+  var runnerAdvanceDelay:Int64 = 0
   
-  init(scene:GameScene ) {
-    super.init()
+  func setScene(scene:GameScene ) {
     self.scene = scene
     labels = scene.labels
     labelsBottom = scene.labelsBottom
@@ -33,6 +33,14 @@ class BBGame : Game {
     field = scene.field
   }
 
+  private func delayGame(timeSec:Int64) {
+
+    let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), timeSec * Int64(NSEC_PER_SEC))
+    dispatch_after(time, dispatch_get_main_queue())
+    {
+        self.scene!.runGame()
+    }
+  }
   override func evtGameStart(dct:[String:AnyObject] = [:]) -> Int {
 
     print("evtGameStart() dct:\(dct)")
@@ -45,7 +53,9 @@ class BBGame : Game {
     // labels!.color = .whiteColor()
 
     labelsBottom!.updateLabelNode(0, text:"Event: GameStart", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
+    delayGame(2)
 
     return EVENT
   }
@@ -80,12 +90,18 @@ class BBGame : Game {
     print("evtGameEnd() dct:\(dct)")
     gameOver = true
 
+    /*
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"GAME", ham:.Center)
     labels!.updateLabelNode(1, text:"OVER", ham:.Center)
 
     labelsBottom!.updateLabelNode(0, text:"Event: GameEnd", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to start new game", ham:.Center)
+    */
+    
+    let transition = SKTransition.crossFadeWithDuration(3.0)
+    let menuScene = MenuScene(size: scene!.size)
+    scene!.view?.presentScene(menuScene, transition: transition)
 
     return EVENT
   }
@@ -97,7 +113,9 @@ class BBGame : Game {
     labels!.updateLabelNode(0, text:"WALKOFF WIN", ham:.Center)
     
     labelsBottom!.updateLabelNode(0, text:"Event: Walkoff", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    // labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
+    delayGame(2)
 
     return EVENT
   }
@@ -119,7 +137,9 @@ class BBGame : Game {
     //labels!.color = up!.color!
     
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
+    delayGame(2)
 
     return EVENT
   }
@@ -140,13 +160,9 @@ class BBGame : Game {
       makeSelection = true
       selectionDisplay!.enableSelection(true)
     } else {
-//      let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), 2 * Int64(NSEC_PER_SEC))
-//      dispatch_after(time, dispatch_get_main_queue())
-//      {
-        // put your code which should be executed with a delay here
-        let idx = team.pickSelection(self)
-        self.in_play(idx)
-//      }
+      let idx = team.pickSelection(self)
+      self.in_play(idx)
+      self.labelsBottom!.hideLabels()
     }
     
     return EVENT
@@ -163,10 +179,12 @@ class BBGame : Game {
     labels!.updateLabelNode(3, text:"Selection:\(sel.sel)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
     selectionDisplay!.enableSelection(false)
-    
+
+    delayGame(2)
+
     return EVENT
   }
   
@@ -181,9 +199,12 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Out", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    // labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
     field!.batterOut()
+
+    delayGame(2)
+
     return EVENT
   }
   
@@ -197,7 +218,9 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Error", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
+    delayGame(2)
 
     return EVENT
   }
@@ -206,14 +229,17 @@ class BBGame : Game {
     print("evtHit() dct:\(dct)")
     
     let batterResult = dct["hit"] as! String
+    let bases = dct["bases"] as! Int
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Hit", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
+    delayGame(2)
+    runnerAdvanceDelay = Int64(bases)
     return EVENT
   }
   
@@ -230,10 +256,12 @@ class BBGame : Game {
     if let val = dct["Batter"] { labels!.updateLabelNode(i++, text:"Batter -> \(val)") }
 
     labelsBottom!.updateLabelNode(0, text:"Event: RunnerAdvance", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     field!.runnersAdvance(dct)
     
+    delayGame(runnerAdvanceDelay*2)
+
     return EVENT
   }
   
@@ -246,7 +274,9 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"\(runs) runs scored")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Run", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+
+    delayGame(2)
 
     return EVENT
   }
@@ -266,9 +296,11 @@ class BBGame : Game {
     outs = 0
     
     labelsBottom!.updateLabelNode(0, text:"Event: SideRetired", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     field!.sideRetired()
+
+    delayGame(2)
 
     return EVENT
   }
