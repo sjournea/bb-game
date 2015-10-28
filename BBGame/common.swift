@@ -32,10 +32,19 @@ let TEST_BUTTON_OUT_COLOR = SKColor.purpleColor()
 let TEST_BUTTON_RANDOM_COLOR = SKColor.brownColor()
 let TEST_BUTTON_ACTIVE_COLOR = BUTTON_ACTIVE_COLOR
 
-// Menu Scene constants
+// MenuScene constants
 let MENU_BUTTON_WIDTH:CGFloat = 200.0
 let MENU_BUTTON_HEIGHT:CGFloat = 100.0
 let MENU_BUTTON_COLOR = SKColor.greenColor()
+
+// Delay in seconds when displaying events
+let GAME_DELAY:Int64 = 1
+
+// BBField constants
+let BASE_COLOR = UIColor.whiteColor()
+let BASE_OCCUPY_COLOR = UIColor.redColor()
+let RUNNER_ADVANCE_DURATION = 1.0  // 1 second 
+
 
 
 

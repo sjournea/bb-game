@@ -24,9 +24,6 @@ enum PlayerPosition {
 
 class BBField : SKSpriteNode {
   let BG_COLOR = UIColor.greenColor()
-  let BASE_COLOR = UIColor.whiteColor()
-  let BASE_OCCUPY_COLOR = UIColor.redColor()
-  let RUNNER_ADVANCE_DURATION = 2.0  // 2 seconds
   
   //  var diamond:SKShapeNode?
   var home:SKShapeNode?
