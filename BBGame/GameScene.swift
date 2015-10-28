@@ -58,28 +58,30 @@ class GameScene: SKScene {
     selectionDisplay!.hidden = true
     addChild(selectionDisplay!)
     
-    visitor = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:false, robot:true)
-    home = BBTeam(name:"Cubs", color:UIColor.blueColor(), home:true, robot:false)
+    visitor = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:false, robot:false)
+    home = BBTeam(name:"Royals", color:UIColor.blueColor(), home:true, robot:true)
     game = BBGame(scene:self)
     
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to start game", ham:.Center)
+    startGame()
   }
   
+  
+  func startGame() {
+
+    scoreboard!.hidden = false
+    field!.hidden = false
+    game!.setup_selection(CreateBBSelection)
+    game!.setup_game(visitor!, home:home!)
+    scoreboard!.setGame(game!)
+    game!.start_game()
+    scoreboard!.updateScore()
+    selectionDisplay!.setGame(game!)
+    
+  }
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     
-    if game!.gameOver {
-
-      scoreboard!.hidden = false
-      field!.hidden = false
-      game!.setup_selection(CreateBBSelection)
-      game!.setup_game(visitor!, home:home!)
-      scoreboard!.setGame(game!)
-      game!.start_game()
-      scoreboard!.updateScore()
-      selectionDisplay!.setGame(game!)
-  
-    } else {
-      if !game!.makeSelection {
+    if game!.gameOver == false {
+      if game!.makeSelection == false {
         game!.run_game()
         scoreboard!.updateScore()
       }

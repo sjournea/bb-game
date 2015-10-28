@@ -24,33 +24,32 @@ class TestButtons : SKSpriteNode {
   init(size:CGSize) {
     super.init( texture:nil, color:BG_COLOR, size:size)
     
-    homeRunButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: TEST_BUTTON_HOME_RUN_COLOR, activeColor: SKColor.redColor(), label:"HR", buttonAction: homeRun)
+    homeRunButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: homeRun,
+      defaultColor: TEST_BUTTON_HOME_RUN_COLOR, activeColor: SKColor.redColor(), label:"HR")
     homeRunButton!.position = CGPointMake(0.0, 0.0)
     addChild(homeRunButton!)
     
-    tripleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: TEST_BUTTON_TRIPLE_COLOR, activeColor: SKColor.redColor(), label:"3B", buttonAction: triple)
+    tripleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: triple,
+      defaultColor: TEST_BUTTON_TRIPLE_COLOR, activeColor: SKColor.redColor(), label:"3B")
     tripleButton!.position = CGPointMake(size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(tripleButton!)
 
-    doubleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: TEST_BUTTON_DOUBLE_COLOR, activeColor: SKColor.redColor(), label:"2B", buttonAction: double)
+    doubleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: double,
+      defaultColor: TEST_BUTTON_DOUBLE_COLOR, activeColor: SKColor.redColor(), label:"2B")
     doubleButton!.position = CGPointMake(2*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(doubleButton!)
 
-    singleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: TEST_BUTTON_SINGLE_COLOR, activeColor: SKColor.redColor(), label:"1B", buttonAction: single)
+    singleButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: single,
+      defaultColor: TEST_BUTTON_SINGLE_COLOR, activeColor: SKColor.redColor(), label:"1B")
     singleButton!.position = CGPointMake(3*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(singleButton!)
 
-    outButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: TEST_BUTTON_OUT_COLOR, activeColor: SKColor.redColor(), label:"OUT", buttonAction: out)
+    outButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: out,
+      defaultColor: TEST_BUTTON_OUT_COLOR, activeColor: SKColor.redColor(), label:"OUT")
     outButton!.position = CGPointMake(4*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(outButton!)
 
-    nextAvailButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height),
-      defaultColor: TEST_BUTTON_RANDOM_COLOR, activeColor: SKColor.redColor(), label:"?", buttonAction: nextAvail)
+    nextAvailButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: nextAvail, defaultColor: TEST_BUTTON_RANDOM_COLOR, activeColor: SKColor.redColor(), label:"?")
     nextAvailButton!.position = CGPointMake(5*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(nextAvailButton!)
   }

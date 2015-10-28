@@ -21,12 +21,14 @@ class TLButton: SKNode {
   var active:Bool = false
   
   init( size         : CGSize,
+        buttonAction : ButtonCallback,
         defaultColor : SKColor,
-        activeColor  : SKColor,
-        label        : String,
-        buttonAction : ButtonCallback) {
+        activeColor  : SKColor = BUTTON_ACTIVE_COLOR,
+        label        : String = "",
+        labelSize    : CGFloat = BUTTON_FONT_SIZE)
+  {
 
-    
+  
     //defaultButton = SKSpriteNode(imageNamed: defaultButtonImage)
     //activeButton = SKSpriteNode(imageNamed: activeButtonImage)
     defaultButton = SKSpriteNode(texture:nil, color:defaultColor, size:size)
@@ -45,7 +47,7 @@ class TLButton: SKNode {
     
     if label != "" {
       lbl.text = label
-      lbl.fontSize = BUTTON_FONT_SIZE
+      lbl.fontSize = labelSize
       lbl.fontColor = txtColor
       lbl.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
       lbl.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center

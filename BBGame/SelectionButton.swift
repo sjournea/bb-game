@@ -17,11 +17,10 @@ class SelectionButton : TLButton {
         selection: Selection,
         buttonAction : ButtonCallback) {
     self.selection = selection
-    super.init( size:size,
+    super.init( size:size, buttonAction:buttonAction,
                 defaultColor:SELECTION_DEFAULT_COLOR,
                 activeColor:SELECTION_ACTIVE_COLOR,
-                label:selection.isUsed() ? selection.desc : "?",
-                buttonAction:buttonAction)
+                label:selection.isUsed() ? selection.desc : "?")
         
   }
   

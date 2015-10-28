@@ -10,7 +10,7 @@ import UIKit
 import SpriteKit
 
 class GameViewController: UIViewController {
-  var scene: GameScene!
+  var scene: MenuScene!
     
   override func prefersStatusBarHidden() -> Bool {
     return true
@@ -25,7 +25,7 @@ class GameViewController: UIViewController {
     skView.showsFPS = true
     // skView.showsNodeCount = true
         
-    scene = GameScene(size: skView.bounds.size)
+    scene = MenuScene(size: skView.bounds.size)
     /* Sprite Kit applies additional optimizations to improve rendering performance */
     // skView.ignoresSiblingOrder = true
         
