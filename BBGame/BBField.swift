@@ -183,13 +183,13 @@ class BBField : SKSpriteNode {
       }
     }
   }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder) has not been implemented")
+  }
   
   func setGame(game:BBGame) {
     self.game = game
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder) has not been implemented")
   }
 }
 

@@ -18,6 +18,7 @@ class GameScene: SKScene {
   var labelsBottom:Labels?
   var field : BBField?
   var selectionDisplay:SelectionDisplay?
+  var summaryDisplay:BBSummary?
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -39,12 +40,18 @@ class GameScene: SKScene {
     scoreboard!.position = CGPointMake(0.0, size.height - 70.0)
     scoreboard!.hidden = true
     addChild(scoreboard!)
-
+    
     labels = Labels(size: CGSize(width:size.width, height:105), num:5)
     labels!.anchorPoint = CGPoint(x:0.0, y:0.0)   // Lower right
-    labels!.position = CGPointMake(0.0, size.height - 175.0)
+    labels!.position = CGPointMake(0.0, size.height - 180.0)
     labels!.hidden = false
     addChild(labels!)
+    
+    summaryDisplay = BBSummary(size: CGSize(width:60, height:45))
+    summaryDisplay!.anchorPoint = CGPoint(x:0.0, y:0.0)  // Lower right
+    summaryDisplay!.position = CGPointMake(size.width - 60, size.height - 120.0)
+    summaryDisplay!.hidden = true
+    addChild(summaryDisplay!)
 
     labelsBottom = Labels(size: CGSize(width:size.width, height:42), num:2)
     labelsBottom!.anchorPoint = CGPoint(x:0.0, y:0.0)   // Lower right
@@ -58,8 +65,8 @@ class GameScene: SKScene {
     selectionDisplay!.hidden = true
     addChild(selectionDisplay!)
     
-    visitor = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:false, robot:false)
-    home = BBTeam(name:"Royals", color:UIColor.blueColor(), home:true, robot:true)
+    visitor = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:false, robot:false, tla:"NYM")
+    home = BBTeam(name:"Royals", color:UIColor.blueColor(), home:true, robot:true, tla:"KC")
     game = BBGame()
     game?.setScene(self)
     
@@ -71,6 +78,7 @@ class GameScene: SKScene {
 
     scoreboard!.hidden = false
     field!.hidden = false
+    summaryDisplay!.hidden = false
     game!.setup_selection(CreateBBSelection)
     game!.setup_game(visitor!, home:home!)
     scoreboard!.setGame(game!)

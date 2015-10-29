@@ -17,13 +17,14 @@ class BBGame : Game {
   var labelsBottom:Labels?
   var field:BBField?
   var selectionDisplay:SelectionDisplay?
+  var summary:BBSummary?
   
   var gameOver:Bool = true
   var inning = 1
   var half = "Top"
   var outs = 0
   var makeSelection = false
-  var runnerAdvanceDelay:Int64 = 0
+  var runnerAdvanceBases:Int = 0
   
   func setScene(scene:GameScene ) {
     self.scene = scene
@@ -31,6 +32,7 @@ class BBGame : Game {
     labelsBottom = scene.labelsBottom
     selectionDisplay = scene.selectionDisplay
     field = scene.field
+    summary = scene.summaryDisplay
   }
 
   private func delayGame(timeSec:Int64 = GAME_DELAY) {
@@ -133,12 +135,13 @@ class BBGame : Game {
     }
     
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     //labels!.color = up!.color!
     
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
     //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
+    summary!.inningStart()
     delayGame()
 
     return EVENT
@@ -149,7 +152,7 @@ class BBGame : Game {
     let team = dct["team"] as! BBTeam
 
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
 
     labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
@@ -174,7 +177,7 @@ class BBGame : Game {
     let sel = dct["sel"] as! Selection
     
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(2, text:"Index:\(index)")
     labels!.updateLabelNode(3, text:"Selection:\(sel.sel)")
 
@@ -195,13 +198,14 @@ class BBGame : Game {
     let batterResult = "Out"
     
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Out", ham:.Center)
     // labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
     field!.batterOut()
+    summary!.setOuts(self.outs)
 
     delayGame()
 
@@ -214,7 +218,7 @@ class BBGame : Game {
     let batterResult = dct["error"] as! String
     
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Error", ham:.Center)
@@ -229,26 +233,25 @@ class BBGame : Game {
     print("evtHit() dct:\(dct)")
     
     let batterResult = dct["hit"] as! String
-    let bases = dct["bases"] as! Int
     
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Hit", ham:.Center)
     //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     delayGame()
-    runnerAdvanceDelay = Int64(bases)
     return EVENT
   }
   
   override func evtRunnerAdvance(dct:[String:AnyObject] = [:]) -> Int {
     print("evtRunnerAdvance() dct:\(dct)")
+    let bases = dct["bases"] as! Int
     //dctRunnerAdvance = dct
     
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     var i = 1
     if let val = dct["3B"] { labels!.updateLabelNode(i++, text:"3B -> \(val)") }
     if let val = dct["2B"] { labels!.updateLabelNode(i++, text:"2B -> \(val)") }
@@ -260,7 +263,13 @@ class BBGame : Game {
 
     field!.runnersAdvance(dct)
     
-    delayGame(runnerAdvanceDelay*Int64(RUNNER_ADVANCE_DURATION))
+    let timeSec:Int64 = Int64(bases*Int(RUNNER_ADVANCE_DURATION))
+    let time = dispatch_time(dispatch_time_t(DISPATCH_TIME_NOW), timeSec * Int64(NSEC_PER_SEC))
+    dispatch_after(time, dispatch_get_main_queue())
+    {
+        self.summary!.runnersAdvance(dct)
+        self.scene!.runGame()
+    }
 
     return EVENT
   }
@@ -270,7 +279,7 @@ class BBGame : Game {
     let runs = dct["runs"] as! Int
 
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(1, text:"\(runs) runs scored")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Run", ham:.Center)
@@ -289,7 +298,7 @@ class BBGame : Game {
     let srd_lob = dct["lob"] as! Int
 
     labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"\(half) of \(inning) -- \(outs) outs - \(base_status())")
+    labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(1, text:"Side Retired")
     labels!.updateLabelNode(2, text:"\(srd_runs) runs \(srd_hits) hits \(srd_errors) errors \(srd_lob) LOB")
 

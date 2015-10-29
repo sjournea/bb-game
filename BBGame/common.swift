@@ -43,9 +43,10 @@ let GAME_DELAY:Int64 = 1
 // BBField constants
 let BASE_COLOR = UIColor.whiteColor()
 let BASE_OCCUPY_COLOR = UIColor.redColor()
-let RUNNER_ADVANCE_DURATION = 1.0  // 1 second 
+let RUNNER_ADVANCE_DURATION:Double = 1.0  // 1 second
 
-
+// BBSummary constants
+let SUMMARY_BACKGROUND_COLOR = UIColor.blackColor()
 
 
 

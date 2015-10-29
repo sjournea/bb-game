@@ -13,8 +13,8 @@ import GameplayKit
 class BBTeam : Team {
   var color:UIColor?
   
-  init(name:String="", color:UIColor = .whiteColor(), home:Bool, robot:Bool=false) {
-    super.init(name:name, home:home, robot:robot)
+  init(name:String="", color:UIColor = .whiteColor(), home:Bool, robot:Bool=false, tla:String="") {
+    super.init(name:name, home:home, robot:robot, tla:tla)
     self.color = color
   }
   

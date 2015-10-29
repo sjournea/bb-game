@@ -12,6 +12,7 @@ class Team {
   let version = BINARY_VERSION.VERSION
   let TEAM_NAME_LENGTH = 20
   var name:String
+  var tla:String
   var robot:Bool = false
   // private var _id
   var runs = 0
@@ -33,10 +34,11 @@ class Team {
     lastSelections = []
   }
   
-  init(name:String="", home:Bool=false, robot:Bool=false) {
+  init(name:String="", home:Bool=false, robot:Bool=false, tla:String="") {
     self.name = name
     self.home = home
     self.robot = robot
+    self.tla = tla
     self._clear_data()
   }
   

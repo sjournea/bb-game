@@ -28,6 +28,7 @@
 		0B833A731BBB904C00036E93 /* BBGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A721BBB904C00036E93 /* BBGame.swift */; };
 		0B833A751BBCEF1200036E93 /* ScoreBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A741BBCEF1200036E93 /* ScoreBoard.swift */; };
 		0B833A7B1BC03D5200036E93 /* Labels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B833A7A1BC03D5200036E93 /* Labels.swift */; };
+		0B86598D1BE1558200DF1ED6 /* BBSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B86598C1BE1558200DF1ED6 /* BBSummary.swift */; };
 		0BFA39C11BD09B530025E7FD /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C01BD09B530025E7FD /* SelectionButton.swift */; };
 		0BFA39C31BD0A7A60025E7FD /* SelectionDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C21BD0A7A60025E7FD /* SelectionDisplay.swift */; };
 		0BFA39C51BD42ABA0025E7FD /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C41BD42ABA0025E7FD /* common.swift */; };
@@ -79,6 +80,7 @@
 		0B833A721BBB904C00036E93 /* BBGame.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBGame.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B833A741BBCEF1200036E93 /* ScoreBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ScoreBoard.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B833A7A1BC03D5200036E93 /* Labels.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Labels.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0B86598C1BE1558200DF1ED6 /* BBSummary.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBSummary.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C01BD09B530025E7FD /* SelectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C21BD0A7A60025E7FD /* SelectionDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionDisplay.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C41BD42ABA0025E7FD /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; };
@@ -149,6 +151,7 @@
 				0BFA39C61BD5E4280025E7FD /* BBSelections.swift */,
 				0B833A6E1BBB8F9700036E93 /* Team.swift */,
 				0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */,
+				0B86598C1BE1558200DF1ED6 /* BBSummary.swift */,
 				0B833A701BBB8FE500036E93 /* Selections.swift */,
 				0B833A721BBB904C00036E93 /* BBGame.swift */,
 				0B3B5DE41BC21F3E00038221 /* BBField.swift */,
@@ -310,6 +313,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B86598D1BE1558200DF1ED6 /* BBSummary.swift in Sources */,
 				0B7A8B6B1BDFEBCF006015E3 /* MenuScene.swift in Sources */,
 				0BFA39C71BD5E4280025E7FD /* BBSelections.swift in Sources */,
 				0B833A3F1BBB89F400036E93 /* GameScene.swift in Sources */,

@@ -288,6 +288,7 @@ class Game {
   private func stError() -> Int {
     // ERROR => RUNNER_ADVANCE
     var dctRunners:[String:AnyObject] = [:]
+    dctRunners["bases"] = self.sel.sel.bases()
     if self.sel.sel == BB.ERROR_1B {
       dctRunners["Batter"] = "1B"
       if (self._3B) {
@@ -330,6 +331,7 @@ class Game {
   private func stHit() -> Int {
     // HIT => RUNNER_ADVANCE
     var dctRunners:[String:AnyObject] = [:]
+    dctRunners["bases"] = self.sel.sel.bases()
     if self.sel.sel == BB.SINGLE {
       dctRunners["Batter"] = "1B"
       if (self._3B) {
