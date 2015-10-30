@@ -83,7 +83,7 @@ enum BINARY_VERSION:Int {
 }
 
 class Selection {
-  let version = BINARY_VERSION.VERSION
+  let version:BINARY_VERSION = .VERSION
   var sel: BB
   let index: Int
   var usedBy:Team?
@@ -113,9 +113,14 @@ class Selection {
     return "sel:\(sel) used:\(used)"
   }
   
-  func encode(version:BINARY_VERSION) -> [Int] {
-    assert(true, "encode() not implemented")
-    return []
+  func encode(version:BINARY_VERSION?) -> NSData {
+    
+    var encode_version:BINARY_VERSION = self.version
+    if let vers = version {
+      encode_version = vers
+    }
+    var data = Struct.pack("B", values:[encode_version.rawValue])
+    return data
   }
   
   func decode(bin_data:[UInt8]) {
