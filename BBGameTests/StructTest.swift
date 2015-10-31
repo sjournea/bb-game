@@ -83,6 +83,48 @@ class StructTest: XCTestCase {
     }
   }
 
+  func testInt16() {
+    let testValues:[Int] = [-1000, -1, 0, 1, 5, 100, 1000, 2000, 5555, 20000]
+    for testValue in testValues {
+      print("Testing Int16 \(testValue)")
+      // pack a Int16
+      let nsdata:NSData = Struct.pack("h", values:[testValue])
+      XCTAssert(nsdata.length == 2)
+      
+      // unpack a Int16
+      let udata:[AnyObject] = Struct.unpack("h", data:nsdata)
+      XCTAssert(udata.count == 1)
+      if udata.count > 0 {
+        if let value = udata[0] as? Int {
+          XCTAssert(value == testValue)
+        } else {
+          XCTAssert(false, "value is not a Int")
+        }
+      }
+    }
+  }
+
+  func testString() {
+    let testValues:[String] = ["Hello", "World!"]
+    for testValue in testValues {
+      print("Testing String \(testValue)")
+      // pack a String
+      let nsdata:NSData = Struct.pack("s", values:[testValue])
+      XCTAssert(nsdata.length == testValue.utf8.count + 1)
+      
+      // unpack a String
+      let udata:[AnyObject] = Struct.unpack("s", data:nsdata)
+      XCTAssert(udata.count == 1)
+      if udata.count > 0 {
+        if let value = udata[0] as? String {
+          XCTAssert(value == testValue)
+        } else {
+          XCTAssert(false, "value is not a String")
+        }
+      }
+    }
+  }
+  
   func testBool() {
     let testValues:[Bool] = [true, false]
     for testValue in testValues {
@@ -170,6 +212,26 @@ class StructTest: XCTestCase {
       XCTAssert(b == b_2)
     }
     
+  }
+  
+  func testCounter() {
+    let testData:[UInt] = [10,20,30,40,1000]
+    
+    // pack data
+    let stPack = StructPack()
+    
+    stPack.pack(">5H", values: [testData[0], testData[1], testData[2], testData[3], testData[4]])
+    let nsdata:NSData = stPack.getData()
+    XCTAssert(nsdata.length == 10)
+    
+    // unpack data
+    let stUnpack = StructUnpack(nsdata:nsdata)
+    var udata:[AnyObject] = stUnpack.unpack(">5H")
+    XCTAssert(udata.count == 5)
+    for (n,tData) in testData.enumerate() {
+      let td = udata[n] as? UInt
+      XCTAssert(td == tData)
+    }
   }
   
   /*

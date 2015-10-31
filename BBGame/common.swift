@@ -78,3 +78,7 @@ extension UInt16
   func hiByte() -> UInt8 { return UInt8((self >> 8) & 0xFF) }
 }
 
+extension String {
+  var length: Int { return characters.count }   // Swift 2.0
+}
+

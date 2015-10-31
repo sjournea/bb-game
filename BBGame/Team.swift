@@ -62,13 +62,78 @@ class Team {
     self.innings[self.innings.endIndex-1] = val + runs
   }
   
-  func encode(version:BINARY_VERSION) -> [Int] {
-    assert(true, "encode() not implemented")
-    return []
+  func encode(stPack:StructPack ) {
+    // version UInt8
+    stPack.pack("B", values:[version.rawValue])
+    // object id  12s     (database)
+    // robot      bool
+    // runs       UInt16
+    // hits       UInt16
+    // errors     UInt16
+    // lob        UInt16
+    stPack.pack(">?4H", values:[robot, runs, hits, errors, lob])
+    // numInnings UInt8
+    // innings    [Int16]
+    // selections [[Int]] -- for each inning
+    stPack.pack("B", values:[innings.count])
+    for (n,inning_score) in innings.enumerate() {
+      stPack.pack(">h", values:[inning_score])
+      let lst:[Int] = lstSelections[n]
+      stPack.pack("B", values:[lst.count])
+      for idx in lst {
+        stPack.pack("B", values:[idx])
+      }
+    }
+    // name       s
+    stPack.pack("ss", values:[name, tla])
   }
   
-  func decode(bin_data:[UInt8]) {
-    assert(true, "decode() not implemented")
+  func decode(stUnPack:StructUnpack) {
+    // version UInt8
+    var values:[AnyObject] = stUnPack.unpack("B")
+    let decode_version = values[0] as! UInt
+    
+    if decode_version == 1 {
+      // object id  12s     (database)
+      // robot      bool
+      // runs       UInt16
+      // hits       UInt16
+      // errors     UInt16
+      // lob        UInt16
+      values = stUnPack.unpack(">?4H")
+      robot = values[0] as! Bool
+      runs = values[1] as! Int
+      hits = values[2] as! Int
+      errors = values[3] as! Int
+      lob = values[4] as! Int
+      
+      // numInnings UInt8
+      // innings    [Int16]
+      // selections [[Int]] -- for each inning
+      values = stUnPack.unpack("B")
+      let numInnings = values[0] as! Int
+      innings.removeAll()
+      lstSelections.removeAll()
+      for _ in 0..<numInnings {
+        values = stUnPack.unpack(">h")
+        let val = values[0] as! Int
+        innings.append(val)
+        values = stUnPack.unpack("B")
+        let cnt = values[0] as! Int
+        var lst:[Int] = []
+        for _ in 0..<cnt {
+          values = stUnPack.unpack("B")
+          let idx = values[0] as! Int
+          lst.append(idx)
+        }
+        lstSelections.append(lst)
+      }
+      // name       s
+      // tla        s
+      values = stUnPack.unpack("ss")
+      name = values[0] as! String
+      tla = values[1] as! String
+    }
   }
   
   func isVisitor() -> Bool {
@@ -100,7 +165,8 @@ func ==(left:Team, right:Team) -> Bool {
     left.hits == right.hits &&
     left.errors == right.errors &&
     left.robot == right.robot &&
-    left.lstSelections == right.lstSelections
+    left.lstSelections == right.lstSelections &&
+    left.tla == right.tla
 }
 
 func !=(left:Team, right:Team) -> Bool {

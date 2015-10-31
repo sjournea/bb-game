@@ -65,8 +65,8 @@ class GameScene: SKScene {
     selectionDisplay!.hidden = true
     addChild(selectionDisplay!)
     
-    visitor = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:false, robot:false, tla:"NYM")
-    home = BBTeam(name:"Royals", color:UIColor.blueColor(), home:true, robot:true, tla:"KC")
+    home = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:true, robot:false, tla:"NYM")
+    visitor = BBTeam(name:"Royals", color:UIColor.blueColor(), home:false, robot:true, tla:"KC")
     game = BBGame()
     game?.setScene(self)
     

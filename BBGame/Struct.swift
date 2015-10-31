@@ -23,7 +23,9 @@ enum Ops:Int {
   case VarUInt8 = 11
   case VarInt8
   case VarUInt16
+  case VarInt16
   case VarBool
+  case VarString
 
   func isControlOp() -> Bool {
     return self.rawValue <= 10
@@ -70,7 +72,9 @@ class StructImpl {
           case "B": opStream.append(.VarUInt8)
           case "b": opStream.append(.VarInt8)
           case "H": opStream.append(.VarUInt16)
+          case "h": opStream.append(.VarInt16)
           case "?": opStream.append(.VarBool)
+          case "s": opStream.append(.VarString)
           default:
             print("ERROR parseFormat() bad character in format: \"\(ch)\"")
           }
@@ -92,7 +96,9 @@ class StructImpl {
       case .VarUInt8: cbVarUInt8()
       case .VarInt8: cbVarInt8()
       case .VarUInt16: cbVarUInt16()
+      case .VarInt16: cbVarInt16()
       case .VarBool: cbVarBool()
+      case .VarString: cbVarString()
       case .Stop: cbStop()
       }
     }
@@ -132,8 +138,16 @@ class StructImpl {
     print("cbVarUInt16() NOT SUPPORTED")
   }
 
+  func cbVarInt16() {
+    print("cbVarInt16() NOT SUPPORTED")
+  }
+
   func cbVarBool() {
     print("cbVarBool() NOT SUPPORTED")
+  }
+
+  func cbVarString() {
+    print("cbVarString() NOT SUPPORTED")
   }
 
 }
@@ -190,6 +204,20 @@ class StructPack : StructImpl {
     }
   }
 
+  override func cbVarInt16() {
+    if let value = input![index++] as? Int {
+      if value < Int(INT16_MIN) || value > Int(INT16_MAX) {
+        print("cbVarUInt16() fail - Int16 value:\(value) out of range")
+      } else {
+        // big endian hard wired
+        bytes.append(value.hiByte())
+        bytes.append(value.loByte())
+      }
+    } else {
+      print( "ERROR - cannot convert value to UInt")
+    }
+  }
+
   override func cbVarBool() {
     if let value = input![index++] as? UInt {
       if value == 0 {
@@ -199,6 +227,24 @@ class StructPack : StructImpl {
       }
     } else {
       print( "pack cbVarBool() Fail - cannot convert value to UInt")
+    }
+  }
+  
+  override func cbVarString() {
+    // will pack as Length <UInt8>, String as UTF8 characters
+    // Limitations 
+    //   Only support lengths up to 255
+    if let value = input![index++] as? String {
+      if value.utf8.count > 255 {
+        print("cbVarString() fail - utf8 length \(value.utf8.count) out of range")
+      } else {
+        bytes.append(UInt8(value.utf8.count))
+        for utfch in value.utf8 {
+          bytes.append(utfch)
+        }
+      }
+    } else {
+      print( "pack cbVarString() Fail - cannot convert value to String")
     }
   }
   
@@ -265,9 +311,35 @@ class StructUnpack : StructImpl {
     values.append(value)
   }
 
+  override func cbVarInt16() {
+    let bytes:[UInt8] = readBytes(2)
+    
+    var value:Int = 0
+    for byte in bytes {
+      value <<= 8
+      value |= Int(byte)
+    }
+    let i16:Int16 = Int16(bitPattern:UInt16(value))
+    values.append(Int(i16))
+  }
+  
   override func cbVarBool() {
     let bytes = readBytes(1)
     let value:Bool = bytes[0] != 0 ? true : false
+    values.append(value)
+  }
+
+  override func cbVarString() {
+    // will pack as Length <UInt8>, String as UTF8 characters
+    // Limitations
+    //   Only support lengths up to 255
+    let byteSize = readBytes(1)
+    let cnt = Int(byteSize[0])
+    let bytes = readBytes(cnt)
+    var value:String = ""
+    for byte in bytes {
+      value.append(UnicodeScalar(byte))
+    }
     values.append(value)
   }
 }

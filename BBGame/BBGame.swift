@@ -179,7 +179,7 @@ class BBGame : Game {
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
     labels!.updateLabelNode(2, text:"Index:\(index)")
-    labels!.updateLabelNode(3, text:"Selection:\(sel.sel)")
+    labels!.updateLabelNode(3, text:"Selection:\(sel.sel!.desc)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
     //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
