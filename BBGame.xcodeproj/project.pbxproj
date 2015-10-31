@@ -32,6 +32,7 @@
 		0B86598F1BE2731900DF1ED6 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B86598E1BE2731900DF1ED6 /* GameKit.framework */; };
 		0B8B5E201BE3C4EE00A7B1FC /* StructTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B5E1F1BE3C4EE00A7B1FC /* StructTest.swift */; };
 		0B8B5E241BE3C96800A7B1FC /* Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B5E231BE3C96800A7B1FC /* Struct.swift */; };
+		0B8B5E261BE45FD300A7B1FC /* SelectionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B8B5E251BE45FD300A7B1FC /* SelectionsTest.swift */; };
 		0BFA39C11BD09B530025E7FD /* SelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C01BD09B530025E7FD /* SelectionButton.swift */; };
 		0BFA39C31BD0A7A60025E7FD /* SelectionDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C21BD0A7A60025E7FD /* SelectionDisplay.swift */; };
 		0BFA39C51BD42ABA0025E7FD /* common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BFA39C41BD42ABA0025E7FD /* common.swift */; };
@@ -87,9 +88,10 @@
 		0B86598E1BE2731900DF1ED6 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		0B8B5E1F1BE3C4EE00A7B1FC /* StructTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = StructTest.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B8B5E231BE3C96800A7B1FC /* Struct.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Struct.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0B8B5E251BE45FD300A7B1FC /* SelectionsTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionsTest.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C01BD09B530025E7FD /* SelectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionButton.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C21BD0A7A60025E7FD /* SelectionDisplay.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SelectionDisplay.swift; sourceTree = "<group>"; tabWidth = 2; };
-		0BFA39C41BD42ABA0025E7FD /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; };
+		0BFA39C41BD42ABA0025E7FD /* common.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = common.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0BFA39C61BD5E4280025E7FD /* BBSelections.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBSelections.swift; sourceTree = "<group>"; tabWidth = 2; };
 /* End PBXFileReference section */
 
@@ -176,6 +178,7 @@
 		0B833A521BBB89FB00036E93 /* BBGameTests */ = {
 			isa = PBXGroup;
 			children = (
+				0B8B5E251BE45FD300A7B1FC /* SelectionsTest.swift */,
 				0B833A531BBB89FB00036E93 /* BBGameTests.swift */,
 				0B8B5E1F1BE3C4EE00A7B1FC /* StructTest.swift */,
 				0B833A551BBB89FB00036E93 /* Info.plist */,
@@ -357,6 +360,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0B8B5E261BE45FD300A7B1FC /* SelectionsTest.swift in Sources */,
 				0B8B5E201BE3C4EE00A7B1FC /* StructTest.swift in Sources */,
 				0B833A541BBB89FB00036E93 /* BBGameTests.swift in Sources */,
 			);

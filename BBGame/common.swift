@@ -48,6 +48,33 @@ let RUNNER_ADVANCE_DURATION:Double = 1.0  // 1 second
 // BBSummary constants
 let SUMMARY_BACKGROUND_COLOR = UIColor.blackColor()
 
-
-
 let DEBUG_USE_TEST_BUTTONS = false
+
+extension Int
+{
+  func loByte() -> UInt8 { return UInt8(self & 0xFF) }
+  func hiByte() -> UInt8 { return UInt8((self >> 8) & 0xFF) }
+  func loWord() -> Int16 { return Int16(self & 0xFFFF) }
+  func hiWord() -> Int16 { return Int16((self >> 16) & 0xFFFF) }
+}
+
+extension Int16
+{
+  func loByte() -> UInt8 { return UInt8(self & 0xFF) }
+  func hiByte() -> UInt8 { return UInt8((self >> 8) & 0xFF) }
+}
+
+extension UInt
+{
+  func loByte() -> UInt8 { return UInt8(self & 0xFF) }
+  func hiByte() -> UInt8 { return UInt8((self >> 8) & 0xFF) }
+  func loWord() -> UInt16 { return UInt16(self & 0xFFFF) }
+  func hiWord() -> UInt16 { return UInt16((self >> 16) & 0xFFFF) }
+}
+
+extension UInt16
+{
+  func loByte() -> UInt8 { return UInt8(self & 0xFF) }
+  func hiByte() -> UInt8 { return UInt8((self >> 8) & 0xFF) }
+}
+

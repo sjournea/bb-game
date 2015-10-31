@@ -84,10 +84,10 @@ enum BINARY_VERSION:Int {
 
 class Selection {
   let version:BINARY_VERSION = .VERSION
-  var sel: BB
-  let index: Int
+  var sel: BB?
+  var index: Int
   var usedBy:Team?
-  var used: Bool = false
+  var used:Bool = false
   
   init(sel: BB, index:Int) {
     self.sel = sel
@@ -96,7 +96,7 @@ class Selection {
   
   var desc : String {
     get {
-      return sel.desc
+      return sel!.desc
     }
   }
 
@@ -113,30 +113,53 @@ class Selection {
     return "sel:\(sel) used:\(used)"
   }
   
-  func encode(version:BINARY_VERSION?) -> NSData {
-    
-    var encode_version:BINARY_VERSION = self.version
-    if let vers = version {
-      encode_version = vers
-    }
-    var data = Struct.pack("B", values:[encode_version.rawValue])
-    return data
+  func encode(st:StructPack) {
+    // version UInt8
+    st.pack("B", values:[version.rawValue])
+    // idx UInt16
+    // sel UInt8
+    // used bool
+    st.pack(">HB?", values:[index,sel!.rawValue, used])
   }
   
-  func decode(bin_data:[UInt8]) {
-    assert(true, "decode() not implemented")
+  func decode(st:StructUnpack) {
+    var values:[AnyObject] = st.unpack("B")
+    let decode_version = values[0] as! UInt
+
+    if decode_version == 1 {
+      values = st.unpack(">HB?")
+      index = values[0] as! Int
+      let rawValue = values[1] as! Int
+      self.sel = BB(rawValue: rawValue)
+      used = values[2] as! Bool
+    }
   }
   
   func str() -> String {
-    return "sel:\(sel.description)"
+    return "sel:\(sel!.description)"
   }
 }
 
 func ==(left:Selection, right:Selection) -> Bool {
-  return left.version == right.version &&
-    left.sel     == right.sel &&
-    left.used    == right.used &&
-    left.usedBy! == right.usedBy!
+  var equal:Bool = left.version == right.version &&
+                   left.index   == right.index &&
+                   left.sel!    == right.sel! &&
+                   left.used    == right.used
+  if equal {
+    // now check usedBy which could be nil
+    if left.usedBy != nil || right.usedBy != nil {
+      if let lub = left.usedBy {
+        if let rub = right.usedBy {
+          equal = lub == rub
+        } else {
+          equal = false
+        }
+      } else {
+        equal = false
+      }
+    }
+  }
+  return equal
 }
 
 func !=(left:Selection, right:Selection) -> Bool {

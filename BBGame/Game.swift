@@ -250,18 +250,18 @@ class Game {
     // SELECTION => OUT|HIT|ERROR
     // Process selection
     self.runs = 0
-    if self.sel.sel.isOut() {
+    if self.sel.sel!.isOut() {
       self._outs++
       return event_publish(GameEvent.Out, dct:["team":self._up, "outs":self._outs])
-    } else if self.sel.sel.isError() {
+    } else if self.sel.sel!.isError() {
       self._srd.errors++
       let field:Team = (self.visitor == self._up) ? self.home : self.visitor
       field.errors++
-      return event_publish(GameEvent.Error, dct:["team":field, "error":self.sel.sel.description])
+      return event_publish(GameEvent.Error, dct:["team":field, "error":self.sel.sel!.description])
     } else { // if self.sel.sel.isHit() {
       self._up.hits++
       self._srd.hits++
-      return event_publish(GameEvent.Hit, dct:["team":self._up, "hit":self.sel.sel.description, "bases":self.sel.sel.bases()])
+      return event_publish(GameEvent.Hit, dct:["team":self._up, "hit":self.sel.sel!.description, "bases":self.sel.sel!.bases()])
     }
   }
     
@@ -288,7 +288,7 @@ class Game {
   private func stError() -> Int {
     // ERROR => RUNNER_ADVANCE
     var dctRunners:[String:AnyObject] = [:]
-    dctRunners["bases"] = self.sel.sel.bases()
+    dctRunners["bases"] = self.sel.sel!.bases()
     if self.sel.sel == BB.ERROR_1B {
       dctRunners["Batter"] = "1B"
       if (self._3B) {
@@ -331,7 +331,7 @@ class Game {
   private func stHit() -> Int {
     // HIT => RUNNER_ADVANCE
     var dctRunners:[String:AnyObject] = [:]
-    dctRunners["bases"] = self.sel.sel.bases()
+    dctRunners["bases"] = self.sel.sel!.bases()
     if self.sel.sel == BB.SINGLE {
       dctRunners["Batter"] = "1B"
       if (self._3B) {
