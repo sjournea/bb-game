@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B07DBB91BE559FA0015D667 /* GameTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBB81BE559FA0015D667 /* GameTest.swift */; };
+		0B07DBBD1BE560980015D667 /* SideRetiredDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBBC1BE560980015D667 /* SideRetiredDataTest.swift */; };
 		0B3B5DDF1BC0B68F00038221 /* BBTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */; };
 		0B3B5DE11BC0D49D00038221 /* TestButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE01BC0D49D00038221 /* TestButtons.swift */; };
 		0B3B5DE31BC0D64700038221 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE21BC0D64700038221 /* Button.swift */; };
@@ -58,6 +60,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B07DBB81BE559FA0015D667 /* GameTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = GameTest.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0B07DBBC1BE560980015D667 /* SideRetiredDataTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SideRetiredDataTest.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBTeam.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DE01BC0D49D00038221 /* TestButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = TestButtons.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DE21BC0D64700038221 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -180,7 +184,9 @@
 		0B833A521BBB89FB00036E93 /* BBGameTests */ = {
 			isa = PBXGroup;
 			children = (
+				0B07DBBC1BE560980015D667 /* SideRetiredDataTest.swift */,
 				0B8B5E251BE45FD300A7B1FC /* SelectionsTest.swift */,
+				0B07DBB81BE559FA0015D667 /* GameTest.swift */,
 				0B8B5E271BE4937A00A7B1FC /* TeamTest.swift */,
 				0B833A531BBB89FB00036E93 /* BBGameTests.swift */,
 				0B8B5E1F1BE3C4EE00A7B1FC /* StructTest.swift */,
@@ -365,6 +371,8 @@
 			files = (
 				0B8B5E281BE4937A00A7B1FC /* TeamTest.swift in Sources */,
 				0B8B5E261BE45FD300A7B1FC /* SelectionsTest.swift in Sources */,
+				0B07DBBD1BE560980015D667 /* SideRetiredDataTest.swift in Sources */,
+				0B07DBB91BE559FA0015D667 /* GameTest.swift in Sources */,
 				0B8B5E201BE3C4EE00A7B1FC /* StructTest.swift in Sources */,
 				0B833A541BBB89FB00036E93 /* BBGameTests.swift in Sources */,
 			);

@@ -80,7 +80,7 @@ class GameScene: SKScene {
     field!.hidden = false
     summaryDisplay!.hidden = false
     game!.setup_selection(CreateBBSelection)
-    game!.setup_game(visitor!, home:home!)
+    game!.setup_game(visitor!, home:home!, pctError: 5)
     scoreboard!.setGame(game!)
     game!.start_game()
     scoreboard!.updateScore()

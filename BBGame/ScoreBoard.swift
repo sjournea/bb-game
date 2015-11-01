@@ -227,7 +227,7 @@ class ScoreBoard : SKSpriteNode {
     }
     lblVisitorRuns.text = "\(game!.visitor.runs)"
     lblVisitorHits.text = "\(game!.visitor.hits)"
-    lblHomeErrors.text = "\(game!.visitor.errors)"
+    lblVisitorErrors.text = "\(game!.visitor.errors)"
     lblHomeRuns.text = "\(game!.home.runs)"
     lblHomeHits.text = "\(game!.home.hits)"
     lblHomeErrors.text = "\(game!.home.errors)"

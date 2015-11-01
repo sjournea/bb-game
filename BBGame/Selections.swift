@@ -86,12 +86,18 @@ class Selection {
   let version:BINARY_VERSION = .VERSION
   var sel: BB?
   var index: Int
-  var usedBy:Team?
+  var usedBy:String = ""
   var used:Bool = false
   
   init(sel: BB, index:Int) {
     self.sel = sel
     self.index = index
+  }
+  
+  init(stUnpack:StructUnpack) {
+    sel = BB.OUT
+    index = -1
+    decode(stUnpack)
   }
   
   var desc : String {
@@ -105,7 +111,7 @@ class Selection {
   }
   
   func Used(team:Team) {
-    usedBy = team
+    usedBy = team.name
     used = true
   }
   
@@ -119,7 +125,8 @@ class Selection {
     // idx UInt16
     // sel UInt8
     // used bool
-    st.pack(">HB?", values:[index,sel!.rawValue, used])
+    // usedBy String
+    st.pack(">HB?s", values:[index,sel!.rawValue, used, usedBy])
   }
   
   func decode(st:StructUnpack) {
@@ -127,11 +134,12 @@ class Selection {
     let decode_version = values[0] as! UInt
 
     if decode_version == 1 {
-      values = st.unpack(">HB?")
+      values = st.unpack(">HB?s")
       index = values[0] as! Int
       let rawValue = values[1] as! Int
       self.sel = BB(rawValue: rawValue)
       used = values[2] as! Bool
+      usedBy = values[3] as! String
     }
   }
   
@@ -141,24 +149,11 @@ class Selection {
 }
 
 func ==(left:Selection, right:Selection) -> Bool {
-  var equal:Bool = left.version == right.version &&
+  let equal:Bool = left.version == right.version &&
                    left.index   == right.index &&
                    left.sel!    == right.sel! &&
-                   left.used    == right.used
-  if equal {
-    // now check usedBy which could be nil
-    if left.usedBy != nil || right.usedBy != nil {
-      if let lub = left.usedBy {
-        if let rub = right.usedBy {
-          equal = lub == rub
-        } else {
-          equal = false
-        }
-      } else {
-        equal = false
-      }
-    }
-  }
+                   left.used    == right.used &&
+                   left.usedBy  == right.usedBy
   return equal
 }
 

@@ -42,6 +42,14 @@ class Team {
     self._clear_data()
   }
   
+  init(stUnpack:StructUnpack) {
+    name = ""
+    home = false
+    robot = false
+    tla = ""
+    decode(stUnpack)
+  }
+  
   func start_game() {
     self._clear_data()
   }

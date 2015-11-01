@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GameplayKit
 
 enum GameEvent: Int, CustomStringConvertible {
     
@@ -65,13 +66,17 @@ class SideRetiredData {
     self.lob = 0
   }
     
-  func encode(version:BINARY_VERSION) -> [Int] {
-    assert(true, "encode() not implemented")
-    return []
+  func encode(stPack:StructPack) {
+    // TODO Need version here?
+    stPack.pack(">4H", values:[runs, hits, errors, lob])
   }
     
-  func decode(bin_data:[UInt8]) {
-    assert(true, "decode() not implemented")
+  func decode(stUnPack:StructUnpack) {
+    let values = stUnPack.unpack(">4H")
+    runs = values[0] as! Int
+    hits = values[1] as! Int
+    errors = values[2] as! Int
+    lob = values[3] as! Int
   }
     
   func makeDict() -> [String:Int] {
@@ -101,30 +106,110 @@ class Game {
   var lstSelections:[Selection] = []
   var _outs:Int = 0
   var _inning:Int = 1
-  private var _1B:Bool = false
-  private var _2B:Bool = false
-  private var _3B:Bool = false
-  private var _final:Bool = false
+  var _1B:Bool = false
+  var _2B:Bool = false
+  var _3B:Bool = false
+  var _final:Bool = false
   var _last_inning = 7
-  private var _up:Team
-  private var _pctError:Float = 0.0
+  var _up:Team
+  var _field:Team
+  var _pctError:Int = 0
   var _srd:SideRetiredData
-  private var sel:Selection
-  private var lastSelection:Selection
-  private var runs:Int = 0
-  private var gameEvent:GameEvent = GameEvent.GameIdle
+  var sel:Selection
+  var lastSelection:Selection
+  var runs:Int = 0
+  var gameEvent:GameEvent = GameEvent.GameIdle
   var createSelectionsFunc:CreateSelectionFuncType = CreateSelection
-    
+
+  
   init() {
     self.visitor = Team()
     self.home = Team()
     // self.lstSelections = generate_selections()
     self._srd = SideRetiredData()
     self._up = self.visitor
+    self._field = self.home
     self.sel = Selection(sel:BB.OUT, index:0)
     self.lastSelection = self.sel
   }
     
+  func encode(stPack:StructPack) {
+    // version UInt8
+    stPack.pack("B", values:[version.rawValue])
+    // object id  12s     (database)
+    // visitor       Team
+    // home          Team
+    // lstSelections [Selections]
+    // srd           SideRetiredData
+    visitor.encode(stPack)
+    home.encode(stPack)
+    stPack.pack(">H", values:[lstSelections.count])
+    for sel in lstSelections {
+      sel.encode(stPack)
+    }
+    _srd.encode(stPack)
+    // _up          bool (false visitor, true home)
+    // _outs        unsigned char
+    // _inning      unsigned char
+    // _1B          bool
+    // _2B          bool
+    // _3B          bool
+    // _final       bool
+    // _pctError    unsigned char
+    // _last_inning unsigned char
+    // gameState    unsigned char
+    let up:Bool = home == _up
+    stPack.pack(">?BB????BBB", values:[up, _outs, _inning, _1B, _2B, _3B, _final, _pctError, _last_inning, gameEvent.rawValue])
+  }
+  
+  func decode(stUnpack:StructUnpack) {
+    // version UInt8
+    var values:[AnyObject] = stUnpack.unpack("B")
+    let decode_version = values[0] as! UInt
+    
+    if decode_version == 1 {
+      // object id  12s     (database)
+      // visitor       Team
+      // home          Team
+      // lstSelections [Selections]
+      // srd           SideRetiredData
+      visitor.decode(stUnpack)
+      home.decode(stUnpack)
+      values = stUnpack.unpack(">H")
+      let cnt = values[0] as! Int
+      lstSelections.removeAll()
+      for _ in 0 ..< cnt {
+        let sel = Selection(stUnpack:stUnpack)
+        lstSelections.append(sel)
+      }
+      _srd.decode(stUnpack)
+      // _up          bool (false visitor, true home)
+      // _outs        unsigned char
+      // _inning      unsigned char
+      // _1B          bool
+      // _2B          bool
+      // _3B          bool
+      // _final       bool
+      // _pctError    unsigned char
+      // _last_inning unsigned char
+      // gameState    unsigned char
+      values = stUnpack.unpack(">?BB????BBB")
+      let up = values[0] as! Bool
+      _outs = values[1] as! Int
+      _inning = values[2] as! Int
+      _1B = values[3] as! Bool
+      _2B = values[4] as! Bool
+      _3B = values[5] as! Bool
+      _final = values[6] as! Bool
+      _pctError = values[7] as! Int
+      _last_inning = values[8] as! Int
+      let event = values[9] as! Int
+      _up = up ? home : visitor
+      _field = up ? visitor : home
+      gameEvent = GameEvent(rawValue: event)!
+    }
+  }
+  
   private func event_publish(evt:GameEvent, dct:[String:AnyObject]=[:]) -> Int {
         
     self.gameEvent = evt
@@ -148,11 +233,12 @@ class Game {
     return EVENT_RETURN
   }
     
-  func setup_game(visitor:Team, home:Team, pctError:Float = 0.0) {
+  func setup_game(visitor:Team, home:Team, pctError:Int = 0) {
     // assert(pctError >= 0.0 && pctError < 1.0, "pctError is illegal")
     self.visitor = visitor
     self.home = home
-    self._pctError = pctError
+    _pctError = pctError
+    
     self.lstSelections = generate_selections(createFunc: createSelectionsFunc)
   }
   
@@ -216,6 +302,7 @@ class Game {
     self.visitor.start_game()
     self.home.start_game()
     self._up = self.visitor
+    self._field = self.home
     self._outs = 0
     self._inning = 1
     self._1B = false
@@ -255,9 +342,8 @@ class Game {
       return event_publish(GameEvent.Out, dct:["team":self._up, "outs":self._outs])
     } else if self.sel.sel!.isError() {
       self._srd.errors++
-      let field:Team = (self.visitor == self._up) ? self.home : self.visitor
-      field.errors++
-      return event_publish(GameEvent.Error, dct:["team":field, "error":self.sel.sel!.description])
+      self._field.errors++
+      return event_publish(GameEvent.Error, dct:["team":self._field, "error":self.sel.sel!.description])
     } else { // if self.sel.sel.isHit() {
       self._up.hits++
       self._srd.hits++
@@ -434,6 +520,7 @@ class Game {
     var half:String = ""
     if self._up == self.visitor {
       self._up = self.home
+      self._field = self.visitor
       half = "bottom"
       // check for game over,last inning and home leading, last at bat not needed
       if self._inning == self._last_inning && self.home.runs > self.visitor.runs {
@@ -442,6 +529,7 @@ class Game {
       }
     } else {
       self._up = self.visitor
+      self._field = self.home
       half = "top"
       // check for game over
       if self._inning >= self._last_inning && self.home.runs != self.visitor.runs {
@@ -475,10 +563,15 @@ class Game {
     }
     // use this selection
     self.sel.Used(_up)
-    // check for an error
-    // if (self.sel.sel == BB.OUT and self._pctError > 0.0 and random.random() < self._pctError) {
-    //    self.sel.sel = BB.ERROR_1B
-    //}
+    // check for an error on out if a percentage is set
+    if self.sel.sel == BB.OUT && self._pctError > 0 {
+      let randomErrors = GKRandomDistribution(lowestValue: 0, highestValue: 100)
+      if randomErrors.nextInt() < _pctError {
+        // 10 % chance error is a 2B error
+        // self.sel.sel = randomErrors.nextInt() < 10 ? BB.ERROR_2B : BB.ERROR_1B
+        self.sel.sel = BB.ERROR_1B
+      }
+    }
     self._up.addSelection(idx)
     self.lastSelection = self.sel
     let status = event_publish(GameEvent.Selection, dct:["sel":self.sel,"idx":idx])
@@ -626,4 +719,34 @@ class Game {
   func evtRun(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
   func evtSideRetired(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
   func evtWalkoff(dct:[String:AnyObject] = [:])  -> Int { return EVENT_CONTINUE }
+}
+
+func ==(left:Game, right:Game) -> Bool {
+  var equal = left.visitor   == right.visitor &&
+              left.home   == right.home &&
+              left._up == right._up &&
+              left._outs == right._outs &&
+              left._inning == right._inning &&
+              left._1B == right._1B &&
+              left._2B == right._2B &&
+              left._3B == right._3B &&
+              left._final == right._final &&
+              left._pctError == right._pctError &&
+              left._srd == right._srd &&
+              left._last_inning == right._last_inning &&
+              left.gameEvent == right.gameEvent &&
+              left.lstSelections.count == right.lstSelections.count
+  if equal {
+    for n in 0..<left.lstSelections.count {
+      if left.lstSelections[n] != right.lstSelections[n] {
+        equal = false
+        break
+      }
+    }
+  }
+  return equal
+}
+
+func !=(left:Game, right:Game) -> Bool {
+  return !(left == right)
 }

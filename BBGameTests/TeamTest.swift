@@ -65,6 +65,27 @@ class TeamTest: XCTestCase {
     XCTAssert(team2 == team)
   }
   
+  func testEncodeDecodeMultiple() {
+    let team1 = Team(name: "Team1", home: true, robot: false, tla: "TM1")
+    let team2 = Team(name: "Team2", home: true, robot: false, tla: "TM2")
+    let team3 = Team(name: "Team3", home: true, robot: false, tla: "TM3")
+    
+    let stPack = StructPack()
+    team1.encode(stPack)
+    team2.encode(stPack)
+    team3.encode(stPack)
+    let nsdata:NSData = stPack.getData()
+    
+    let stUnpack = StructUnpack(nsdata:nsdata)
+    let team4 = Team(stUnpack:stUnpack)
+    let team5 = Team(stUnpack:stUnpack)
+    let team6 = Team(stUnpack:stUnpack)
+
+    XCTAssert(team1 == team4)
+    XCTAssert(team2 == team5)
+    XCTAssert(team3 == team6)
+  }
+  
   func testTeamAtBat() {
     let team1 = Team(name:"Bulldogs", robot:false, home:true, tla:"BUL")
     

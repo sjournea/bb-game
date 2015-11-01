@@ -8,6 +8,18 @@
 
 import Foundation
 
+func toByteArray<T>(var value:T) -> [UInt8] {
+  return withUnsafePointer(&value) {
+    Array(UnsafeBufferPointer(start: UnsafePointer<UInt8>($0), count:sizeof(T)))
+  }
+}
+
+func fromByteArray<T>(value:[UInt8], _: T.Type) -> T {
+  return value.withUnsafeBufferPointer {
+    return UnsafePointer<T>($0.baseAddress).memory
+  }
+}
+
 enum Endian {
     case little
     case big
@@ -26,6 +38,7 @@ enum Ops:Int {
   case VarInt16
   case VarBool
   case VarString
+  case VarFloat
 
   func isControlOp() -> Bool {
     return self.rawValue <= 10
@@ -75,6 +88,7 @@ class StructImpl {
           case "h": opStream.append(.VarInt16)
           case "?": opStream.append(.VarBool)
           case "s": opStream.append(.VarString)
+          case "f": opStream.append(.VarFloat)
           default:
             print("ERROR parseFormat() bad character in format: \"\(ch)\"")
           }
@@ -99,6 +113,7 @@ class StructImpl {
       case .VarInt16: cbVarInt16()
       case .VarBool: cbVarBool()
       case .VarString: cbVarString()
+      case .VarFloat: cbVarFloat()
       case .Stop: cbStop()
       }
     }
@@ -150,6 +165,10 @@ class StructImpl {
     print("cbVarString() NOT SUPPORTED")
   }
 
+  func cbVarFloat() {
+    print("cbVarFloat() NOT SUPPORTED")
+  }
+  
 }
 
 class StructPack : StructImpl {
@@ -248,6 +267,16 @@ class StructPack : StructImpl {
     }
   }
   
+  override func cbVarFloat() {
+    if let value = input![index++] as? Float {
+      // TODO Not sure about endian
+      let floatBytes = toByteArray(value)
+      bytes += floatBytes
+    } else {
+      print( "ERROR - cannot convert value to Float")
+    }
+  }
+  
   func getData() -> NSData {
     return NSData(bytes:bytes, length:bytes.count)
   }
@@ -340,6 +369,12 @@ class StructUnpack : StructImpl {
     for byte in bytes {
       value.append(UnicodeScalar(byte))
     }
+    values.append(value)
+  }
+
+  override func cbVarFloat() {
+    let bytes:[UInt8] = readBytes(4)
+    let value = fromByteArray(bytes, Float.self)
     values.append(value)
   }
 }

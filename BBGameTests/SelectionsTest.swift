@@ -48,19 +48,29 @@ class SelectionsTest: XCTestCase {
     }
   }
 
+  func enocdeDecodeVerify(se:Selection) {
+    let stPack = StructPack()
+    se.encode(stPack)
+    let nsdata:NSData = stPack.getData()
+    
+    let stUnpack = StructUnpack(nsdata:nsdata)
+    let selection = Selection(stUnpack:stUnpack)
+    XCTAssert(se == selection)
+  }
+  
   func testEncodeDecode() {
-    let selection = Selection(sel:BB.OUT, index:99)
+
+    let home = Team(name:"Home", home: true, robot:false, tla:"HOM")
+    // let visitor = Team(name: "Visitor", home: false, robot: false, tla: "VIS")
+
     let lst:[BB] = [BB.OUT, BB.SINGLE, BB.DOUBLE, BB.TRIPLE, BB.HOMERUN, BB.ERROR_1B, BB.ERROR_2B]
     for (i,value) in lst.enumerate() {
       let se = Selection(sel:value, index:i)
       
-      let stPack = StructPack()
-      se.encode(stPack)
-      let nsdata:NSData = stPack.getData()
+      enocdeDecodeVerify(se)
+      se.Used(home)
+      enocdeDecodeVerify(se)
       
-      let stUnpack = StructUnpack(nsdata:nsdata)
-      selection.decode(stUnpack)
-      XCTAssert(se == selection)
     }
   }
   

@@ -20,6 +20,16 @@ class StructTest: XCTestCase {
     super.tearDown()
   }
   
+  func testByteUtils() {
+    let lst:[Float] = [10.0, 11.0, -1.2, 100.457, 1729.1729]
+    for testValue in lst {
+      let bytes = toByteArray(testValue)
+      let value = fromByteArray(bytes, Float.self)
+      XCTAssertEqual(testValue, value)
+    }
+    
+  }
+  
   func testUInt8() {
     let testValues:[UInt] = [1,5,10,100,255]
     for testValue in testValues {
@@ -104,6 +114,27 @@ class StructTest: XCTestCase {
     }
   }
 
+  func testFloat() {
+    let testValues:[Float] = [10.0, -1.0, 0.9, 1001.0, 3.1549]
+    for testValue in testValues {
+      print("Testing Float \(testValue)")
+      // pack a String
+      let nsdata:NSData = Struct.pack("f", values:[testValue])
+      XCTAssert(nsdata.length == 4)
+      
+      // unpack a String
+      let udata:[AnyObject] = Struct.unpack("f", data:nsdata)
+      XCTAssert(udata.count == 1)
+      if udata.count > 0 {
+        if let value = udata[0] as? Float {
+          XCTAssert(value == testValue)
+        } else {
+          XCTAssert(false, "value is not a Float")
+        }
+      }
+    }
+  }
+    
   func testString() {
     let testValues:[String] = ["Hello", "World!"]
     for testValue in testValues {
@@ -111,7 +142,7 @@ class StructTest: XCTestCase {
       // pack a String
       let nsdata:NSData = Struct.pack("s", values:[testValue])
       XCTAssert(nsdata.length == testValue.utf8.count + 1)
-      
+            
       // unpack a String
       let udata:[AnyObject] = Struct.unpack("s", data:nsdata)
       XCTAssert(udata.count == 1)
@@ -124,7 +155,7 @@ class StructTest: XCTestCase {
       }
     }
   }
-  
+
   func testBool() {
     let testValues:[Bool] = [true, false]
     for testValue in testValues {
