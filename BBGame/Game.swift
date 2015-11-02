@@ -565,7 +565,7 @@ class Game {
     self.sel.Used(_up)
     // check for an error on out if a percentage is set
     if self.sel.sel == BB.OUT && self._pctError > 0 {
-      let randomErrors = GKRandomDistribution(lowestValue: 0, highestValue: 100)
+      let randomErrors = GKRandomDistribution(lowestValue: 0, highestValue: 99)
       if randomErrors.nextInt() < _pctError {
         // 10 % chance error is a 2B error
         // self.sel.sel = randomErrors.nextInt() < 10 ? BB.ERROR_2B : BB.ERROR_1B

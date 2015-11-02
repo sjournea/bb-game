@@ -82,3 +82,17 @@ extension String {
   var length: Int { return characters.count }   // Swift 2.0
 }
 
+/*
+protocol EnumerableEnum {
+  init?(rawValue: Int)
+  static func firstValue() -> Int
+}
+
+extension EnumerableEnum {
+  static func enumerate() -> AnyGenerator<Self> {
+    var nextIndex = firstRawValue()
+    return anyGenerator { Self(rawValue: nextIndex++) }
+  }
+  static func firstRawValue() -> Int { return 0 }
+}
+*/
