@@ -80,7 +80,7 @@ class GameScene: SKScene {
     field!.hidden = false
     summaryDisplay!.hidden = false
     game!.setup_selection(CreateBBSelection)
-    game!.setup_game(visitor!, home:home!, pctError: 5)
+    game!.setup_game(visitor!, home:home!, pctError: 2)
     scoreboard!.setGame(game!)
     game!.start_game()
     scoreboard!.updateScore()
@@ -92,14 +92,14 @@ class GameScene: SKScene {
     game!.run_game()
     scoreboard!.updateScore()
   }
-  
+/*
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
     
     if game!.gameOver == false && game!.makeSelection == false {
       runGame()
     }
   }
-    
+*/
   func swipedRight(sender:UISwipeGestureRecognizer){
     print("swiped right")
   }
