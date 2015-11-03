@@ -111,8 +111,9 @@ class GameEventTester: Game {
   
   override func evtRunnerAdvance(dct:[String:AnyObject] = [:])  -> Int {
     XCTAssertGreaterThanOrEqual(dct.count, 1)
-    XCTAssertLessThanOrEqual(dct.count, 4)
+    XCTAssertLessThanOrEqual(dct.count, 5)
     XCTAssertNotNil(dct["Batter"])
+    XCTAssertNotNil(dct["bases"])
     addEventCall(.RunnerAdvance)
     return EVENT_CONTINUE
   }

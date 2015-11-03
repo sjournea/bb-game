@@ -37,7 +37,7 @@ class GameTest: XCTestCase {
     return nil
   }
   
-  func encodeDecodeVerify(game:Game) {
+  func encodeDecodeVerify(game:Game) -> Game {
     // encode and decode and verify match
     let stPack = StructPack()
     game.encode(stPack)
@@ -48,6 +48,7 @@ class GameTest: XCTestCase {
     let game2 = Game()
     game2.decode(stUnpack)
     XCTAssert(game == game2)
+    return game2
   }
 
   func testCreate() {
@@ -200,6 +201,23 @@ class GameTest: XCTestCase {
       game.in_play(lst[0])
       // verify
       encodeDecodeVerify(game)
+    }
+  }
+
+  func testGameEncodeDecodeUse() {
+    let game = Game()
+    game.setup_game(visitor!, home:home!)
+    game.start_game()
+    
+    encodeDecodeVerify(game)
+    var game2 = game
+    while !game2.is_final() {
+      // get next avail
+      let lst = game2.avail()
+      XCTAssertNotEqual(lst, [])
+      game2.in_play(lst[0])
+      // verify
+      game2 = encodeDecodeVerify(game2)
     }
   }
 /*

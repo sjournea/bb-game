@@ -48,7 +48,7 @@ let RUNNER_ADVANCE_DURATION:Double = 1.0  // 1 second
 // BBSummary constants
 let SUMMARY_BACKGROUND_COLOR = UIColor.blackColor()
 
-let DEBUG_USE_TEST_BUTTONS = false
+let DEBUG_USE_TEST_BUTTONS = true
 
 extension Int
 {

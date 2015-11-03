@@ -46,8 +46,8 @@ enum BB: Int, CustomStringConvertible {
       case DOUBLE: return "2B"
       case TRIPLE: return "3B"
       case HOMERUN: return "HR"
-      case ERROR_1B: return "ERR 1B"
-      case ERROR_2B: return "ERR s2B"
+      case ERROR_1B: return "ERR"
+      case ERROR_2B: return "ERR2"
       }
     }
   }

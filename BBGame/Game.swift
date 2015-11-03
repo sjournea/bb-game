@@ -561,8 +561,6 @@ class Game {
     if self.sel.isUsed() {
       return false
     }
-    // use this selection
-    self.sel.Used(_up)
     // check for an error on out if a percentage is set
     if self.sel.sel == BB.OUT && self._pctError > 0 {
       let randomErrors = GKRandomDistribution(lowestValue: 0, highestValue: 99)
@@ -572,6 +570,9 @@ class Game {
         self.sel.sel = BB.ERROR_1B
       }
     }
+    // use this selection
+    self.sel.Used(_up)
+    // save selection index to up team
     self._up.addSelection(idx)
     self.lastSelection = self.sel
     let status = event_publish(GameEvent.Selection, dct:["sel":self.sel,"idx":idx])

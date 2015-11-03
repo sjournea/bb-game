@@ -65,8 +65,8 @@ class GameScene: SKScene {
     selectionDisplay!.hidden = true
     addChild(selectionDisplay!)
     
-    home = BBTeam(name:"Mets", color:UIColor.whiteColor(), home:true, robot:false, tla:"NYM")
-    visitor = BBTeam(name:"Royals", color:UIColor.blueColor(), home:false, robot:true, tla:"KC")
+    visitor = BBTeam(name:"Labs", color:UIColor.blueColor(), home:false, robot:true, tla:"LAB")
+    home = BBTeam(name:"Frenchies", color:UIColor.whiteColor(), home:true, robot:false, tla:"FRE")
     game = BBGame()
     game?.setScene(self)
     
@@ -80,7 +80,7 @@ class GameScene: SKScene {
     field!.hidden = false
     summaryDisplay!.hidden = false
     game!.setup_selection(CreateBBSelection)
-    game!.setup_game(visitor!, home:home!, pctError: 2)
+    game!.setup_game(visitor!, home:home!, pctError: 1)
     scoreboard!.setGame(game!)
     game!.start_game()
     scoreboard!.updateScore()
@@ -92,14 +92,13 @@ class GameScene: SKScene {
     game!.run_game()
     scoreboard!.updateScore()
   }
-/*
+
   override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    
-    if game!.gameOver == false && game!.makeSelection == false {
-      runGame()
+    if game!.gameOver{
+      game!.run_game()
     }
   }
-*/
+
   func swipedRight(sender:UISwipeGestureRecognizer){
     print("swiped right")
   }

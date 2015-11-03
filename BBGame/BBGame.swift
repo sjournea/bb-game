@@ -55,7 +55,6 @@ class BBGame : Game {
     // labels!.color = .whiteColor()
 
     labelsBottom!.updateLabelNode(0, text:"Event: GameStart", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     delayGame()
 
@@ -84,22 +83,14 @@ class BBGame : Game {
     
     labelsBottom!.updateLabelNode(0, text:"Event: GameFinal", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
+    gameOver = true
 
     return EVENT
   }
 
   override func evtGameEnd(dct:[String:AnyObject] = [:]) -> Int {
     print("evtGameEnd() dct:\(dct)")
-    gameOver = true
 
-    /*
-    labels!.hideLabels()
-    labels!.updateLabelNode(0, text:"GAME", ham:.Center)
-    labels!.updateLabelNode(1, text:"OVER", ham:.Center)
-
-    labelsBottom!.updateLabelNode(0, text:"Event: GameEnd", ham:.Center)
-    labelsBottom!.updateLabelNode(1, text:"Tap screen to start new game", ham:.Center)
-    */
     
     let transition = SKTransition.crossFadeWithDuration(3.0)
     let menuScene = MenuScene(size: scene!.size)
@@ -115,7 +106,6 @@ class BBGame : Game {
     labels!.updateLabelNode(0, text:"WALKOFF WIN", ham:.Center)
     
     labelsBottom!.updateLabelNode(0, text:"Event: Walkoff", ham:.Center)
-    // labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     delayGame()
 
@@ -139,7 +129,6 @@ class BBGame : Game {
     //labels!.color = up!.color!
     
     labelsBottom!.updateLabelNode(0, text:"Event: InningStart", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     summary!.inningStart()
     delayGame()
@@ -157,8 +146,8 @@ class BBGame : Game {
     labelsBottom!.updateLabelNode(0, text:"Event: AtBat", ham:.Center)
     labelsBottom!.updateLabelNode(1, text:"\(team.name)", ham:.Center)
 
-
     field!.batterUp()
+    
     if team.isHuman() {
       makeSelection = true
       selectionDisplay!.enableSelection(true)
@@ -182,7 +171,6 @@ class BBGame : Game {
     labels!.updateLabelNode(3, text:"Selection:\(sel.sel!.desc)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Selection", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
     selectionDisplay!.enableSelection(false)
 
@@ -202,7 +190,6 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Out", ham:.Center)
-    // labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
     
     field!.batterOut()
     summary!.setOuts(self.outs)
@@ -222,7 +209,6 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Error", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     delayGame()
 
@@ -239,7 +225,6 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"Batter: \(batterResult)")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Hit", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     delayGame()
     return EVENT
@@ -248,7 +233,6 @@ class BBGame : Game {
   override func evtRunnerAdvance(dct:[String:AnyObject] = [:]) -> Int {
     print("evtRunnerAdvance() dct:\(dct)")
     let bases = dct["bases"] as! Int
-    //dctRunnerAdvance = dct
     
     labels!.hideLabels()
     labels!.updateLabelNode(0, text:"\(half) of \(inning)", ham:.Center)
@@ -259,7 +243,6 @@ class BBGame : Game {
     if let val = dct["Batter"] { labels!.updateLabelNode(i++, text:"Batter -> \(val)") }
 
     labelsBottom!.updateLabelNode(0, text:"Event: RunnerAdvance", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     field!.runnersAdvance(dct)
     
@@ -283,7 +266,6 @@ class BBGame : Game {
     labels!.updateLabelNode(1, text:"\(runs) runs scored")
 
     labelsBottom!.updateLabelNode(0, text:"Event: Run", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     delayGame()
 
@@ -305,7 +287,6 @@ class BBGame : Game {
     outs = 0
     
     labelsBottom!.updateLabelNode(0, text:"Event: SideRetired", ham:.Center)
-    //labelsBottom!.updateLabelNode(1, text:"Tap screen to continue", ham:.Center)
 
     field!.sideRetired()
 

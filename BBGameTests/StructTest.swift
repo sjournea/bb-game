@@ -21,10 +21,16 @@ class StructTest: XCTestCase {
   }
   
   func testByteUtils() {
-    let lst:[Float] = [10.0, 11.0, -1.2, 100.457, 1729.1729]
-    for testValue in lst {
+    let lstFloats:[Float] = [10.0, 11.0, -1.2, 100.457, 1729.1729]
+    for testValue in lstFloats {
       let bytes = toByteArray(testValue)
       let value = fromByteArray(bytes, Float.self)
+      XCTAssertEqual(testValue, value)
+    }
+    let lstDoubles:[Double] = [10.0, 11.0, -1.2, 100.457, 1729.1729, 45.0e9, -32.6789e-9]
+    for testValue in lstDoubles {
+      let bytes = toByteArray(testValue)
+      let value = fromByteArray(bytes, Double.self)
       XCTAssertEqual(testValue, value)
     }
     

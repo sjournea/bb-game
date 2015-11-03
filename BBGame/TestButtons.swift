@@ -19,7 +19,7 @@ class TestButtons : SKSpriteNode {
   var doubleButton: TLButton?
   var singleButton: TLButton?
   var outButton: TLButton?
-  var nextAvailButton: TLButton?
+  var errorButton: TLButton?
   
   init(size:CGSize) {
     super.init( texture:nil, color:BG_COLOR, size:size)
@@ -49,9 +49,9 @@ class TestButtons : SKSpriteNode {
     outButton!.position = CGPointMake(4*size.width*BUTTON_SCALE_WIDTH, 0.0)
     addChild(outButton!)
 
-    nextAvailButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: nextAvail, defaultColor: TEST_BUTTON_RANDOM_COLOR, activeColor: SKColor.redColor(), label:"?")
-    nextAvailButton!.position = CGPointMake(5*size.width*BUTTON_SCALE_WIDTH, 0.0)
-    addChild(nextAvailButton!)
+    errorButton = TLButton(size:CGSize(width: size.width*BUTTON_SCALE_WIDTH, height: size.height), buttonAction: error, defaultColor: TEST_BUTTON_RANDOM_COLOR, activeColor: SKColor.redColor(), label:"ERR")
+    errorButton!.position = CGPointMake(5*size.width*BUTTON_SCALE_WIDTH, 0.0)
+    addChild(errorButton!)
   }
     
   required init?(coder aDecoder: NSCoder) {
@@ -114,11 +114,19 @@ class TestButtons : SKSpriteNode {
     }
   }
   
-  func nextAvail(button:TLButton) {
-    print("NEXT AVAILABLE")
-    let idx = game!.avail()[0]
-    game!.in_play(idx)
-    game!.makeSelection = false
+  func error(button:TLButton) {
+    print("Error")
+    let lstAvail:[Int] = game!.avail()
+    for index in lstAvail {
+      let selection = game!.lstSelections[index]
+      if selection.sel == BB.OUT {
+        selection.sel = BB.ERROR_1B
+        game!.in_play(index)
+        game!.makeSelection = false
+        break
+      }
+    }
   }
+
 }
 
