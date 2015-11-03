@@ -9,95 +9,8 @@
 import Foundation
 import GameplayKit
 
-enum GameEvent: Int, CustomStringConvertible {
-    
-  case GameIdle,
-  GameStart,  // visitor, home, start time
-  GameEnd,
-  SideRetired,
-  AtBat,
-  Out,
-  Hit,
-  Run,
-  Error,
-  Selection,
-  InningStart,
-  RunnerAdvance,
-  GameInit,
-  GameFinal,
-  Walkoff
-  
-  var description : String {
-    get {
-      switch(self) {
-        case GameIdle: return "GameIdle"
-        case GameStart: return "GameStart"
-        case GameEnd: return "GameEnd"
-        case SideRetired: return "SideRetired"
-        case AtBat: return "AtBat"
-        case Out: return "Out"
-        case Hit: return "Hit"
-        case Run: return "Run"
-        case Error: return "Error"
-        case Selection: return "Selection"
-        case InningStart: return "InningStart"
-        case RunnerAdvance: return "RunnerAdvance"
-        case GameInit: return "GameInit"
-        case GameFinal: return "GameFinal"
-        case Walkoff: return "Walkoff"
-      }
-    }
-  }
-}
-
 let EVENT_CONTINUE:Int = 0
 let EVENT_RETURN:Int = 1
-
-class SideRetiredData {
-  var runs:Int = 0
-  var hits:Int = 0
-  var errors:Int = 0
-  var lob:Int = 0
-    
-  func clear() {
-    self.runs = 0
-    self.hits = 0
-    self.errors = 0
-    self.lob = 0
-  }
-    
-  func encode(stPack:StructPack) {
-    // TODO Need version here?
-    stPack.pack(">4H", values:[runs, hits, errors, lob])
-  }
-    
-  func decode(stUnPack:StructUnpack) {
-    let values = stUnPack.unpack(">4H")
-    runs = values[0] as! Int
-    hits = values[1] as! Int
-    errors = values[2] as! Int
-    lob = values[3] as! Int
-  }
-    
-  func makeDict() -> [String:Int] {
-    return ["runs":self.runs, "hits":self.hits, "errors":self.errors, "lob":self.lob]
-  }
-    
-  func str() -> String {
-    return "Runs:\(self.runs) Hits:\(self.hits) Errors:\(self.errors) LOB:\(self.lob)"
-  }
-}
-
-func ==(left:SideRetiredData, right:SideRetiredData) -> Bool {
-  return (left.runs   == right.runs &&
-         left.hits   == right.hits &&
-         left.errors == right.errors &&
-         left.lob    == right.lob)
-}
-
-func !=(left:SideRetiredData, right:SideRetiredData) -> Bool {
-  return !(left == right)
-}
 
 class Game {
   let version = BINARY_VERSION.VERSION
@@ -109,7 +22,7 @@ class Game {
   var _1B:Bool = false
   var _2B:Bool = false
   var _3B:Bool = false
-  var _final:Bool = false
+  // var _final:Bool = false
   var _last_inning = 7
   var _up:Team
   var _field:Team
@@ -154,12 +67,11 @@ class Game {
     // _1B          bool
     // _2B          bool
     // _3B          bool
-    // _final       bool
     // _pctError    unsigned char
     // _last_inning unsigned char
     // gameState    unsigned char
     let up:Bool = home == _up
-    stPack.pack(">?BB????BBB", values:[up, _outs, _inning, _1B, _2B, _3B, _final, _pctError, _last_inning, gameEvent.rawValue])
+    stPack.pack(">?BB???BBB", values:[up, _outs, _inning, _1B, _2B, _3B, _pctError, _last_inning, gameEvent.rawValue])
   }
   
   func decode(stUnpack:StructUnpack) {
@@ -189,21 +101,19 @@ class Game {
       // _1B          bool
       // _2B          bool
       // _3B          bool
-      // _final       bool
       // _pctError    unsigned char
       // _last_inning unsigned char
       // gameState    unsigned char
-      values = stUnpack.unpack(">?BB????BBB")
+      values = stUnpack.unpack(">?BB???BBB")
       let up = values[0] as! Bool
       _outs = values[1] as! Int
       _inning = values[2] as! Int
       _1B = values[3] as! Bool
       _2B = values[4] as! Bool
       _3B = values[5] as! Bool
-      _final = values[6] as! Bool
-      _pctError = values[7] as! Int
-      _last_inning = values[8] as! Int
-      let event = values[9] as! Int
+      _pctError = values[6] as! Int
+      _last_inning = values[7] as! Int
+      let event = values[8] as! Int
       _up = up ? home : visitor
       _field = up ? visitor : home
       gameEvent = GameEvent(rawValue: event)!
@@ -308,7 +218,6 @@ class Game {
     self._1B = false
     self._2B = false
     self._3B = false
-    self._final = false
     self._last_inning = 7
     self._srd.clear()
         
@@ -507,7 +416,6 @@ class Game {
     // RUN => AT_BAT | WALKOFF
     // check for end of game if in extra innings
     if (self._inning >= self._last_inning && self._up == self.home && self.home.runs > self.visitor.runs) {
-      self._final = true
       return event_publish(GameEvent.Walkoff)
     }
     return event_publish(GameEvent.AtBat, dct:["team":self._up])
@@ -533,7 +441,6 @@ class Game {
       half = "top"
       // check for game over
       if self._inning >= self._last_inning && self.home.runs != self.visitor.runs {
-        self._final = true
         return event_publish(GameEvent.GameFinal)
       }
       self._inning++
@@ -582,8 +489,8 @@ class Game {
     return true
   }
     
-  func is_final() -> Bool {
-    return self._final
+  func is_over() -> Bool {
+    return gameEvent == GameEvent.GameIdle
   }
     
   func base_status() -> String {
@@ -601,7 +508,7 @@ class Game {
   func status() -> String {
     var s = ""
     let score = "\(self.visitor.name) \(self.visitor.runs) \(self.home.name) \(self.home.runs)"
-    if (self.is_final()) {
+    if (self.is_over()) {
       s = "Final Score: " + score
     } else {
       var inning = (self._up == self.visitor) ? "Top" : "Bottom"
@@ -731,7 +638,6 @@ func ==(left:Game, right:Game) -> Bool {
               left._1B == right._1B &&
               left._2B == right._2B &&
               left._3B == right._3B &&
-              left._final == right._final &&
               left._pctError == right._pctError &&
               left._srd == right._srd &&
               left._last_inning == right._last_inning &&

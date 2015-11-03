@@ -10,6 +10,8 @@
 		0B07DBB91BE559FA0015D667 /* GameTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBB81BE559FA0015D667 /* GameTest.swift */; };
 		0B07DBBD1BE560980015D667 /* SideRetiredDataTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBBC1BE560980015D667 /* SideRetiredDataTest.swift */; };
 		0B07DBBF1BE6CBE20015D667 /* GameEventTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBBE1BE6CBE20015D667 /* GameEventTest.swift */; };
+		0B07DBC51BE94A7E0015D667 /* SideRetiredData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBC41BE94A7E0015D667 /* SideRetiredData.swift */; };
+		0B07DBC71BE94C2D0015D667 /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B07DBC61BE94C2D0015D667 /* GameEvent.swift */; };
 		0B3B5DDF1BC0B68F00038221 /* BBTeam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */; };
 		0B3B5DE11BC0D49D00038221 /* TestButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE01BC0D49D00038221 /* TestButtons.swift */; };
 		0B3B5DE31BC0D64700038221 /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B3B5DE21BC0D64700038221 /* Button.swift */; };
@@ -64,6 +66,8 @@
 		0B07DBB81BE559FA0015D667 /* GameTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = GameTest.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B07DBBC1BE560980015D667 /* SideRetiredDataTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SideRetiredDataTest.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B07DBBE1BE6CBE20015D667 /* GameEventTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = GameEventTest.swift; sourceTree = "<group>"; tabWidth = 2; };
+		0B07DBC41BE94A7E0015D667 /* SideRetiredData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideRetiredData.swift; sourceTree = "<group>"; };
+		0B07DBC61BE94C2D0015D667 /* GameEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
 		0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = BBTeam.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DE01BC0D49D00038221 /* TestButtons.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = TestButtons.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0B3B5DE21BC0D64700038221 /* Button.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; tabWidth = 2; };
@@ -153,6 +157,7 @@
 		0B833A391BBB89F300036E93 /* BBGame */ = {
 			isa = PBXGroup;
 			children = (
+				0B07DBC41BE94A7E0015D667 /* SideRetiredData.swift */,
 				0B8B5E231BE3C96800A7B1FC /* Struct.swift */,
 				0BFA39C41BD42ABA0025E7FD /* common.swift */,
 				0B833A3A1BBB89F300036E93 /* AppDelegate.swift */,
@@ -167,6 +172,7 @@
 				0B833A7A1BC03D5200036E93 /* Labels.swift */,
 				0B833A741BBCEF1200036E93 /* ScoreBoard.swift */,
 				0B833A6C1BBB8EA600036E93 /* Game.swift */,
+				0B07DBC61BE94C2D0015D667 /* GameEvent.swift */,
 				0BFA39C61BD5E4280025E7FD /* BBSelections.swift */,
 				0B833A6E1BBB8F9700036E93 /* Team.swift */,
 				0B3B5DDE1BC0B68F00038221 /* BBTeam.swift */,
@@ -362,6 +368,8 @@
 				0BFA39C11BD09B530025E7FD /* SelectionButton.swift in Sources */,
 				0B833A711BBB8FE500036E93 /* Selections.swift in Sources */,
 				0BFA39C31BD0A7A60025E7FD /* SelectionDisplay.swift in Sources */,
+				0B07DBC71BE94C2D0015D667 /* GameEvent.swift in Sources */,
+				0B07DBC51BE94A7E0015D667 /* SideRetiredData.swift in Sources */,
 				0B833A6D1BBB8EA700036E93 /* Game.swift in Sources */,
 				0BFA39C51BD42ABA0025E7FD /* common.swift in Sources */,
 				0B833A751BBCEF1200036E93 /* ScoreBoard.swift in Sources */,

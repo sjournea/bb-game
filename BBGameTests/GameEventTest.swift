@@ -188,7 +188,7 @@ class GameEventTest: XCTestCase {
     game.setup_game(visitor!, home:home!)
     game.start_game()
     
-    while !game.is_final() {
+    while !game.is_over() {
       // random selection
       let idx = game.avail()[0]
       game.in_play(idx)

@@ -62,6 +62,7 @@ class GameTest: XCTestCase {
 
   func testGameStart() {
     let game = Game()
+    XCTAssertEqual(game.gameEvent, GameEvent.GameIdle)
     game.setup_game(visitor!, home:home!)
     game.start_game()
     
@@ -71,10 +72,12 @@ class GameTest: XCTestCase {
     XCTAssertEqual(game._1B, false)
     XCTAssertEqual(game._2B, false)
     XCTAssertEqual(game._3B, false)
-    XCTAssertEqual(game._final, false)
     XCTAssertEqual(game._last_inning, 7)
     XCTAssertEqual(game.visitor.innings, [0] )
     XCTAssertEqual(game.home.innings, [])
+
+    XCTAssertEqual(game.gameEvent, GameEvent.AtBat)
+
   }
 
   func testGamePlayOuts() {
@@ -194,7 +197,7 @@ class GameTest: XCTestCase {
     
     encodeDecodeVerify(game)
     
-    while !game.is_final() {
+    while !game.is_over() {
       // get next avail
       let lst = game.avail()
       XCTAssertNotEqual(lst, [])
@@ -211,7 +214,7 @@ class GameTest: XCTestCase {
     
     encodeDecodeVerify(game)
     var game2 = game
-    while !game2.is_final() {
+    while !game2.is_over() {
       // get next avail
       let lst = game2.avail()
       XCTAssertNotEqual(lst, [])
