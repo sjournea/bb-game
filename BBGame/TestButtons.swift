@@ -12,6 +12,7 @@ import SpriteKit
 class TestButtons : SKSpriteNode {
   let BG_COLOR = UIColor.grayColor()
   let BUTTON_SCALE_WIDTH:CGFloat = 1.0/6.0  // 1/6
+  let NO_MORE_AVAIL_COLOR = SKColor.grayColor()
   
   var game:BBGame?
   var homeRunButton: TLButton?
@@ -66,50 +67,89 @@ class TestButtons : SKSpriteNode {
     self.hidden = !enable
   }
   
-  private func findSelection(bb:BB) -> Bool {
+  private func findSelection(bb:BB) -> [Int] {
     let lstAvail:[Int] = game!.avail()
+    var lstTypeAvail:[Int] = []
     for index in lstAvail {
       let selection = game!.lstSelections[index]
       if selection.sel == bb {
-        game!.in_play(index)
-        game!.makeSelection = false
-        return true
+        lstTypeAvail.append(index)
       }
     }
-    return false
+    return lstTypeAvail
   }
-  
+
   func homeRun(button:TLButton) {
     print("HOME RUN")
-    if !findSelection(BB.HOMERUN) {
+    let lst = findSelection(BB.HOMERUN)
+    if lst.count > 0 {
+      game!.in_play(lst[0])
+      game!.makeSelection = false
+      if lst.count == 1 {
+        // No more homeruns
+        button.defaultButton.color = NO_MORE_AVAIL_COLOR
+      }
+    } else {
       print("*** No HOME_RUNS found ***")
     }
   }
 
   func triple(button:TLButton) {
     print("TRIPLE")
-    if !findSelection(BB.TRIPLE) {
+    let lst = findSelection(BB.TRIPLE)
+    if lst.count > 0 {
+      game!.in_play(lst[0])
+      game!.makeSelection = false
+      if lst.count == 1 {
+        // No more
+        button.defaultButton.color = NO_MORE_AVAIL_COLOR
+      }
+    } else {
       print("*** No TRIPLES found ***")
     }
   }
 
   func double(button:TLButton) {
     print("DOUBLE")
-    if !findSelection(BB.DOUBLE) {
+    let lst = findSelection(BB.DOUBLE)
+    if lst.count > 0 {
+      game!.in_play(lst[0])
+      game!.makeSelection = false
+      if lst.count == 1 {
+        // No more
+        button.defaultButton.color = NO_MORE_AVAIL_COLOR
+      }
+    } else {
       print("*** No DOUBLES found ***")
     }
   }
   
   func single(button:TLButton) {
     print("SINGLE")
-    if !findSelection(BB.SINGLE) {
+    let lst = findSelection(BB.SINGLE)
+    if lst.count > 0 {
+      game!.in_play(lst[0])
+      game!.makeSelection = false
+      if lst.count == 1 {
+        // No more
+        button.defaultButton.color = NO_MORE_AVAIL_COLOR
+      }
+    } else {
       print("*** No SINGLES found ***")
     }
   }
   
   func out(button:TLButton) {
     print("OUT")
-    if !findSelection(BB.OUT) {
+    let lst = findSelection(BB.OUT)
+    if lst.count > 0 {
+      game!.in_play(lst[0])
+      game!.makeSelection = false
+      if lst.count == 1 {
+        // No more
+        button.defaultButton.color = NO_MORE_AVAIL_COLOR
+      }
+    } else {
       print("*** No OUTS found ***")
     }
   }

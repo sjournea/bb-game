@@ -8,8 +8,11 @@
 
 import UIKit
 import SpriteKit
+import GameKit
 
 class GameViewController: UIViewController {
+
+  let localPlayer:GKLocalPlayer = GKLocalPlayer.localPlayer()
   var scene: MenuScene!
     
   override func prefersStatusBarHidden() -> Bool {
@@ -31,9 +34,18 @@ class GameViewController: UIViewController {
         
     /* Set the scale mode to scale to fit the window */
     scene.scaleMode = .AspectFill
-        
+
+    localPlayer.authenticateHandler = authenticate
+    
     skView.presentScene(scene)
   }
+
+  func authenticate(vc:UIViewController?, error:NSError?) {
+    print( "authenticate() error:\(error)")
+    
+    
+  }
+  
 }
 
 /*
